@@ -1,9 +1,10 @@
-package com.example.ecommerceplatform.controllers;
+package com.tw.ecommerceplatform.controllers;
 
-import com.example.ecommerceplatform.models.UserEntity;
-import com.example.ecommerceplatform.services.JpaUserDetailsService;
-import com.example.ecommerceplatform.services.UserValidatorService;
+import com.tw.ecommerceplatform.models.UserEntity;
+import com.tw.ecommerceplatform.services.JpaUserDetailsService;
+import com.tw.ecommerceplatform.services.UserValidatorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,12 +20,14 @@ public class AdminController {
     private final JpaUserDetailsService userService;
 
     // Entry point to the main admin page
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping("/private")
     public String adminGet() {
         return "admin/admin";
     }
 
     // Method used to get the change password form
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/private/changePassword")
     public String changePassword(Model model) {
         model.addAttribute("userEntity", new UserEntity());
@@ -33,6 +36,7 @@ public class AdminController {
     }
 
     // Method used to change the password
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/private/passwordChanged")
     public String passwordChanged(@ModelAttribute("userEntity") UserEntity userEntity, BindingResult bindingResult){
         userValidatorService.validate(userEntity, bindingResult);

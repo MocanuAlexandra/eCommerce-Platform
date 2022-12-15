@@ -1,8 +1,8 @@
-package com.example.ecommerceplatform.services;
+package com.tw.ecommerceplatform.services;
 
 
-import com.example.ecommerceplatform.models.UserEntity;
-import com.example.ecommerceplatform.repositories.UserRepository;
+import com.tw.ecommerceplatform.models.UserEntity;
+import com.tw.ecommerceplatform.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,6 +1,6 @@
-package com.example.ecommerceplatform.services;
+package com.tw.ecommerceplatform.services;
 
-import com.example.ecommerceplatform.models.UserEntity;
+import com.tw.ecommerceplatform.models.UserEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;

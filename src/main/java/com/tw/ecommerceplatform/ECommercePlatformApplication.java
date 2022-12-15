@@ -1,9 +1,9 @@
-package com.example.ecommerceplatform;
+package com.tw.ecommerceplatform;
 
-import com.example.ecommerceplatform.models.RoleEntity;
-import com.example.ecommerceplatform.models.UserEntity;
-import com.example.ecommerceplatform.repositories.RoleRepository;
-import com.example.ecommerceplatform.repositories.UserRepository;
+import com.tw.ecommerceplatform.models.RoleEntity;
+import com.tw.ecommerceplatform.models.UserEntity;
+import com.tw.ecommerceplatform.repositories.RoleRepository;
+import com.tw.ecommerceplatform.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

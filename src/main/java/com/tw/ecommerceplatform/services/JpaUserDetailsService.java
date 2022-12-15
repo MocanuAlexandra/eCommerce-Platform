@@ -1,9 +1,9 @@
-package com.example.ecommerceplatform.services;
+package com.tw.ecommerceplatform.services;
 
 
-import com.example.ecommerceplatform.models.SecurityUserDetails;
-import com.example.ecommerceplatform.models.UserEntity;
-import com.example.ecommerceplatform.repositories.UserRepository;
+import com.tw.ecommerceplatform.models.SecurityUserDetails;
+import com.tw.ecommerceplatform.models.UserEntity;
+import com.tw.ecommerceplatform.repositories.UserRepository;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class JpaUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
 
     public JpaUserDetailsService(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder) {

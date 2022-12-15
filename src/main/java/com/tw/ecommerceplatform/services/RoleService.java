@@ -1,8 +1,8 @@
-package com.example.ecommerceplatform.services;
+package com.tw.ecommerceplatform.services;
 
 
-import com.example.ecommerceplatform.models.RoleEntity;
-import com.example.ecommerceplatform.repositories.RoleRepository;
+import com.tw.ecommerceplatform.models.RoleEntity;
+import com.tw.ecommerceplatform.repositories.RoleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +16,6 @@ public class RoleService {
     }
 
     public List<RoleEntity> allRoles(){
-        return (List<RoleEntity>) roleRepository.findAll();
+        return roleRepository.findAll();
     }
 }
