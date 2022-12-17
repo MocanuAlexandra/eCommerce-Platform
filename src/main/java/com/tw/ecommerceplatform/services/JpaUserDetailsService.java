@@ -22,9 +22,9 @@ public class JpaUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         // Get the user from the database
-        UserEntity user = userRepository.findByUsername(username);
+        UserEntity user = userRepository.findByEmail(email);
 
         // If no user was found, throw UsernameNotFoundException
         if (user == null)
@@ -34,7 +34,7 @@ public class JpaUserDetailsService implements UserDetailsService {
     }
 
     public void changePassword(String username, String currentPassword, String newPassword) throws Exception {
-        UserEntity user = userRepository.findByUsername(username);
+        UserEntity user = userRepository.findByEmail(username);
 
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
             throw new Exception("Incorrect current password");

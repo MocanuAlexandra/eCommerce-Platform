@@ -2,16 +2,18 @@ package com.tw.ecommerceplatform.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Entity
 @Data
+@RequiredArgsConstructor
 @Table(name = "user", schema = "public", catalog = "demo")
 public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private long id;
-    @Column(name = "username", unique = true)
-    private String username;
+    @Column(name = "email", unique = true)
+    private String email;
     @Column(name = "password")
     private String password;
     @Transient
@@ -19,11 +21,8 @@ public class UserEntity {
     @ManyToOne
     private RoleEntity role;
 
-    public UserEntity() {
-    }
-
-    public UserEntity(String username, String password, RoleEntity role) {
-        this.username = username;
+    public UserEntity(String email, String password, RoleEntity role) {
+        this.email = email;
         this.password = password;
         this.role = role;
     }

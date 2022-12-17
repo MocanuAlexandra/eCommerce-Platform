@@ -29,9 +29,9 @@ public class ECommercePlatformApplication {
 			roleRepository.save(role_admin);
 
 
-			UserEntity user = new UserEntity("username",
+			UserEntity user = new UserEntity("username@gmail.com",
 					passwordEncoder.encode("password"), role_user);
-			UserEntity admin = new UserEntity("admin",
+			UserEntity admin = new UserEntity("admin@gmail.com",
 					passwordEncoder.encode("admin"), role_admin);
 
 			userRepository.save(user);

@@ -23,7 +23,7 @@ public class AdminController {
     // Entry point to the main admin page
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping("/private")
-    public String adminGet() {
+    public String open() {
         return "admin/admin";
     }
 
@@ -56,6 +56,8 @@ public class AdminController {
             bindingResult.rejectValue("currentPassword", "error.form", "Incorrect current password");
             return "admin/changePassword";
         }
+
+        // If the password was changed successfully, redirect to the admin page
         return "redirect:/private";
     }
 }

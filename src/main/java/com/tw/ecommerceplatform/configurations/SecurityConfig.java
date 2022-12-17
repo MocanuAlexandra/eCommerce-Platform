@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests().requestMatchers("/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
+                .formLogin().loginPage("/login").permitAll()
                 .and()
                 .logout().deleteCookies("access_token");
 
