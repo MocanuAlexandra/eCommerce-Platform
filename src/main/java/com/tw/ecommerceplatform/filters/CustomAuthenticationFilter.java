@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.tw.ecommerceplatform.models.SecurityUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,20 +16,20 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
 
-//TODO DELETE COOKIE ON "/logout"
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
     private final AuthenticationManager authenticationManager;
-    CustomAuthenticationFilterUtils customAuthenticationFilterUtils = new CustomAuthenticationFilterUtils();
+    private String failRedirectURL = "/login?error";
 
     public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
 
-    // Method called when a user tries to log in
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String username = request.getParameter("username");
@@ -39,42 +40,51 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         return authenticationManager.authenticate(authenticationToken);
     }
 
-    // Method called when a user successfully logs in
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
-        // TODO CHANGE SECRET
         SecurityUserDetails user = (SecurityUserDetails) authentication.getPrincipal();
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
 
         // Create access token
         String access_token = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(Instant.now().plus(1, ChronoUnit.HOURS))
+                .withExpiresAt(Instant.now().plus(1, ChronoUnit.DAYS))
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("role", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
 
-        // Create refresh token
-        String refresh_token = JWT.create()
-                .withSubject(user.getUsername())
-                .withExpiresAt(Instant.now().plus(1, ChronoUnit.DAYS))
-                .withIssuer(request.getRequestURL().toString())
-                .sign(algorithm);
+        // Create a cookie for the token
+        Cookie tokenCookie = new Cookie("access_token", access_token);
 
-        // Add the tokens in headers
-        response.setHeader("access_token", access_token);
-        response.setHeader("refresh_token", refresh_token);
+        // Get the timestamp for now
+        Instant now = Instant.now();
 
-        // Add the tokens in cookies
-        response.addCookie(customAuthenticationFilterUtils.createToken(access_token));
+        // Get the time stamp for 24 hours from now
+        Instant expireTime = now.plus(1, ChronoUnit.DAYS);
 
-        // If the user has successfully authenticated, redirect him by role to the appropriate page
-        customAuthenticationFilterUtils.redirectUserByRole(user, response);
+        // The difference will always be the same, the number of seconds in a day
+        tokenCookie.setMaxAge((int) Duration.between(now, expireTime).getSeconds());
+        response.addCookie(tokenCookie);
+
+
+        // If the user has successfully authenticated, redirect him to page a
+        if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+            response.sendRedirect("/private");
+        } else if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_USER"))) {
+            response.sendRedirect("/public");
+        }
     }
 
-    // Method called when a user fails to log in
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        response.sendRedirect("/login?error");
+        response.sendRedirect(failRedirectURL);
+    }
+
+    public String getFailRedirectURL() {
+        return failRedirectURL;
+    }
+
+    public void setFailRedirectURL(String failRedirectURL) {
+        this.failRedirectURL = failRedirectURL;
     }
 }

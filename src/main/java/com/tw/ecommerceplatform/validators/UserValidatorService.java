@@ -1,4 +1,4 @@
-package com.tw.ecommerceplatform.services;
+package com.tw.ecommerceplatform.validators;
 
 import com.tw.ecommerceplatform.models.UserEntity;
 import org.springframework.stereotype.Service;

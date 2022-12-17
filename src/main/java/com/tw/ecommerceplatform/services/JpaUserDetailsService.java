@@ -23,7 +23,6 @@ public class JpaUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
         // Get the user from the database
         UserEntity user = userRepository.findByUsername(username);
 
@@ -34,17 +33,13 @@ public class JpaUserDetailsService implements UserDetailsService {
         return new SecurityUserDetails(user);
     }
 
-    public void save(UserEntity savedUser) {
-        UserEntity user = userRepository.findByUsername(savedUser.getUsername());
+    public void changePassword(String username, String currentPassword, String newPassword) throws Exception {
+        UserEntity user = userRepository.findByUsername(username);
 
-        // verify if user exists
-        if (user != null) {
-            user.setUsername(savedUser.getUsername());
-            user.setPassword(passwordEncoder.encode(savedUser.getPassword()));
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new Exception("Incorrect current password");
         }
-
-        // save user if not exists //TODO: AT REGISTER
-        assert user != null;
+        user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
     }
 }

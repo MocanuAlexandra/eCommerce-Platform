@@ -10,7 +10,7 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private long id;
-    @Column(name = "username",unique = true)
+    @Column(name = "username", unique = true)
     private String username;
     @Column(name = "password")
     private String password;
@@ -19,7 +19,9 @@ public class UserEntity {
     @ManyToOne
     private RoleEntity role;
 
-    public UserEntity(){};
+    public UserEntity() {
+    }
+
     public UserEntity(String username, String password, RoleEntity role) {
         this.username = username;
         this.password = password;

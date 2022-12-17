@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @RequestMapping("/public")
-    public String publicGet()
-    {
+    public String publicGet() {
         return "user";
     }
 }
