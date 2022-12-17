@@ -1,6 +1,7 @@
 package com.tw.ecommerceplatform.services;
 
 
+import com.tw.ecommerceplatform.models.RoleEntity;
 import com.tw.ecommerceplatform.models.SecurityUserDetails;
 import com.tw.ecommerceplatform.models.UserEntity;
 import com.tw.ecommerceplatform.repositories.UserRepository;
@@ -33,13 +34,28 @@ public class JpaUserDetailsService implements UserDetailsService {
         return new SecurityUserDetails(user);
     }
 
-    public void changePassword(String username, String currentPassword, String newPassword) throws Exception {
-        UserEntity user = userRepository.findByEmail(username);
+    public void changePassword(String email, String currentPassword, String newPassword) throws Exception {
 
+        UserEntity user = userRepository.findByEmail(email);
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
             throw new Exception("Incorrect current password");
         }
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
+    }
+
+    public void registerCustomer(String email, String newPassword, RoleEntity role) throws Exception {
+        UserEntity savedUser = userRepository.findByEmail(email);
+
+        if (savedUser != null) {
+            throw new Exception("User already exists");
+        } else {
+            UserEntity newUser = new UserEntity();
+            newUser.setEmail(email);
+            newUser.setPassword(passwordEncoder.encode(newPassword));
+            newUser.setRole(role);
+
+            userRepository.save(newUser);
+        }
     }
 }

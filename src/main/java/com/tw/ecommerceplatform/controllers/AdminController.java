@@ -1,6 +1,6 @@
 package com.tw.ecommerceplatform.controllers;
 
-import com.tw.ecommerceplatform.models.ChangePasswordModel;
+import com.tw.ecommerceplatform.models.ChangePasswordUserModel;
 import com.tw.ecommerceplatform.services.JpaUserDetailsService;
 import com.tw.ecommerceplatform.validators.ChangePasswordValidatorService;
 import lombok.RequiredArgsConstructor;
@@ -20,25 +20,24 @@ public class AdminController {
     private final ChangePasswordValidatorService changePasswordValidatorService;
     private final JpaUserDetailsService userService;
 
-    // Entry point to the main admin page
+    // Endpoint to main page of admin
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping("/private")
     public String open() {
         return "admin/admin";
     }
 
-    // Method used to get the change password form
+    // Endpoint to change password page
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/private/changePassword")
     public String changePassword(Model model) {
-        model.addAttribute("form", new ChangePasswordModel());
+        model.addAttribute("form", new ChangePasswordUserModel());
         return "admin/changePassword";
     }
 
-    // Method used to actually change the password
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/private/changePassword")
-    public String changePassword(@ModelAttribute("form") ChangePasswordModel form,
+    public String changePassword(@ModelAttribute("form") ChangePasswordUserModel form,
                                  Authentication authentication,
                                  BindingResult bindingResult) {
 

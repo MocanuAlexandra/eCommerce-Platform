@@ -36,6 +36,8 @@ public class SecurityConfig {
                 .and()
                 .userDetailsService(jpaUserDetailsService)
                 .authorizeHttpRequests().requestMatchers("/login").permitAll()
+                .and()
+                .authorizeHttpRequests().requestMatchers("/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").permitAll()

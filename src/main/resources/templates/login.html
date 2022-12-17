@@ -1,14 +1,18 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Login</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <div class="form-container">
-    <form method="post" th:action="@{/login}">
-        <h1>Login</h1>
+    <h1>Login</h1>
+    <form method="post" th:object="${form}" th:action="@{/login}">
+
+        <!-- Email -->
         <div class="form-group">
             <label for="username">Email</label>
             <input type="text"
@@ -16,8 +20,10 @@
                    id="username"
                    placeholder="Enter your email"
                    name="username">
+            <span class="has-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
         </div>
 
+        <!-- Password-->
         <div class="form-group">
             <label for="password">Password</label>
             <input type="password"
@@ -25,9 +31,15 @@
                    id="password"
                    placeholder="Enter your password"
                    name="password">
+            <span class="has-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
         </div>
+
+        <!-- Buttons aria -->
         <div class="buttons">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Sign In</button>
+            <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account?
+                <a href="/register" class="link-danger">Register</a>
+            </p>
         </div>
 
     </form>

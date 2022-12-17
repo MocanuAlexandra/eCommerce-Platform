@@ -42,7 +42,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
-        SecurityUserDetails user = (SecurityUserDetails)authentication.getPrincipal();
+        SecurityUserDetails user = (SecurityUserDetails) authentication.getPrincipal();
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
 
         // Create access token
@@ -63,14 +63,14 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         Instant expireTime = now.plus(1, ChronoUnit.DAYS);
 
         // The difference will always be the same, the number of seconds in a day
-        tokenCookie.setMaxAge((int)Duration.between(now, expireTime).getSeconds());
+        tokenCookie.setMaxAge((int) Duration.between(now, expireTime).getSeconds());
         response.addCookie(tokenCookie);
 
 
         // If the user has successfully authenticated, redirect him to page a
         if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
             response.sendRedirect("/private");
-        } else if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_USER"))) {
+        } else if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_CUSTOMER"))) {
             response.sendRedirect("/public");
         }
     }

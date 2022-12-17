@@ -1,6 +1,6 @@
 package com.tw.ecommerceplatform.validators;
 
-import com.tw.ecommerceplatform.models.ChangePasswordModel;
+import com.tw.ecommerceplatform.models.ChangePasswordUserModel;
 import com.tw.ecommerceplatform.models.UserEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
@@ -17,7 +17,7 @@ public class ChangePasswordValidatorService implements Validator {
 
     @Override
     public void validate(Object changePasswordModel, Errors errors) {
-        ChangePasswordModel model = (ChangePasswordModel) changePasswordModel;
+        ChangePasswordUserModel model = (ChangePasswordUserModel) changePasswordModel;
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "currentPassword", "user.isPasswordEmpty");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "newPassword", "user.isPasswordEmpty");

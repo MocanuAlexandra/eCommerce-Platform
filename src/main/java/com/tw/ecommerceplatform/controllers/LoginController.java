@@ -1,6 +1,6 @@
 package com.tw.ecommerceplatform.controllers;
 
-import com.tw.ecommerceplatform.models.LoginModel;
+import com.tw.ecommerceplatform.models.LoginUserModel;
 import com.tw.ecommerceplatform.validators.LoginValidatorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,14 +13,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class LoginController {
     LoginValidatorService loginValidatorService;
+
     @GetMapping("/login")
     public String open(Model model) {
-        model.addAttribute("form", new LoginModel());
+        model.addAttribute("form", new LoginUserModel());
         return "login";
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute("form") LoginModel form,
+    public String login(@ModelAttribute("form") LoginUserModel form,
                         BindingResult bindingResult) {
 
         // Validate the form

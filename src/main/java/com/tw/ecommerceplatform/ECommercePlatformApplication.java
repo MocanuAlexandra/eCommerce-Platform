@@ -22,7 +22,7 @@ public class ECommercePlatformApplication {
 	public CommandLineRunner insert(RoleRepository roleRepository, UserRepository userRepository,
 									PasswordEncoder passwordEncoder){
 		return args -> {
-			RoleEntity role_user = new RoleEntity("ROLE_USER");
+			RoleEntity role_user = new RoleEntity("ROLE_CUSTOMER");
 			RoleEntity role_admin = new RoleEntity("ROLE_ADMIN");
 
 			roleRepository.save(role_user);
