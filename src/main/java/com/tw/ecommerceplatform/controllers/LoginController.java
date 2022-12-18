@@ -21,7 +21,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute("form") LoginUserModel form,
+    public String login( @ModelAttribute("form") LoginUserModel form,
                         BindingResult bindingResult) {
 
         // Validate the form

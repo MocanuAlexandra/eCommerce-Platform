@@ -2,7 +2,7 @@ package com.tw.ecommerceplatform.filters;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.tw.ecommerceplatform.models.SecurityUserDetails;
+import com.tw.ecommerceplatform.entities.SecurityUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-    private String failRedirectURL = "/login?error";
+    private String failRedirectURL = "/login";
 
     public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -71,6 +71,9 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
             response.sendRedirect("/private");
         } else if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_CUSTOMER"))) {
+            response.sendRedirect("/public");
+        }
+        else if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_WAREHOUSE_ADMIN"))) {
             response.sendRedirect("/public");
         }
     }

@@ -1,4 +1,4 @@
-package com.tw.ecommerceplatform.models;
+package com.tw.ecommerceplatform.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Entity
 @Data
 @RequiredArgsConstructor
-@Table(name = "user", schema = "public", catalog = "demo")
+@Table(name = "user", schema = "public")
 public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

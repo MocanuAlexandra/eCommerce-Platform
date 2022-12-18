@@ -1,14 +1,14 @@
 package com.tw.ecommerceplatform.validators;
 
 import com.tw.ecommerceplatform.models.RegisterUserModel;
-import com.tw.ecommerceplatform.models.UserEntity;
+import com.tw.ecommerceplatform.entities.UserEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 @Service
-public class RegisterValidatorService implements Validator {
+public class RegisterUserValidatorService implements Validator {
     @Override
     public boolean supports(Class<?> aClass) {
         return UserEntity.class.equals(aClass);

@@ -1,10 +1,12 @@
 package com.tw.ecommerceplatform.controllers;
 
+import com.tw.ecommerceplatform.entities.RoleEntity;
 import com.tw.ecommerceplatform.models.RegisterUserModel;
-import com.tw.ecommerceplatform.models.RoleEntity;
+import com.tw.ecommerceplatform.models.RegisterWarehouseModel;
 import com.tw.ecommerceplatform.repositories.RoleRepository;
 import com.tw.ecommerceplatform.services.JpaUserDetailsService;
-import com.tw.ecommerceplatform.validators.RegisterValidatorService;
+import com.tw.ecommerceplatform.validators.RegisterUserValidatorService;
+import com.tw.ecommerceplatform.validators.RegisterWarehouseValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class RegisterController {
     private final JpaUserDetailsService userService;
-    private final RegisterValidatorService registerValidatorService;
+    private final RegisterUserValidatorService registerUserValidatorService;
+    private final RegisterWarehouseValidationService registerWarehouseValidationService;
     private final RoleRepository roleRepository;
 
     @GetMapping("/register")
@@ -30,6 +33,8 @@ public class RegisterController {
         return "register/register";
     }
 
+
+    // Register Customer
     @GetMapping("/register/customer")
     public String registerCustomer(Model model) {
         model.addAttribute("form", new RegisterUserModel());
@@ -37,22 +42,42 @@ public class RegisterController {
     }
 
     @PostMapping("/register/customer")
-    public String register(@ModelAttribute("form") RegisterUserModel form,
+    public String registerCustomer(@ModelAttribute("form") RegisterUserModel form,
                            BindingResult bindingResult) {
 
         // Validate the form
-        registerValidatorService.validate(form, bindingResult);
+        registerUserValidatorService.validate(form, bindingResult);
         if (bindingResult.hasErrors()) {
             return "register/registerCustomer";
         }
 
-        // Try to register the user
+        // Try to register the customer and redirect to the login page
         try {
-            RoleEntity role_user = roleRepository.findByName("ROLE_CUSTOMER");
-            userService.registerCustomer(form.getUsername(), form.getPassword(),role_user);
+            RoleEntity roleUser = roleRepository.findByName("ROLE_CUSTOMER");
+            userService.registerCustomer(form.getUsername(), form.getPassword(),roleUser);
         } catch (Exception e) {
             bindingResult.rejectValue("username", "error.user", "User already exists");
             return "register/registerCustomer";
+        }
+        return "redirect:/login";
+    }
+
+
+    // Register Warehouse Admin
+    @GetMapping("/register/warehouse")
+    public String registerWarehouseAdmin(Model model) {
+        model.addAttribute("form", new RegisterWarehouseModel());
+        return "register/registerWarehouse";
+    }
+
+    @PostMapping("/register/warehouse")
+    public String registerWarehouseAdmin(@ModelAttribute("form") RegisterWarehouseModel form,
+                           BindingResult bindingResult) {
+
+        // Validate the form
+        registerWarehouseValidationService.validate(form, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "register/registerWarehouse";
         }
         return "redirect:/login";
     }

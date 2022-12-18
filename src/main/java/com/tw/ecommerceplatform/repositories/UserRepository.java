@@ -1,6 +1,6 @@
 package com.tw.ecommerceplatform.repositories;
 
-import com.tw.ecommerceplatform.models.UserEntity;
+import com.tw.ecommerceplatform.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

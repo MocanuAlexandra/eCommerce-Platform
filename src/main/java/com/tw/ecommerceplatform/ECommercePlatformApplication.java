@@ -1,9 +1,11 @@
 package com.tw.ecommerceplatform;
 
-import com.tw.ecommerceplatform.models.RoleEntity;
-import com.tw.ecommerceplatform.models.UserEntity;
+import com.tw.ecommerceplatform.entities.RoleEntity;
+import com.tw.ecommerceplatform.entities.UserEntity;
+import com.tw.ecommerceplatform.entities.WarehouseEntity;
 import com.tw.ecommerceplatform.repositories.RoleRepository;
 import com.tw.ecommerceplatform.repositories.UserRepository;
+import com.tw.ecommerceplatform.repositories.WarehouseRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,23 +21,34 @@ public class ECommercePlatformApplication {
 
 	//TODO REMOVE THIS
 	@Bean
-	public CommandLineRunner insert(RoleRepository roleRepository, UserRepository userRepository,
-									PasswordEncoder passwordEncoder){
+	public CommandLineRunner insert(RoleRepository roleRepository,
+									UserRepository userRepository,
+									WarehouseRepository warehouseRepository,
+									PasswordEncoder passwordEncoder) {
 		return args -> {
 			RoleEntity role_user = new RoleEntity("ROLE_CUSTOMER");
 			RoleEntity role_admin = new RoleEntity("ROLE_ADMIN");
+			RoleEntity role_warehouse_admin = new RoleEntity("ROLE_WAREHOUSE_ADMIN");
 
 			roleRepository.save(role_user);
 			roleRepository.save(role_admin);
+			roleRepository.save(role_warehouse_admin);
 
 
 			UserEntity user = new UserEntity("username@gmail.com",
 					passwordEncoder.encode("password"), role_user);
 			UserEntity admin = new UserEntity("admin@gmail.com",
 					passwordEncoder.encode("admin"), role_admin);
+			UserEntity warehouse_admin = new UserEntity("warehouse@gmail.com",
+					passwordEncoder.encode("admin"), role_warehouse_admin);
 
 			userRepository.save(user);
 			userRepository.save(admin);
+			userRepository.save(warehouse_admin);
+
+			WarehouseEntity warehouse = new WarehouseEntity("warehouse", "address", "1234", warehouse_admin);
+			warehouseRepository.save(warehouse);
+
 		};
 	}
 }

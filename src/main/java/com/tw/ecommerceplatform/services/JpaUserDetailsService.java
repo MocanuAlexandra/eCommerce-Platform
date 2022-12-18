@@ -1,9 +1,9 @@
 package com.tw.ecommerceplatform.services;
 
 
-import com.tw.ecommerceplatform.models.RoleEntity;
-import com.tw.ecommerceplatform.models.SecurityUserDetails;
-import com.tw.ecommerceplatform.models.UserEntity;
+import com.tw.ecommerceplatform.entities.RoleEntity;
+import com.tw.ecommerceplatform.entities.SecurityUserDetails;
+import com.tw.ecommerceplatform.entities.UserEntity;
 import com.tw.ecommerceplatform.repositories.UserRepository;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;

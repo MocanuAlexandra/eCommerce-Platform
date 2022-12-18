@@ -1,6 +1,6 @@
 package com.tw.ecommerceplatform.repositories;
 
-import com.tw.ecommerceplatform.models.RoleEntity;
+import com.tw.ecommerceplatform.entities.RoleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

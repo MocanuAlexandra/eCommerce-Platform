@@ -1,4 +1,4 @@
-package com.tw.ecommerceplatform.models;
+package com.tw.ecommerceplatform.entities;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -1,7 +1,7 @@
 package com.tw.ecommerceplatform.services;
 
 
-import com.tw.ecommerceplatform.models.RoleEntity;
+import com.tw.ecommerceplatform.entities.RoleEntity;
 import com.tw.ecommerceplatform.repositories.RoleRepository;
 import org.springframework.stereotype.Service;
 
