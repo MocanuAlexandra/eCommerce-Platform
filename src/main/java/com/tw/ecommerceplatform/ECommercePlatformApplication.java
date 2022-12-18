@@ -1,5 +1,6 @@
 package com.tw.ecommerceplatform;
 
+import com.tw.ecommerceplatform.Utility.RegistrationStatus;
 import com.tw.ecommerceplatform.entities.RoleEntity;
 import com.tw.ecommerceplatform.entities.UserEntity;
 import com.tw.ecommerceplatform.entities.WarehouseEntity;
@@ -46,7 +47,8 @@ public class ECommercePlatformApplication {
 			userRepository.save(admin);
 			userRepository.save(warehouse_admin);
 
-			WarehouseEntity warehouse = new WarehouseEntity("warehouse", "address", "1234", warehouse_admin);
+			WarehouseEntity warehouse = new WarehouseEntity("Warehouse Name", "Street 56", "12345",
+					warehouse_admin, RegistrationStatus.APPROVED);
 			warehouseRepository.save(warehouse);
 
 		};

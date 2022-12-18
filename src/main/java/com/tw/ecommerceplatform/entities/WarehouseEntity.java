@@ -1,5 +1,6 @@
 package com.tw.ecommerceplatform.entities;
 
+import com.tw.ecommerceplatform.Utility.RegistrationStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -22,15 +23,21 @@ public class WarehouseEntity{
     @Column(name = "code")
     private String code;
 
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private RegistrationStatus status;
+
+    //TODO add itemes many to many
     @OneToOne
     @JoinColumn(name = "admin_id")
     private UserEntity adminWarehouse;
 
-    public WarehouseEntity(String name, String address, String code, UserEntity admin) {
+    public WarehouseEntity(String name, String address, String code, UserEntity admin, RegistrationStatus status) {
         this.name = name;
         this.address = address;
         this.code = code;
         this.adminWarehouse = admin;
+        this.status = status;
     }
 }
 

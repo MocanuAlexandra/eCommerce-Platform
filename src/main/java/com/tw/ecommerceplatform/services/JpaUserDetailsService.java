@@ -4,6 +4,7 @@ package com.tw.ecommerceplatform.services;
 import com.tw.ecommerceplatform.entities.RoleEntity;
 import com.tw.ecommerceplatform.entities.SecurityUserDetails;
 import com.tw.ecommerceplatform.entities.UserEntity;
+import com.tw.ecommerceplatform.models.RegisterUserModel;
 import com.tw.ecommerceplatform.repositories.UserRepository;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -44,18 +45,19 @@ public class JpaUserDetailsService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public void registerCustomer(String email, String newPassword, RoleEntity role) throws Exception {
-        UserEntity savedUser = userRepository.findByEmail(email);
+    public UserEntity registerUser(RegisterUserModel registerUserModel, RoleEntity role) throws Exception {
+        UserEntity savedUser = userRepository.findByEmail(registerUserModel.getUsername());
+        UserEntity newUser = new UserEntity();
 
         if (savedUser != null) {
             throw new Exception("User already exists");
         } else {
-            UserEntity newUser = new UserEntity();
-            newUser.setEmail(email);
-            newUser.setPassword(passwordEncoder.encode(newPassword));
+            newUser.setEmail(registerUserModel.getUsername());
+            newUser.setPassword(passwordEncoder.encode(registerUserModel.getPassword()));
             newUser.setRole(role);
 
             userRepository.save(newUser);
         }
+        return newUser;
     }
 }

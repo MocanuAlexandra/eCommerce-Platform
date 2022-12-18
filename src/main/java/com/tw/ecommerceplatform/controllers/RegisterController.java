@@ -5,6 +5,7 @@ import com.tw.ecommerceplatform.models.RegisterUserModel;
 import com.tw.ecommerceplatform.models.RegisterWarehouseModel;
 import com.tw.ecommerceplatform.repositories.RoleRepository;
 import com.tw.ecommerceplatform.services.JpaUserDetailsService;
+import com.tw.ecommerceplatform.services.WarehouseService;
 import com.tw.ecommerceplatform.validators.RegisterUserValidatorService;
 import com.tw.ecommerceplatform.validators.RegisterWarehouseValidationService;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +16,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.Objects;
+
 @Controller
 @RequiredArgsConstructor
 public class RegisterController {
     private final JpaUserDetailsService userService;
+    private final WarehouseService warehouseService;
     private final RegisterUserValidatorService registerUserValidatorService;
     private final RegisterWarehouseValidationService registerWarehouseValidationService;
     private final RoleRepository roleRepository;
@@ -43,7 +47,7 @@ public class RegisterController {
 
     @PostMapping("/register/customer")
     public String registerCustomer(@ModelAttribute("form") RegisterUserModel form,
-                           BindingResult bindingResult) {
+                                   BindingResult bindingResult) {
 
         // Validate the form
         registerUserValidatorService.validate(form, bindingResult);
@@ -54,7 +58,7 @@ public class RegisterController {
         // Try to register the customer and redirect to the login page
         try {
             RoleEntity roleUser = roleRepository.findByName("ROLE_CUSTOMER");
-            userService.registerCustomer(form.getUsername(), form.getPassword(),roleUser);
+            userService.registerUser(form, roleUser);
         } catch (Exception e) {
             bindingResult.rejectValue("username", "error.user", "User already exists");
             return "register/registerCustomer";
@@ -72,11 +76,23 @@ public class RegisterController {
 
     @PostMapping("/register/warehouse")
     public String registerWarehouseAdmin(@ModelAttribute("form") RegisterWarehouseModel form,
-                           BindingResult bindingResult) {
+                                         BindingResult bindingResult) {
 
         // Validate the form
         registerWarehouseValidationService.validate(form, bindingResult);
         if (bindingResult.hasErrors()) {
+            return "register/registerWarehouse";
+        }
+
+        // Save the warehouse with the pending status
+        try {
+            RoleEntity roleWarehouseAdmin = roleRepository.findByName("ROLE_WAREHOUSE_ADMIN");
+            warehouseService.registerWarehouse(form, roleWarehouseAdmin);
+        } catch (Exception e) {
+            if (Objects.equals(e.getMessage(), "Warehouse already exists")) {
+                bindingResult.rejectValue("name", "error.warehouse", "Warehouse already exists");
+            } else if (Objects.equals(e.getMessage(), "User already exists"))
+                bindingResult.rejectValue("username", "error.user", "User already exists");
             return "register/registerWarehouse";
         }
         return "redirect:/login";
