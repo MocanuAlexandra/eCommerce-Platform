@@ -2,11 +2,15 @@ package com.tw.ecommerceplatform.entities;
 
 import com.tw.ecommerceplatform.Utility.RegistrationStatus;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @RequiredArgsConstructor
 @Table(name = "warehouse", schema = "public")
 public class WarehouseEntity{

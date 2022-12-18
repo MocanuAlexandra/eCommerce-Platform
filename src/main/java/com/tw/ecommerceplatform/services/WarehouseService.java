@@ -10,6 +10,8 @@ import com.tw.ecommerceplatform.repositories.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class WarehouseService {
@@ -45,5 +47,9 @@ public class WarehouseService {
             // Save warehouse into database
             warehouseRepository.save(warehouseEntity);
         }
+    }
+
+    public List<WarehouseEntity> getAllPendingWarehouses() {
+        return warehouseRepository.getAllPendingWarehouses();
     }
 }

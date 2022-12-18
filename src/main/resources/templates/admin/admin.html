@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Admin page</title>
@@ -13,5 +13,34 @@
         <button type="submit" class="btn btn-primary">Change Password</button>
     </div>
 </form>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Approve</th>
+        <th>Reject</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="warehouse : ${warehouses}">
+        <td th:text="${warehouse.name}"></td>
+        <td>
+            <form th:action="@{/private}" method="post">
+                <input type="hidden" name="action" value="approve"/>
+                <input type="hidden" name="id" th:value="${warehouse.id}"/>
+                <button type="submit" class="btn btn-success">Approve</button>
+            </form>
+        </td>
+        <td>
+            <form th:action="@{/private}" method="post">
+                <input type="hidden" name="action" value="reject"/>
+                <input type="hidden" name="id" th:value="${warehouse.id}"/>
+                <button type="submit" class="btn btn-danger">Reject</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>

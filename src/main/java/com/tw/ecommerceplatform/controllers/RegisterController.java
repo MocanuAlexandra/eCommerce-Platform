@@ -76,7 +76,8 @@ public class RegisterController {
 
     @PostMapping("/register/warehouse")
     public String registerWarehouseAdmin(@ModelAttribute("form") RegisterWarehouseModel form,
-                                         BindingResult bindingResult) {
+                                         BindingResult bindingResult,
+                                         Model model) {
 
         // Validate the form
         registerWarehouseValidationService.validate(form, bindingResult);

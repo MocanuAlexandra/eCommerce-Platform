@@ -1,7 +1,9 @@
 package com.tw.ecommerceplatform.controllers;
 
+import com.tw.ecommerceplatform.entities.WarehouseEntity;
 import com.tw.ecommerceplatform.models.ChangePasswordUserModel;
 import com.tw.ecommerceplatform.services.JpaUserDetailsService;
+import com.tw.ecommerceplatform.services.WarehouseService;
 import com.tw.ecommerceplatform.validators.ChangePasswordValidatorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,18 +14,25 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 public class AdminController {
     private final ChangePasswordValidatorService changePasswordValidatorService;
     private final JpaUserDetailsService userService;
+    private final WarehouseService warehouseService;
 
     // Endpoint to main page of admin
     @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping("/private")
-    public String open() {
+    @GetMapping("/private")
+    public String open(Model model) {
+
+        // Add the warehouses with pending state to the model
+        List<WarehouseEntity> warehouses = warehouseService.getAllPendingWarehouses();
+        model.addAttribute("warehouses", warehouses);
+
         return "admin/admin";
     }
 
