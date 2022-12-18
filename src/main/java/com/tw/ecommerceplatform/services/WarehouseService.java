@@ -29,8 +29,10 @@ public class WarehouseService {
 
         // Check if the warehouse already exists
         WarehouseEntity savedWarehouse = warehouseRepository.findByName(registerWarehouseModel.getName());
-        if (savedWarehouse != null) {
+        if (savedWarehouse != null && savedWarehouse.getStatus() == RegistrationStatus.APPROVED) {
             throw new Exception("Warehouse already exists");
+        } else if (savedWarehouse != null && savedWarehouse.getStatus() == RegistrationStatus.PENDING) {
+            throw new Exception("Warehouse already exists and is pending approval");
         } else {
             // Create warehouse with status pending and assign admin
             WarehouseEntity warehouseEntity = new WarehouseEntity(

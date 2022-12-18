@@ -30,7 +30,7 @@ public class JpaUserDetailsService implements UserDetailsService {
 
         // If no user was found, throw UsernameNotFoundException
         if (user == null)
-            throw new UsernameNotFoundException("No user with this username could be found");
+            throw new UsernameNotFoundException("No user with this email could be found");
 
         return new SecurityUserDetails(user);
     }

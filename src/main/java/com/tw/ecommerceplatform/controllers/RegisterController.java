@@ -91,10 +91,14 @@ public class RegisterController {
         } catch (Exception e) {
             if (Objects.equals(e.getMessage(), "Warehouse already exists")) {
                 bindingResult.rejectValue("name", "error.warehouse", "Warehouse already exists");
+            } else if (Objects.equals(e.getMessage(), "Warehouse already exists and is pending approval")) {
+                bindingResult.rejectValue("name", "error.warehouse", "Warehouse already exists and is pending approval");
             } else if (Objects.equals(e.getMessage(), "User already exists"))
                 bindingResult.rejectValue("username", "error.user", "User already exists");
             return "register/registerWarehouse";
         }
-        return "redirect:/login";
+
+        // Redirect to pending page
+        return "redirect:/register/warehouse/pending";
     }
 }
