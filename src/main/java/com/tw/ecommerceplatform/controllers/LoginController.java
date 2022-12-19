@@ -1,36 +1,27 @@
 package com.tw.ecommerceplatform.controllers;
 
-import com.tw.ecommerceplatform.models.LoginUserModel;
-import com.tw.ecommerceplatform.validators.LoginValidatorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-//TODO: make error messages visible in the login page
 @Controller
+@RequestMapping("/login")
 public class LoginController {
-    LoginValidatorService loginValidatorService;
 
-    @GetMapping("/login")
-    public String open(Model model) {
-        model.addAttribute("form", new LoginUserModel());
+    @GetMapping
+    public String getLogin(@RequestParam(value = "error", required = false) String error, Model model) {
+
+        if (error != null)
+            addIntoModel(model, true, "Invalid credentials");
+        else
+            addIntoModel(model, false, "");
         return "login";
     }
 
-    @PostMapping("/login")
-    public String login( @ModelAttribute("form") LoginUserModel form,
-                        BindingResult bindingResult) {
-
-        // Validate the form
-        loginValidatorService.validate(form, bindingResult);
-        if (bindingResult.hasErrors()) {
-            return "login";
-        }
-
-        // Redirect to the default page
-        return "user";
+    private void addIntoModel(Model model, boolean showError, String errorMessage) {
+        model.addAttribute("showError", showError);
+        model.addAttribute("errorMessage", errorMessage);
     }
 }

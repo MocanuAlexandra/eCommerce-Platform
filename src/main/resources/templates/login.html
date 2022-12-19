@@ -10,7 +10,7 @@
 <body>
 <div class="form-container">
     <h1>Login</h1>
-    <form method="post" th:object="${form}" th:action="@{/login}">
+    <form method="post" action="/login">
 
         <!-- Email -->
         <div class="form-group">
@@ -20,7 +20,6 @@
                    id="username"
                    placeholder="Enter your email"
                    name="username">
-            <span class="has-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
         </div>
 
         <!-- Password-->
@@ -31,7 +30,10 @@
                    id="password"
                    placeholder="Enter your password"
                    name="password">
-            <span class="has-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+        </div>
+
+        <div th:if="${showError}">
+            <span class="has-error" th:text="${errorMessage}"></span>
         </div>
 
         <!-- Buttons aria -->

@@ -1,5 +1,6 @@
 package com.tw.ecommerceplatform.entities;
 
+import com.tw.ecommerceplatform.Utility.RegistrationStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -49,6 +50,11 @@ public class SecurityUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
+        if (user.getStatus() == RegistrationStatus.APPROVED)
+            return true;
+        else if (user.getStatus() == RegistrationStatus.PENDING)
+            return false;
+
         return true;
     }
 }

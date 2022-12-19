@@ -1,10 +1,12 @@
 package com.tw.ecommerceplatform.services;
 
 
+import com.tw.ecommerceplatform.Utility.RegistrationStatus;
 import com.tw.ecommerceplatform.entities.RoleEntity;
 import com.tw.ecommerceplatform.entities.SecurityUserDetails;
 import com.tw.ecommerceplatform.entities.UserEntity;
 import com.tw.ecommerceplatform.models.RegisterUserModel;
+import com.tw.ecommerceplatform.repositories.RoleRepository;
 import com.tw.ecommerceplatform.repositories.UserRepository;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,10 +19,15 @@ import org.springframework.stereotype.Service;
 public class JpaUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
+    private final RoleService roleService;
 
-    public JpaUserDetailsService(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder) {
+    public JpaUserDetailsService(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder,
+                                 RoleRepository roleRepository, RoleService roleService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
+        this.roleService = roleService;
     }
 
     @Override
@@ -52,12 +59,26 @@ public class JpaUserDetailsService implements UserDetailsService {
         if (savedUser != null) {
             throw new Exception("User already exists");
         } else {
-            newUser.setEmail(registerUserModel.getUsername());
-            newUser.setPassword(passwordEncoder.encode(registerUserModel.getPassword()));
-            newUser.setRole(role);
-
+            if(role==roleService.getRoleByName("CUSTOMER")) {
+                newUser.setEmail(registerUserModel.getUsername());
+                newUser.setPassword(passwordEncoder.encode(registerUserModel.getPassword()));
+                newUser.setRole(role);
+                newUser.setStatus(RegistrationStatus.APPROVED);
+            }
+            else if(role==roleService.getRoleByName("WAREHOUSE_ADMIN"))
+            {
+                newUser.setEmail(registerUserModel.getUsername());
+                newUser.setPassword(passwordEncoder.encode(registerUserModel.getPassword()));
+                newUser.setRole(role);
+                newUser.setStatus(RegistrationStatus.PENDING);
+            }
             userRepository.save(newUser);
         }
         return newUser;
+    }
+
+    public void deleteUser(Long id)
+    {
+        userRepository.deleteById(id);
     }
 }

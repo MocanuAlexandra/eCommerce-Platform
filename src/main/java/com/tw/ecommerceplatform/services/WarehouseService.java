@@ -1,6 +1,5 @@
 package com.tw.ecommerceplatform.services;
 
-import com.tw.ecommerceplatform.Utility.RegistrationStatus;
 import com.tw.ecommerceplatform.entities.RoleEntity;
 import com.tw.ecommerceplatform.entities.UserEntity;
 import com.tw.ecommerceplatform.entities.WarehouseEntity;
@@ -18,6 +17,7 @@ public class WarehouseService {
     private final JpaUserDetailsService userDetailsService;
     private final WarehouseRepository warehouseRepository;
 
+    // Register Warehouse
     public void registerWarehouse(RegisterWarehouseModel registerWarehouseModel, RoleEntity role) throws Exception {
 
         // Get user details
@@ -31,25 +31,36 @@ public class WarehouseService {
 
         // Check if the warehouse already exists
         WarehouseEntity savedWarehouse = warehouseRepository.findByName(registerWarehouseModel.getName());
-        if (savedWarehouse != null && savedWarehouse.getStatus() == RegistrationStatus.APPROVED) {
+        if (savedWarehouse != null) {
             throw new Exception("Warehouse already exists");
-        } else if (savedWarehouse != null && savedWarehouse.getStatus() == RegistrationStatus.PENDING) {
-            throw new Exception("Warehouse already exists and is pending approval");
         } else {
-            // Create warehouse with status pending and assign admin
+
+            // Create warehouse
             WarehouseEntity warehouseEntity = new WarehouseEntity(
                     registerWarehouseModel.getName(),
                     registerWarehouseModel.getAddress(),
                     registerWarehouseModel.getCode(),
-                    warehouseAdmin,
-                    RegistrationStatus.PENDING);
+                    warehouseAdmin);
 
             // Save warehouse into database
             warehouseRepository.save(warehouseEntity);
         }
     }
 
+    public WarehouseEntity getWarehouseById(Long warehouseId) {
+        return warehouseRepository.findById(warehouseId).get();
+    }
+
+    public void save(WarehouseEntity warehouse) {
+        warehouseRepository.save(warehouse);
+    }
+
     public List<WarehouseEntity> getAllPendingWarehouses() {
         return warehouseRepository.getAllPendingWarehouses();
+    }
+
+    public void deleteWarehouse(Long id)
+    {
+        warehouseRepository.deleteById(id);
     }
 }

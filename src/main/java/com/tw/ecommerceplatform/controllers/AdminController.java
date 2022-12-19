@@ -1,5 +1,6 @@
 package com.tw.ecommerceplatform.controllers;
 
+import com.tw.ecommerceplatform.Utility.RegistrationStatus;
 import com.tw.ecommerceplatform.entities.WarehouseEntity;
 import com.tw.ecommerceplatform.models.ChangePasswordUserModel;
 import com.tw.ecommerceplatform.services.JpaUserDetailsService;
@@ -14,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -35,6 +37,31 @@ public class AdminController {
 
         return "admin/admin";
     }
+
+    //TODO shop admin
+    //Endpoint to approve/reject registrations coming from warehouse/shop admin
+    @PostMapping("/approve-reject")
+    public String approveReject(@RequestParam("action") String action, @RequestParam("id") Long id, Model model) {
+        if (action.equalsIgnoreCase("approve")) {
+
+            // Approve registration
+            WarehouseEntity warehouse = warehouseService.getWarehouseById(id);
+            warehouse.getAdminWarehouse().setStatus(RegistrationStatus.APPROVED);
+            warehouseService.save(warehouse);
+
+        } else if (action.equalsIgnoreCase("reject")) {
+
+            // Reject registration -> remove both warehouse and it's admin from db
+            Long userId = warehouseService.getWarehouseById(id).getAdminWarehouse().getId();
+            warehouseService.deleteWarehouse(id);
+            userService.deleteUser(userId);
+        }
+
+        List<WarehouseEntity> warehouses = warehouseService.getAllPendingWarehouses();
+        model.addAttribute("warehouses", warehouses);
+        return "admin/admin";
+    }
+
 
     // Endpoint to change password page
     @PreAuthorize("hasRole('ADMIN')")

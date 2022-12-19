@@ -39,12 +39,12 @@
 
         <!-- Code-->
         <div class="form-group">
-            <label for="codeInput">Code</label>
+            <label for="codeInput">Business code</label>
             <input id="codeInput"
                    name="code"
                    type="text"
                    class="form-control"
-                   placeholder="Code"
+                   placeholder="Business code"
                    th:field="*{code}"
                    autofocus="autofocus">
             <span class="has-error" th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></span>
