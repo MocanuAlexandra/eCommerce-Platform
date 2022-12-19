@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Admin page</title>
+    <title>Admin Panel</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
 <form th:action="@{/private/changePassword}" method="get">
@@ -28,13 +28,13 @@
         <td>
             <form th:action="@{/approve-reject}" method="post">
                 <input type="hidden" name="id" th:value="${warehouse.id}"/>
-                <button type="submit" name="action" value="approve" class="btn btn-success">Approve</button>
+                <button type="submit" name="action" value="Approved" class="btn btn-success">Approve</button>
             </form>
         </td>
         <td>
             <form th:action="@{/approve-reject}" method="post">
                 <input type="hidden" name="id" th:value="${warehouse.id}"/>
-                <button type="submit" name="action" value="reject" class="btn btn-danger">Reject</button>
+                <button type="submit" name="action" value="Rejected" class="btn btn-danger">Reject</button>
             </form>
         </td>
     </tr>

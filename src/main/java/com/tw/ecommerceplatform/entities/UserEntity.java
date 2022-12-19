@@ -1,12 +1,16 @@
 package com.tw.ecommerceplatform.entities;
 
-import com.tw.ecommerceplatform.Utility.RegistrationStatus;
+import com.tw.ecommerceplatform.utility.RegistrationStatus;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @RequiredArgsConstructor
 @Table(name = "user", schema = "public")
 public class UserEntity {
@@ -30,6 +34,6 @@ public class UserEntity {
         this.email = email;
         this.password = password;
         this.role = role;
-        this.status=status;
+        this.status = status;
     }
 }

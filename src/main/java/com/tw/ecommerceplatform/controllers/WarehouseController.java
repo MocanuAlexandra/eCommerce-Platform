@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class WarehouseController {
 
-    // Endpoint to main page of warehouse
+    // Endpoint to main page of warehouse' admin
     @PreAuthorize("hasRole('WAREHOUSE_ADMIN')")
     @RequestMapping("/warehouse")
     @ResponseBody

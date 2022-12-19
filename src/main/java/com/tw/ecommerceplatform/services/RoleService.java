@@ -3,21 +3,15 @@ package com.tw.ecommerceplatform.services;
 
 import com.tw.ecommerceplatform.entities.RoleEntity;
 import com.tw.ecommerceplatform.repositories.RoleRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
+@RequiredArgsConstructor
 public class RoleService {
     private final RoleRepository roleRepository;
 
-    public RoleService(RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;
+    RoleEntity getRoleByName(String name) {
+        return roleRepository.findByName(name);
     }
-
-    public List<RoleEntity> allRoles() {
-        return roleRepository.findAll();
-    }
-
-    RoleEntity getRoleByName(String name){return roleRepository.findByName(name);}
 }

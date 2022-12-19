@@ -47,20 +47,23 @@ public class WarehouseService {
         }
     }
 
+    // Get warehouse by id
     public WarehouseEntity getWarehouseById(Long warehouseId) {
         return warehouseRepository.findById(warehouseId).get();
     }
 
-    public void save(WarehouseEntity warehouse) {
+    // Save warehouse into database
+    public void saveWarehouse(WarehouseEntity warehouse) {
         warehouseRepository.save(warehouse);
     }
 
+    // Get all warehouses that are in pending status
     public List<WarehouseEntity> getAllPendingWarehouses() {
         return warehouseRepository.getAllPendingWarehouses();
     }
 
-    public void deleteWarehouse(Long id)
-    {
+    // Delete warehouse
+    public void deleteWarehouse(Long id) {
         warehouseRepository.deleteById(id);
     }
 }

@@ -70,9 +70,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
         String[] roles = decodedJWT.getClaim("role").asArray(String.class);
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        stream(roles).forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority(role));
-        });
+        stream(roles).forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
 
         // Create an authentication token and pass it to the security context holder
         UsernamePasswordAuthenticationToken authenticationToken =

@@ -12,7 +12,7 @@ import lombok.ToString;
 @ToString
 @RequiredArgsConstructor
 @Table(name = "warehouse", schema = "public")
-public class WarehouseEntity{
+public class WarehouseEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

@@ -67,7 +67,7 @@ public class RegisterController {
     }
 
 
-    // Register Warehouse Admin
+    // Register Warehouse & it's Admin
     @GetMapping("/register/warehouse")
     public String registerWarehouseAdmin(Model model) {
         model.addAttribute("form", new RegisterWarehouseModel());
@@ -76,8 +76,7 @@ public class RegisterController {
 
     @PostMapping("/register/warehouse")
     public String registerWarehouseAdmin(@ModelAttribute("form") RegisterWarehouseModel form,
-                                         BindingResult bindingResult,
-                                         Model model) {
+                                         BindingResult bindingResult) {
 
         // Validate the form
         registerWarehouseValidationService.validate(form, bindingResult);
@@ -85,7 +84,7 @@ public class RegisterController {
             return "register/registerWarehouse";
         }
 
-        // Save the warehouse with the pending status
+        // Try to register the warehouse and it's admin
         try {
             RoleEntity roleWarehouseAdmin = roleRepository.findByName("ROLE_WAREHOUSE_ADMIN");
             warehouseService.registerWarehouse(form, roleWarehouseAdmin);

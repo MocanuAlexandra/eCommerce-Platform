@@ -1,6 +1,6 @@
 package com.tw.ecommerceplatform.entities;
 
-import com.tw.ecommerceplatform.Utility.RegistrationStatus;
+import com.tw.ecommerceplatform.utility.RegistrationStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

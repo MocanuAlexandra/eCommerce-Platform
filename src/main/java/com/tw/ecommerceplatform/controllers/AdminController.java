@@ -1,6 +1,6 @@
 package com.tw.ecommerceplatform.controllers;
 
-import com.tw.ecommerceplatform.Utility.RegistrationStatus;
+import com.tw.ecommerceplatform.utility.RegistrationStatus;
 import com.tw.ecommerceplatform.entities.WarehouseEntity;
 import com.tw.ecommerceplatform.models.ChangePasswordUserModel;
 import com.tw.ecommerceplatform.services.JpaUserDetailsService;
@@ -38,18 +38,19 @@ public class AdminController {
         return "admin/admin";
     }
 
+    //TODO make 2 tabs for pending and approved warehouses/shops
     //TODO shop admin
     //Endpoint to approve/reject registrations coming from warehouse/shop admin
     @PostMapping("/approve-reject")
     public String approveReject(@RequestParam("action") String action, @RequestParam("id") Long id, Model model) {
-        if (action.equalsIgnoreCase("approve")) {
+        if (action.equalsIgnoreCase(RegistrationStatus.APPROVED.getName())) {
 
             // Approve registration
             WarehouseEntity warehouse = warehouseService.getWarehouseById(id);
             warehouse.getAdminWarehouse().setStatus(RegistrationStatus.APPROVED);
-            warehouseService.save(warehouse);
+            warehouseService.saveWarehouse(warehouse);
 
-        } else if (action.equalsIgnoreCase("reject")) {
+        } else if (action.equalsIgnoreCase(RegistrationStatus.REJECTED.getName())) {
 
             // Reject registration -> remove both warehouse and it's admin from db
             Long userId = warehouseService.getWarehouseById(id).getAdminWarehouse().getId();
@@ -63,7 +64,7 @@ public class AdminController {
     }
 
 
-    // Endpoint to change password page
+    // Endpoint to change password
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/private/changePassword")
     public String changePassword(Model model) {
