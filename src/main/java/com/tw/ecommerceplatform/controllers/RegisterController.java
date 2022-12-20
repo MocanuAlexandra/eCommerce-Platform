@@ -3,10 +3,11 @@ package com.tw.ecommerceplatform.controllers;
 import com.tw.ecommerceplatform.entities.RoleEntity;
 import com.tw.ecommerceplatform.models.RegisterUserModel;
 import com.tw.ecommerceplatform.models.RegisterWarehouseShopModel;
-import com.tw.ecommerceplatform.repositories.RoleRepository;
 import com.tw.ecommerceplatform.services.JpaUserDetailsService;
 import com.tw.ecommerceplatform.services.ShopService;
 import com.tw.ecommerceplatform.services.WarehouseService;
+import com.tw.ecommerceplatform.services.RoleService;
+import com.tw.ecommerceplatform.utility.Role;
 import com.tw.ecommerceplatform.validators.RegisterUserValidatorService;
 import com.tw.ecommerceplatform.validators.RegisterWarehouseShopValidationService;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +26,13 @@ public class RegisterController {
     private final JpaUserDetailsService userService;
     private final WarehouseService warehouseService;
     private final ShopService shopService;
+    private final RoleService roleService;
     private final RegisterUserValidatorService registerUserValidatorService;
     private final RegisterWarehouseShopValidationService registerWarehouseValidationService;
-    private final RoleRepository roleRepository;
 
+    //Main register page
     @GetMapping("/register")
-    public String getRegisterPage() {
+    public String getRegister() {
         return "register/register";
     }
 
@@ -59,7 +61,7 @@ public class RegisterController {
 
         // Try to register the customer and redirect to the login page
         try {
-            RoleEntity roleUser = roleRepository.findByName("ROLE_CUSTOMER");
+            RoleEntity roleUser = roleService.getRoleByName(Role.CUSTOMER.getName());
             userService.registerUser(form, roleUser);
         } catch (Exception e) {
             bindingResult.rejectValue("username", "error.user", "User already exists");
@@ -71,14 +73,14 @@ public class RegisterController {
 
     // Register Warehouse & it's Admin
     @GetMapping("/register/warehouse")
-    public String registerWarehouseAdmin(Model model) {
+    public String getRegisterWarehouse(Model model) {
         model.addAttribute("form", new RegisterWarehouseShopModel());
         return "register/registerWarehouse";
     }
 
     @PostMapping("/register/warehouse")
-    public String registerWarehouseAdmin(@ModelAttribute("form") RegisterWarehouseShopModel form,
-                                         BindingResult bindingResult) {
+    public String registerWarehouse(@ModelAttribute("form") RegisterWarehouseShopModel form,
+                                    BindingResult bindingResult) {
 
         // Validate the form
         registerWarehouseValidationService.validate(form, bindingResult);
@@ -88,7 +90,7 @@ public class RegisterController {
 
         // Try to register the warehouse and it's admin
         try {
-            RoleEntity warehouseAdminRole = roleRepository.findByName("ROLE_WAREHOUSE_ADMIN");
+            RoleEntity warehouseAdminRole = roleService.getRoleByName(Role.WAREHOUSE_ADMIN.getName());
             warehouseService.registerWarehouse(form, warehouseAdminRole);
         } catch (Exception e) {
             if (Objects.equals(e.getMessage(), "Warehouse already exists")) {
@@ -105,14 +107,14 @@ public class RegisterController {
 
     // Register Shop & it's Admin
     @GetMapping("/register/shop")
-    public String registerShopAdmin(Model model) {
+    public String getRegisterShop(Model model) {
         model.addAttribute("form", new RegisterWarehouseShopModel());
         return "register/registerShop";
     }
 
     @PostMapping("/register/shop")
-    public String registerShopAdmin(@ModelAttribute("form") RegisterWarehouseShopModel form,
-                                    BindingResult bindingResult) {
+    public String registerShop(@ModelAttribute("form") RegisterWarehouseShopModel form,
+                               BindingResult bindingResult) {
 
         // Validate the form
         registerWarehouseValidationService.validate(form, bindingResult);
@@ -122,7 +124,7 @@ public class RegisterController {
 
         // Try to register the shop and it's admin
         try {
-            RoleEntity shopAdminRole = roleRepository.findByName("ROLE_SHOP_ADMIN");
+            RoleEntity shopAdminRole = roleService.getRoleByName(Role.SHOP_ADMIN.getName());
             shopService.registerShop(form, shopAdminRole);
         } catch (Exception e) {
             if (Objects.equals(e.getMessage(), "Shop already exists")) {

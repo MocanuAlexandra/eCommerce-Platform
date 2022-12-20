@@ -1,44 +1,112 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Admin Panel</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
+
+<!-- Change password -->
 <form th:action="@{/private/changePassword}" method="get">
     <div class="buttons">
         <button type="submit" class="btn btn-primary">Change Password</button>
     </div>
 </form>
 
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th>Warehouse Name</th>
-        <th>Approve</th>
-        <th>Reject</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="warehouse : ${warehouses}">
-        <td th:text="${warehouse.name}"></td>
-        <td>
-            <form th:action="@{/approve-reject}" method="post">
-                <input type="hidden" name="id" th:value="${warehouse.id}"/>
-                <button type="submit" name="action" value="Approved" class="btn btn-success">Approve</button>
-            </form>
-        </td>
-        <td>
-            <form th:action="@{/approve-reject}" method="post">
-                <input type="hidden" name="id" th:value="${warehouse.id}"/>
-                <button type="submit" name="action" value="Rejected" class="btn btn-danger">Reject</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<!-- Tabs with pending registrations -->
+<div class="container mt-5">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="warehouse-tab" data-toggle="tab" href="#warehouse"
+               role="tab" aria-controls="warehouse" aria-selected="true">Pending warehouses</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="shop-tab" data-toggle="tab" href="#shop"
+               role="tab" aria-controls="shop" aria-selected="false">Pending shops</a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+
+        <!-- Pending warehouses -->
+        <div class="tab-pane fade show active" id="warehouse" role="tabpanel" aria-labelledby="warehouse-tab">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Approve</th>
+                    <th>Reject</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <!-- Loop through the pending warehouses and display a row for each one -->
+                <tr th:each="warehouse : ${warehouses}">
+                    <td width="33%" th:text="${warehouse.name}"></td>
+                    <td width="33%">
+                        <form th:action="@{/warehouse/approve-reject}" method="post">
+                            <input type="hidden" name="id" th:value="${warehouse.id}"/>
+                            <button type="submit" name="action" value="Approved" class="btn btn-success">Approve
+                            </button>
+                        </form>
+                    </td>
+                    <td width="33%">
+                        <form th:action="@{/warehouse/approve-reject}" method="post">
+                            <input type="hidden" name="id" th:value="${warehouse.id}"/>
+                            <button type="submit" name="action" value="Rejected" class="btn btn-danger">Reject</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pending shops -->
+        <div class="tab-pane fade" id="shop" role="tabpanel" aria-labelledby="warehouse-tab">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Approve</th>
+                    <th>Reject</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Loop through the pending shops and display a row for each one -->
+                <tr th:each="shop : ${shops}">
+                    <td width="33%" th:text="${shop.name}"></td>
+                    <td width="33%">
+                        <form th:action="@{/shop/approve-reject}" method="post">
+                            <input type="hidden" name="id" th:value="${shop.id}"/>
+                            <button type="submit" name="action" value="Approved" class="btn btn-success">Approve
+                            </button>
+                        </form>
+                    </td>
+                    <td width="33%">
+                        <form th:action="@{/shop/approve-reject}" method="post">
+                            <input type="hidden" name="id" th:value="${shop.id}"/>
+                            <button type="submit" name="action" value="Rejected" class="btn btn-danger">Reject</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#myTab a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+    });
+</script>
+
 </body>
 </html>

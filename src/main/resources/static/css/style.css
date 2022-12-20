@@ -53,3 +53,22 @@
     background-color: #218838;
     border-color: #1e7e34;
 }
+
+/* Style the tab links */
+.nav-tabs a {
+    color: #555;
+    font-weight: 600;
+}
+
+/* Style the active tab link */
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: #007bff;
+}
+
+/* Style the tab content */
+.tab-content {
+    border: 1px solid #ddd;
+    border-top: none;
+    padding: 20px;
+}
+

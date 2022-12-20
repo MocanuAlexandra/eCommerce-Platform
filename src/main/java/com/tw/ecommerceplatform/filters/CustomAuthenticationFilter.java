@@ -3,6 +3,7 @@ package com.tw.ecommerceplatform.filters;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.tw.ecommerceplatform.entities.SecurityUserDetails;
+import com.tw.ecommerceplatform.utility.Role;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -67,13 +68,13 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
 
         // If the user has successfully authenticated, redirect him accordingly to his role
-        if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+        if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(Role.ADMIN.getName()))) {
             response.sendRedirect("/private");
-        } else if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_CUSTOMER"))) {
+        } else if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(Role.CUSTOMER.getName()))) {
             response.sendRedirect("/public");
-        } else if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_WAREHOUSE_ADMIN"))) {
+        } else if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(Role.WAREHOUSE_ADMIN.getName()))) {
             response.sendRedirect("/warehouse");
-        } else if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_SHOP_ADMIN"))) {
+        } else if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(Role.SHOP_ADMIN.getName()))) {
             response.sendRedirect("/shop");
         }
 

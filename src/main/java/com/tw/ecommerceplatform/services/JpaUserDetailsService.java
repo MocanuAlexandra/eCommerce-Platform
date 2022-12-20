@@ -7,6 +7,7 @@ import com.tw.ecommerceplatform.entities.SecurityUserDetails;
 import com.tw.ecommerceplatform.entities.UserEntity;
 import com.tw.ecommerceplatform.models.RegisterUserModel;
 import com.tw.ecommerceplatform.repositories.UserRepository;
+import com.tw.ecommerceplatform.utility.Role;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -63,7 +64,7 @@ public class JpaUserDetailsService implements UserDetailsService {
             throw new Exception("User already exists");
         } else {
             // Check if user has role of customer - if yes, set registration status to approved
-            if (role == roleService.getRoleByName("CUSTOMER")) {
+            if (role == roleService.getRoleByName(Role.CUSTOMER.getName())) {
                 newUser.setEmail(registerUserModel.getUsername());
                 newUser.setPassword(passwordEncoder.encode(registerUserModel.getPassword()));
                 newUser.setRole(role);

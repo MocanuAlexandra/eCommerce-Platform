@@ -6,6 +6,7 @@ import com.tw.ecommerceplatform.entities.UserEntity;
 import com.tw.ecommerceplatform.models.RegisterUserModel;
 import com.tw.ecommerceplatform.models.RegisterWarehouseShopModel;
 import com.tw.ecommerceplatform.repositories.ShopRepository;
+import com.tw.ecommerceplatform.utility.RegistrationStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -65,5 +66,19 @@ public class ShopService {
     // Delete shop
     public void deleteShop(Long id) {
         shopRepository.deleteById(id);
+    }
+
+    // Function used to reject a registration for a shop
+    public void rejectRegistration(Long id) {
+        Long userId = getShopById(id).getAdminShop().getId();
+        deleteShop(id);
+        userDetailsService.deleteUser(userId);
+    }
+
+    // Function used to approve a registration for a shop
+    public void approveShop(Long id) {
+        ShopEntity shop = getShopById(id);
+        shop.getAdminShop().setStatus(RegistrationStatus.APPROVED);
+        saveShop(shop);
     }
 }

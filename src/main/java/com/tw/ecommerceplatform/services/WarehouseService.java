@@ -6,6 +6,7 @@ import com.tw.ecommerceplatform.entities.WarehouseEntity;
 import com.tw.ecommerceplatform.models.RegisterUserModel;
 import com.tw.ecommerceplatform.models.RegisterWarehouseShopModel;
 import com.tw.ecommerceplatform.repositories.WarehouseRepository;
+import com.tw.ecommerceplatform.utility.RegistrationStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -65,5 +66,19 @@ public class WarehouseService {
     // Delete warehouse
     public void deleteWarehouse(Long id) {
         warehouseRepository.deleteById(id);
+    }
+
+    // Function used to reject a warehouse
+    public void rejectWarehouse(Long id) {
+        Long userId = getWarehouseById(id).getAdminWarehouse().getId();
+        deleteWarehouse(id);
+        userDetailsService.deleteUser(userId);
+    }
+
+    // Function used to approve a warehouse
+    public void approveRegistration(Long id) {
+        WarehouseEntity warehouse = getWarehouseById(id);
+        warehouse.getAdminWarehouse().setStatus(RegistrationStatus.APPROVED);
+        saveWarehouse(warehouse);
     }
 }

@@ -1,12 +1,12 @@
 package com.tw.ecommerceplatform.controllers;
 
 import com.tw.ecommerceplatform.entities.ShopEntity;
-import com.tw.ecommerceplatform.services.ShopService;
-import com.tw.ecommerceplatform.utility.RegistrationStatus;
 import com.tw.ecommerceplatform.entities.WarehouseEntity;
 import com.tw.ecommerceplatform.models.ChangePasswordUserModel;
 import com.tw.ecommerceplatform.services.JpaUserDetailsService;
+import com.tw.ecommerceplatform.services.ShopService;
 import com.tw.ecommerceplatform.services.WarehouseService;
+import com.tw.ecommerceplatform.utility.RegistrationStatus;
 import com.tw.ecommerceplatform.validators.ChangePasswordValidatorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,9 +32,9 @@ public class AdminController {
     // Endpoint to main page of admin
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/private")
-    public String open(Model model) {
+    public String getAdminPanel(Model model) {
 
-        // Add the warehouses with pending state to the model
+        //Add the warehouses with pending state to the model
         List<WarehouseEntity> warehouses = warehouseService.getAllPendingWarehouses();
         model.addAttribute("warehouses", warehouses);
 
@@ -45,37 +45,60 @@ public class AdminController {
         return "admin/admin";
     }
 
-    //TODO make 2 tabs for pending and approved warehouses/shops
-    //Endpoint to approve/reject registrations coming from warehouse/shop admin
+    //Endpoint to approve/reject registrations coming from warehouse admin
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/approve-reject")
-    public String approveReject(@RequestParam("action") String action, @RequestParam("id") Long id, Model model) {
+    @PostMapping("warehouse/approve-reject")
+    public String approveRejectWarehouse(@RequestParam("action") String action,
+                                         @RequestParam("id") Long id,
+                                         Model model) {
         if (action.equalsIgnoreCase(RegistrationStatus.APPROVED.getName())) {
 
             // Approve registration
-            WarehouseEntity warehouse = warehouseService.getWarehouseById(id);
-            warehouse.getAdminWarehouse().setStatus(RegistrationStatus.APPROVED);
-            warehouseService.saveWarehouse(warehouse);
+            warehouseService.approveRegistration(id);
 
         } else if (action.equalsIgnoreCase(RegistrationStatus.REJECTED.getName())) {
 
             // Reject registration -> remove both warehouse and it's admin from db
-            Long userId = warehouseService.getWarehouseById(id).getAdminWarehouse().getId();
-            warehouseService.deleteWarehouse(id);
-            userService.deleteUser(userId);
+            warehouseService.rejectWarehouse(id);
         }
 
         // Reload the warehouses with pending state to the model
         List<WarehouseEntity> warehouses = warehouseService.getAllPendingWarehouses();
         model.addAttribute("warehouses", warehouses);
-        return "admin/admin";
+
+        return "redirect:/private";
+    }
+
+
+    //Endpoint to approve/reject registrations coming from shop admin
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("shop/approve-reject")
+    public String approveRejectShop(@RequestParam("action") String action,
+                                    @RequestParam("id") Long id,
+                                    Model model) {
+        if (action.equalsIgnoreCase(RegistrationStatus.APPROVED.getName())) {
+
+            // Approve registration
+            shopService.approveShop(id);
+
+        } else if (action.equalsIgnoreCase(RegistrationStatus.REJECTED.getName())) {
+
+            // Reject registration -> remove both shop and it's admin from db
+            shopService.rejectRegistration(id);
+        }
+
+        // Reload the shops with pending state to the model
+        List<ShopEntity> shops = shopService.getAllPendingShops();
+        model.addAttribute("shops", shops);
+
+        return "redirect:/private";
     }
 
 
     // Endpoint to change password
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/private/changePassword")
-    public String changePassword(Model model) {
+    public String getChangePassword(Model model) {
         model.addAttribute("form", new ChangePasswordUserModel());
         return "admin/changePassword";
     }

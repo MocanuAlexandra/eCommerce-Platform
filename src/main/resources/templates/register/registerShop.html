@@ -1,105 +1,105 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-  <link rel="stylesheet" type="text/css" href="/css/style.css">
-  <title>Registration Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <title>Registration Form</title>
 </head>
 <body>
 <div class="form-container">
-  <form method="post" th:object="${form}" th:action="@{/register/shop}">
-    <h1>Create shop account</h1>
+    <form method="post" th:object="${form}" th:action="@{/register/shop}">
+        <h1>Create shop account</h1>
 
-    <!-- Name-->
-    <div class="form-group">
-      <label for="nameInput">Name</label>
-      <input id="nameInput"
-             name="name"
-             type="text"
-             class="form-control"
-             placeholder="Name"
-             th:field="*{name}"
-             autofocus="autofocus">
-      <span class="has-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
-    </div>
+        <!-- Name-->
+        <div class="form-group">
+            <label for="nameInput">Name</label>
+            <input id="nameInput"
+                   name="name"
+                   type="text"
+                   class="form-control"
+                   placeholder="Name"
+                   th:field="*{name}"
+                   autofocus="autofocus">
+            <span class="has-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+        </div>
 
-    <!-- Address-->
-    <div class="form-group">
-      <label for="addressInput">Address</label>
-      <input id="addressInput"
-             name="address"
-             type="text"
-             class="form-control"
-             placeholder="Address"
-             th:field="*{address}"
-             autofocus="autofocus">
-      <span class="has-error" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span>
-    </div>
+        <!-- Address-->
+        <div class="form-group">
+            <label for="addressInput">Address</label>
+            <input id="addressInput"
+                   name="address"
+                   type="text"
+                   class="form-control"
+                   placeholder="Address"
+                   th:field="*{address}"
+                   autofocus="autofocus">
+            <span class="has-error" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span>
+        </div>
 
-    <!-- Code-->
-    <div class="form-group">
-      <label for="codeInput">Business code</label>
-      <input id="codeInput"
-             name="code"
-             type="text"
-             class="form-control"
-             placeholder="Business code"
-             th:field="*{code}"
-             autofocus="autofocus">
-      <span class="has-error" th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></span>
-    </div>
+        <!-- Code-->
+        <div class="form-group">
+            <label for="codeInput">Business code</label>
+            <input id="codeInput"
+                   name="code"
+                   type="text"
+                   class="form-control"
+                   placeholder="Business code"
+                   th:field="*{code}"
+                   autofocus="autofocus">
+            <span class="has-error" th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></span>
+        </div>
 
-    <!-- Email -->
-    <div class="form-group">
-      <label for="emailInput">Email</label>
-      <input id="emailInput"
-             name="username"
-             type="text"
-             class="form-control"
-             placeholder="Email"
-             th:field="*{username}"
-             autofocus="autofocus">
-      <span class="has-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
-    </div>
+        <!-- Email -->
+        <div class="form-group">
+            <label for="emailInput">Email</label>
+            <input id="emailInput"
+                   name="username"
+                   type="text"
+                   class="form-control"
+                   placeholder="Email"
+                   th:field="*{username}"
+                   autofocus="autofocus">
+            <span class="has-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+        </div>
 
-    <!-- Password -->
-    <div class="form-group">
-      <label for="passwordInput">Password</label>
-      <input id="passwordInput"
-             name="password"
-             type="password"
-             class="form-control"
-             th:field="*{password}"
-             placeholder="Password">
-      <span class="has-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
-    </div>
+        <!-- Password -->
+        <div class="form-group">
+            <label for="passwordInput">Password</label>
+            <input id="passwordInput"
+                   name="password"
+                   type="password"
+                   class="form-control"
+                   th:field="*{password}"
+                   placeholder="Password">
+            <span class="has-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+        </div>
 
-    <!--Password Confirm -->
-    <div class="form-group">
-      <label for="confirmPassword">Confirm Password</label>
-      <input id="confirmPassword"
-             name="confirmPassword"
-             type="password"
-             class="form-control"
-             th:field="*{confirmPassword}"
-             placeholder="Confirm your password">
-      <span class="has-error" th:if="${#fields.hasErrors('confirmPassword')}"
-            th:errors="*{confirmPassword}"></span>
-    </div>
+        <!--Password Confirm -->
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input id="confirmPassword"
+                   name="confirmPassword"
+                   type="password"
+                   class="form-control"
+                   th:field="*{confirmPassword}"
+                   placeholder="Confirm your password">
+            <span class="has-error" th:if="${#fields.hasErrors('confirmPassword')}"
+                  th:errors="*{confirmPassword}"></span>
+        </div>
 
-    <!-- Buttons aria -->
-    <div class="buttons">
-      <button type="submit" class="btn btn-primary">Sign Up</button>
-      <p class="small fw-bold mt-2 pt-1 mb-0">Already have an account?
-        <a href="/login" class="link-danger">Login</a>
-      </p>
-      <p class="small fw-bold mt-2 pt-1 mb-0">Choose another registration type?
-        <a href="/register" class="link-danger">Register</a>
-      </p>
-    </div>
+        <!-- Buttons aria -->
+        <div class="buttons">
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+            <p class="small fw-bold mt-2 pt-1 mb-0">Already have an account?
+                <a href="/login" class="link-danger">Login</a>
+            </p>
+            <p class="small fw-bold mt-2 pt-1 mb-0">Choose another registration type?
+                <a href="/register" class="link-danger">Register</a>
+            </p>
+        </div>
 
-  </form>
+    </form>
 </div>
 </body>
 </html>

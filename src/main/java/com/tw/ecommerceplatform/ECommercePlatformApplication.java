@@ -9,6 +9,7 @@ import com.tw.ecommerceplatform.entities.WarehouseEntity;
 import com.tw.ecommerceplatform.repositories.RoleRepository;
 import com.tw.ecommerceplatform.repositories.UserRepository;
 import com.tw.ecommerceplatform.repositories.WarehouseRepository;
+import com.tw.ecommerceplatform.utility.Role;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -34,10 +35,10 @@ public class ECommercePlatformApplication {
                                     WarehouseRepository warehouseRepository,
                                     PasswordEncoder passwordEncoder) {
         return args -> {
-            RoleEntity role_user = new RoleEntity("ROLE_CUSTOMER");
-            RoleEntity role_admin = new RoleEntity("ROLE_ADMIN");
-            RoleEntity role_warehouse_admin = new RoleEntity("ROLE_WAREHOUSE_ADMIN");
-            RoleEntity role_shop_admin = new RoleEntity("ROLE_SHOP_ADMIN");
+            RoleEntity role_user = new RoleEntity(Role.CUSTOMER.getName());
+            RoleEntity role_admin = new RoleEntity(Role.ADMIN.getName());
+            RoleEntity role_warehouse_admin = new RoleEntity(Role.WAREHOUSE_ADMIN.getName());
+            RoleEntity role_shop_admin = new RoleEntity(Role.SHOP_ADMIN.getName());
 
             roleRepository.save(role_user);
             roleRepository.save(role_admin);
