@@ -1,5 +1,7 @@
 package com.tw.ecommerceplatform.controllers;
 
+import com.tw.ecommerceplatform.entities.ShopEntity;
+import com.tw.ecommerceplatform.services.ShopService;
 import com.tw.ecommerceplatform.utility.RegistrationStatus;
 import com.tw.ecommerceplatform.entities.WarehouseEntity;
 import com.tw.ecommerceplatform.models.ChangePasswordUserModel;
@@ -25,6 +27,7 @@ public class AdminController {
     private final ChangePasswordValidatorService changePasswordValidatorService;
     private final JpaUserDetailsService userService;
     private final WarehouseService warehouseService;
+    private final ShopService shopService;
 
     // Endpoint to main page of admin
     @PreAuthorize("hasRole('ADMIN')")
@@ -35,12 +38,16 @@ public class AdminController {
         List<WarehouseEntity> warehouses = warehouseService.getAllPendingWarehouses();
         model.addAttribute("warehouses", warehouses);
 
+        // Add the shops wit pending state to the model
+        List<ShopEntity> shops = shopService.getAllPendingShops();
+        model.addAttribute("shops", shops);
+
         return "admin/admin";
     }
 
     //TODO make 2 tabs for pending and approved warehouses/shops
-    //TODO shop admin
     //Endpoint to approve/reject registrations coming from warehouse/shop admin
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/approve-reject")
     public String approveReject(@RequestParam("action") String action, @RequestParam("id") Long id, Model model) {
         if (action.equalsIgnoreCase(RegistrationStatus.APPROVED.getName())) {
@@ -58,6 +65,7 @@ public class AdminController {
             userService.deleteUser(userId);
         }
 
+        // Reload the warehouses with pending state to the model
         List<WarehouseEntity> warehouses = warehouseService.getAllPendingWarehouses();
         model.addAttribute("warehouses", warehouses);
         return "admin/admin";

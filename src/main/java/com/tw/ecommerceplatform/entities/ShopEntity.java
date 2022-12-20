@@ -11,8 +11,8 @@ import lombok.ToString;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Table(name = "warehouse", schema = "public")
-public class WarehouseEntity {
+@Table(name = "shop", schema = "public")
+public class ShopEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -29,13 +29,12 @@ public class WarehouseEntity {
     // TODO add itemes many to many
     @OneToOne
     @JoinColumn(name = "admin_id")
-    private UserEntity adminWarehouse;
+    private UserEntity adminShop;
 
-    public WarehouseEntity(String name, String address, String business_code, UserEntity admin) {
+    public ShopEntity(String name, String address, String business_code, UserEntity admin) {
         this.name = name;
         this.address = address;
         this.business_code = business_code;
-        this.adminWarehouse = admin;
+        this.adminShop = admin;
     }
 }
-

@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class RegisterWarehouseModel extends RegisterUserModel{
+public class RegisterWarehouseShopModel extends RegisterUserModel {
     private String name;
     private String address;
     private String code;

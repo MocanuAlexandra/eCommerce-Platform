@@ -19,8 +19,8 @@ public class ChangePasswordValidatorService implements Validator {
     public void validate(Object changePasswordModel, Errors errors) {
         ChangePasswordUserModel model = (ChangePasswordUserModel) changePasswordModel;
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "currentPassword", "user.isFieldEmpty");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "newPassword", "user.isFieldEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "currentPassword", "form.isFieldEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "newPassword", "form.isFieldEmpty");
 
         /*
            at least 8 digits {8,}
@@ -36,9 +36,9 @@ public class ChangePasswordValidatorService implements Validator {
         boolean arePasswordTheSame = model.getNewPassword().equals(model.getConfirmPassword());
 
         if (!isValidPassword)
-            errors.rejectValue("newPassword", "user.isValidPassword");
+            errors.rejectValue("newPassword", "form.isValidPassword");
         if (!arePasswordTheSame)
-            errors.rejectValue("confirmPassword", "user.isPasswordTheSame");
+            errors.rejectValue("confirmPassword", "form.isPasswordTheSame");
     }
 }
 

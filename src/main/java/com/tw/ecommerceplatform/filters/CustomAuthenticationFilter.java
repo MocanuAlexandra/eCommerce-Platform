@@ -66,14 +66,17 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         response.addCookie(tokenCookie);
 
 
-        // If the user has successfully authenticated, redirect him
+        // If the user has successfully authenticated, redirect him accordingly to his role
         if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
             response.sendRedirect("/private");
         } else if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_CUSTOMER"))) {
             response.sendRedirect("/public");
         } else if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_WAREHOUSE_ADMIN"))) {
             response.sendRedirect("/warehouse");
+        } else if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_SHOP_ADMIN"))) {
+            response.sendRedirect("/shop");
         }
+
     }
 
     @Override

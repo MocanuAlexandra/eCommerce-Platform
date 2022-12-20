@@ -2,12 +2,13 @@ package com.tw.ecommerceplatform.controllers;
 
 import com.tw.ecommerceplatform.entities.RoleEntity;
 import com.tw.ecommerceplatform.models.RegisterUserModel;
-import com.tw.ecommerceplatform.models.RegisterWarehouseModel;
+import com.tw.ecommerceplatform.models.RegisterWarehouseShopModel;
 import com.tw.ecommerceplatform.repositories.RoleRepository;
 import com.tw.ecommerceplatform.services.JpaUserDetailsService;
+import com.tw.ecommerceplatform.services.ShopService;
 import com.tw.ecommerceplatform.services.WarehouseService;
 import com.tw.ecommerceplatform.validators.RegisterUserValidatorService;
-import com.tw.ecommerceplatform.validators.RegisterWarehouseValidationService;
+import com.tw.ecommerceplatform.validators.RegisterWarehouseShopValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,12 +24,13 @@ import java.util.Objects;
 public class RegisterController {
     private final JpaUserDetailsService userService;
     private final WarehouseService warehouseService;
+    private final ShopService shopService;
     private final RegisterUserValidatorService registerUserValidatorService;
-    private final RegisterWarehouseValidationService registerWarehouseValidationService;
+    private final RegisterWarehouseShopValidationService registerWarehouseValidationService;
     private final RoleRepository roleRepository;
 
     @GetMapping("/register")
-    public String open() {
+    public String getRegisterPage() {
         return "register/register";
     }
 
@@ -70,12 +72,12 @@ public class RegisterController {
     // Register Warehouse & it's Admin
     @GetMapping("/register/warehouse")
     public String registerWarehouseAdmin(Model model) {
-        model.addAttribute("form", new RegisterWarehouseModel());
+        model.addAttribute("form", new RegisterWarehouseShopModel());
         return "register/registerWarehouse";
     }
 
     @PostMapping("/register/warehouse")
-    public String registerWarehouseAdmin(@ModelAttribute("form") RegisterWarehouseModel form,
+    public String registerWarehouseAdmin(@ModelAttribute("form") RegisterWarehouseShopModel form,
                                          BindingResult bindingResult) {
 
         // Validate the form
@@ -86,13 +88,11 @@ public class RegisterController {
 
         // Try to register the warehouse and it's admin
         try {
-            RoleEntity roleWarehouseAdmin = roleRepository.findByName("ROLE_WAREHOUSE_ADMIN");
-            warehouseService.registerWarehouse(form, roleWarehouseAdmin);
+            RoleEntity warehouseAdminRole = roleRepository.findByName("ROLE_WAREHOUSE_ADMIN");
+            warehouseService.registerWarehouse(form, warehouseAdminRole);
         } catch (Exception e) {
             if (Objects.equals(e.getMessage(), "Warehouse already exists")) {
                 bindingResult.rejectValue("name", "error.warehouse", "Warehouse already exists");
-            } else if (Objects.equals(e.getMessage(), "Warehouse already exists and is pending approval")) {
-                bindingResult.rejectValue("name", "error.warehouse", "Warehouse already exists and is pending approval");
             } else if (Objects.equals(e.getMessage(), "User already exists"))
                 bindingResult.rejectValue("username", "error.user", "User already exists");
             return "register/registerWarehouse";
@@ -100,5 +100,39 @@ public class RegisterController {
 
         // Redirect to pending page
         return "redirect:/register/warehouse/pending";
+    }
+
+
+    // Register Shop & it's Admin
+    @GetMapping("/register/shop")
+    public String registerShopAdmin(Model model) {
+        model.addAttribute("form", new RegisterWarehouseShopModel());
+        return "register/registerShop";
+    }
+
+    @PostMapping("/register/shop")
+    public String registerShopAdmin(@ModelAttribute("form") RegisterWarehouseShopModel form,
+                                    BindingResult bindingResult) {
+
+        // Validate the form
+        registerWarehouseValidationService.validate(form, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "register/registerShop";
+        }
+
+        // Try to register the shop and it's admin
+        try {
+            RoleEntity shopAdminRole = roleRepository.findByName("ROLE_SHOP_ADMIN");
+            shopService.registerShop(form, shopAdminRole);
+        } catch (Exception e) {
+            if (Objects.equals(e.getMessage(), "Shop already exists")) {
+                bindingResult.rejectValue("name", "error.shop", "Warehouse already exists");
+            } else if (Objects.equals(e.getMessage(), "User already exists"))
+                bindingResult.rejectValue("username", "error.user", "User already exists");
+            return "register/registerShop";
+        }
+
+        // Redirect to pending page
+        return "redirect:/register/shop/pending";
     }
 }

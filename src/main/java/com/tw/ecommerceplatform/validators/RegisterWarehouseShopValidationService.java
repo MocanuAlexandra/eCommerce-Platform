@@ -1,14 +1,14 @@
 package com.tw.ecommerceplatform.validators;
 
 import com.tw.ecommerceplatform.entities.UserEntity;
-import com.tw.ecommerceplatform.models.RegisterWarehouseModel;
+import com.tw.ecommerceplatform.models.RegisterWarehouseShopModel;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 @Service
-public class RegisterWarehouseValidationService implements Validator {
+public class RegisterWarehouseShopValidationService implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -16,14 +16,14 @@ public class RegisterWarehouseValidationService implements Validator {
     }
 
     @Override
-    public void validate(Object userEntity, Errors errors) {
-        RegisterWarehouseModel user = (RegisterWarehouseModel) userEntity;
+    public void validate(Object registerWarehouseShopModel, Errors errors) {
+        RegisterWarehouseShopModel model = (RegisterWarehouseShopModel) registerWarehouseShopModel;
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "user.isFieldEmpty");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "user.isFieldEmpty");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "user.isFieldEmpty");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "address", "user.isFieldEmpty");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "code", "user.isFieldEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "form.isFieldEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "form.isFieldEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "form.isFieldEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "address", "form.isFieldEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "code", "form.isFieldEmpty");
 
 
         /* Valid email regex pattern - https://owasp.org/www-community/OWASP_Validation_Regex_Repository */
@@ -65,28 +65,28 @@ public class RegisterWarehouseValidationService implements Validator {
         */
         String nameRegexPattern = "^[A-Z][a-zA-Z]*(\\s[A-Z][a-zA-Z]*)+$";
 
-        /* Zip code format by 5 digits */
-        String zipCodeRegexPattern = "^[0-9]{5}$";
+        /* Code format by 5 digits */
+        String codeRegexPattern = "^[0-9]{5}$";
 
-        boolean isValidEmail = user.getUsername().matches(emailRegexPattern);
-        boolean isValidPassword = user.getPassword().matches(passwordRegexPattern);
-        boolean arePasswordTheSame = user.getPassword().equals(user.getConfirmPassword());
-        boolean isNameValid = user.getName().matches(nameRegexPattern);
-        boolean isAddressValid = user.getAddress().matches(addressRegexPattern);
-        boolean isCodeNumberValid = user.getCode().matches(zipCodeRegexPattern);
+        boolean isValidEmail = model.getUsername().matches(emailRegexPattern);
+        boolean isValidPassword = model.getPassword().matches(passwordRegexPattern);
+        boolean arePasswordTheSame = model.getPassword().equals(model.getConfirmPassword());
+        boolean isNameValid = model.getName().matches(nameRegexPattern);
+        boolean isAddressValid = model.getAddress().matches(addressRegexPattern);
+        boolean isCodeNumberValid = model.getCode().matches(codeRegexPattern);
 
         if (!isValidEmail)
-            errors.rejectValue("username", "user.isValidEmail");
+            errors.rejectValue("username", "form.isValidEmail");
         if (!isValidPassword)
-            errors.rejectValue("password", "user.isValidPassword");
+            errors.rejectValue("password", "form.isValidPassword");
         if (!arePasswordTheSame)
-            errors.rejectValue("confirmPassword", "user.isPasswordTheSame");
+            errors.rejectValue("confirmPassword", "form.isPasswordTheSame");
         if (!isNameValid)
-            errors.rejectValue("name", "user.isNameValid");
+            errors.rejectValue("name", "form.isNameValid");
         if (!isAddressValid)
-            errors.rejectValue("address", "user.isAddressValid");
+            errors.rejectValue("address", "form.isAddressValid");
         if (!isCodeNumberValid)
-            errors.rejectValue("code", "user.isCodeNumberValid");
+            errors.rejectValue("code", "form.isCodeNumberValid");
 
     }
 }

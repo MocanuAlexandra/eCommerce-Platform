@@ -4,7 +4,7 @@ import com.tw.ecommerceplatform.entities.RoleEntity;
 import com.tw.ecommerceplatform.entities.UserEntity;
 import com.tw.ecommerceplatform.entities.WarehouseEntity;
 import com.tw.ecommerceplatform.models.RegisterUserModel;
-import com.tw.ecommerceplatform.models.RegisterWarehouseModel;
+import com.tw.ecommerceplatform.models.RegisterWarehouseShopModel;
 import com.tw.ecommerceplatform.repositories.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,32 +18,32 @@ public class WarehouseService {
     private final WarehouseRepository warehouseRepository;
 
     // Register Warehouse
-    public void registerWarehouse(RegisterWarehouseModel registerWarehouseModel, RoleEntity role) throws Exception {
+    public void registerWarehouse(RegisterWarehouseShopModel registerWarehouseShopModel, RoleEntity role) throws Exception {
 
         // Get user details
         RegisterUserModel registerUserModel = new RegisterUserModel(
-                registerWarehouseModel.getUsername(),
-                registerWarehouseModel.getPassword(),
-                registerWarehouseModel.getConfirmPassword());
+                registerWarehouseShopModel.getUsername(),
+                registerWarehouseShopModel.getPassword(),
+                registerWarehouseShopModel.getConfirmPassword());
 
         // Register user
         UserEntity warehouseAdmin = userDetailsService.registerUser(registerUserModel, role);
 
         // Check if the warehouse already exists
-        WarehouseEntity savedWarehouse = warehouseRepository.findByName(registerWarehouseModel.getName());
+        WarehouseEntity savedWarehouse = warehouseRepository.findByName(registerWarehouseShopModel.getName());
         if (savedWarehouse != null) {
             throw new Exception("Warehouse already exists");
         } else {
 
             // Create warehouse
-            WarehouseEntity warehouseEntity = new WarehouseEntity(
-                    registerWarehouseModel.getName(),
-                    registerWarehouseModel.getAddress(),
-                    registerWarehouseModel.getCode(),
+            WarehouseEntity newWarehouse = new WarehouseEntity(
+                    registerWarehouseShopModel.getName(),
+                    registerWarehouseShopModel.getAddress(),
+                    registerWarehouseShopModel.getCode(),
                     warehouseAdmin);
 
             // Save warehouse into database
-            warehouseRepository.save(warehouseEntity);
+            warehouseRepository.save(newWarehouse);
         }
     }
 

@@ -7,18 +7,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class WarehouseController {
+public class ShopController {
 
-    // Endpoint to main page of warehouse' admin
-    @PreAuthorize("hasRole('WAREHOUSE_ADMIN')")
-    @RequestMapping("/warehouse")
+    // Endpoint to main page of shop' admin
+    @PreAuthorize("hasRole('SHOP_ADMIN')")
+    @RequestMapping("/shop")
     @ResponseBody
-    public String getWarehouseAdminPage() {
-        return "Warehouse admin page";
+    public String getAdminShopPage() {
+        return "Shop admin page";
     }
 
     // Endpoint to pending approval page
-    @GetMapping("/register/warehouse/pending")
+    @GetMapping("/register/shop/pending")
     public String pending() {
         return "register/registrationPending";
     }

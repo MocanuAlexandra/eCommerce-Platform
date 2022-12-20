@@ -70,7 +70,7 @@ public class JpaUserDetailsService implements UserDetailsService {
                 newUser.setStatus(RegistrationStatus.APPROVED);
 
                 // if not, set registration status to pending
-            } else{
+            } else {
                 newUser.setEmail(registerUserModel.getUsername());
                 newUser.setPassword(passwordEncoder.encode(registerUserModel.getPassword()));
                 newUser.setRole(role);

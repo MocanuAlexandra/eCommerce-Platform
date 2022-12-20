@@ -15,11 +15,11 @@ public class RegisterUserValidatorService implements Validator {
     }
 
     @Override
-    public void validate(Object userEntity, Errors errors) {
-        RegisterUserModel user = (RegisterUserModel) userEntity;
+    public void validate(Object registerUserModel, Errors errors) {
+        RegisterUserModel model = (RegisterUserModel) registerUserModel;
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "user.isEmailEmpty");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "user.isPasswordEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "form.isEmailEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "form.isPasswordEmpty");
 
         /* Valid email regex pattern - https://owasp.org/www-community/OWASP_Validation_Regex_Repository */
         /* Typical email format: email@domain.com */
@@ -35,15 +35,15 @@ public class RegisterUserValidatorService implements Validator {
         */
         String passwordRegexPattern = "^(?:(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*)[^\s]{8,}$";
 
-        boolean isValidEmail = user.getUsername().matches(emailRegexPattern);
-        boolean isValidPassword = user.getPassword().matches(passwordRegexPattern);
-        boolean arePasswordTheSame = user.getPassword().equals(user.getConfirmPassword());
+        boolean isValidEmail = model.getUsername().matches(emailRegexPattern);
+        boolean isValidPassword = model.getPassword().matches(passwordRegexPattern);
+        boolean arePasswordTheSame = model.getPassword().equals(model.getConfirmPassword());
 
         if (!isValidEmail)
-            errors.rejectValue("username", "user.isValidEmail");
+            errors.rejectValue("username", "form.isValidEmail");
         if (!isValidPassword)
-            errors.rejectValue("password", "user.isValidPassword");
+            errors.rejectValue("password", "form.isValidPassword");
         if (!arePasswordTheSame)
-            errors.rejectValue("confirmPassword", "user.isPasswordTheSame");
+            errors.rejectValue("confirmPassword", "form.isPasswordTheSame");
     }
 }

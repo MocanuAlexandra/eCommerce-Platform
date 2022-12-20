@@ -1,5 +1,7 @@
 package com.tw.ecommerceplatform;
 
+import com.tw.ecommerceplatform.entities.ShopEntity;
+import com.tw.ecommerceplatform.repositories.ShopRepository;
 import com.tw.ecommerceplatform.utility.RegistrationStatus;
 import com.tw.ecommerceplatform.entities.RoleEntity;
 import com.tw.ecommerceplatform.entities.UserEntity;
@@ -15,6 +17,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class ECommercePlatformApplication {
+    private final ShopRepository shopRepository;
+
+    public ECommercePlatformApplication(ShopRepository shopRepository) {
+        this.shopRepository = shopRepository;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(ECommercePlatformApplication.class, args);
@@ -30,10 +37,12 @@ public class ECommercePlatformApplication {
             RoleEntity role_user = new RoleEntity("ROLE_CUSTOMER");
             RoleEntity role_admin = new RoleEntity("ROLE_ADMIN");
             RoleEntity role_warehouse_admin = new RoleEntity("ROLE_WAREHOUSE_ADMIN");
+            RoleEntity role_shop_admin = new RoleEntity("ROLE_SHOP_ADMIN");
 
             roleRepository.save(role_user);
             roleRepository.save(role_admin);
             roleRepository.save(role_warehouse_admin);
+            roleRepository.save(role_shop_admin);
 
 
             UserEntity user = new UserEntity("username@gmail.com",
@@ -44,11 +53,18 @@ public class ECommercePlatformApplication {
                     passwordEncoder.encode("admin"), role_warehouse_admin, RegistrationStatus.APPROVED);
             UserEntity warehouse_admin2 = new UserEntity("warehouse2@gmail.com",
                     passwordEncoder.encode("admin"), role_warehouse_admin, RegistrationStatus.PENDING);
+            UserEntity shop_admin = new UserEntity("shop@gmail.com",
+                    passwordEncoder.encode("admin"), role_shop_admin, RegistrationStatus.APPROVED);
+            UserEntity shop_admin2 = new UserEntity("shop2@gmail.com",
+                    passwordEncoder.encode("admin"), role_shop_admin, RegistrationStatus.PENDING);
+
 
             userRepository.save(user);
             userRepository.save(admin);
             userRepository.save(warehouse_admin);
             userRepository.save(warehouse_admin2);
+            userRepository.save(shop_admin);
+            userRepository.save(shop_admin2);
 
             WarehouseEntity warehouse = new WarehouseEntity("Warehouse Name", "Street 56", "12345",
                     warehouse_admin);
@@ -56,6 +72,11 @@ public class ECommercePlatformApplication {
                     warehouse_admin2);
             warehouseRepository.save(warehouse);
             warehouseRepository.save(warehouse2);
+
+            ShopEntity shop = new ShopEntity("Shop Name", "Strada 34", "12345", shop_admin);
+            ShopEntity shop2 = new ShopEntity("Magazinul Meu", "Strada 4", "12395", shop_admin2);
+            shopRepository.save(shop);
+            shopRepository.save(shop2);
 
         };
     }
