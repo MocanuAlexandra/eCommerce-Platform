@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <title>Create product</title>
+</head>
+<body>
+<div class="form-container">
+    <form method="post" th:object="${form}" th:action="@{/warehouse/createItem}">
+        <h1>Create New Item</h1>
+
+        <!-- Name -->
+        <div class="form-group">
+            <label for="nameInput">Name</label>
+            <input id="nameInput"
+                   name="name"
+                   type="text"
+                   class="form-control"
+                   placeholder="Name"
+                   th:field="*{name}"
+                   autofocus="autofocus">
+        </div>
+        <span class="has-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+
+        <!-- Initial quantity -->
+        <div class="form-group">
+            <label for="quantityInput">Initial quantity</label>
+            <input id="quantityInput"
+                   name="quantity"
+                   type="number"
+                   class="form-control"
+                   placeholder="Initial quantity"
+                   th:field="*{quantity}"
+                   autofocus="autofocus">
+        </div>
+        <span class="has-error" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></span>
+
+        <!-- Buttons aria -->
+        <div class="buttons">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a href="/warehouse" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

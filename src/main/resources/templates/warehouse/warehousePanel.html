@@ -11,7 +11,11 @@
 <body>
 
 <!-- Create product -->
-
+<form th:action="@{/warehouse/createItem}" method="get">
+    <div class="buttons">
+        <button type="submit" class="btn btn-primary">Create new item</button>
+    </div>
+</form>
 
 <!-- Tabs with view all items and also view orders coming from shops -->
 <div class="container mt-5">
@@ -31,7 +35,6 @@
                 <tr>
                     <th>Name</th>
                     <th>Quantity</th>
-                    <th>Increase quantity</th>
                 </tr>
                 </thead>
                 <tbody>

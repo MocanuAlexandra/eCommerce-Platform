@@ -49,14 +49,14 @@
                     <td width="33%" th:text="${warehouse.name}"></td>
                     <td width="33%">
                         <form th:action="@{/warehouse/approve-reject}" method="post">
-                            <input type="hidden" name="id" th:value="${warehouse.id}"/>
+                            <input type="hidden" name="id" th:value="${warehouse.warehouse_id}"/>
                             <button type="submit" name="action" value="Approved" class="btn btn-success">Approve
                             </button>
                         </form>
                     </td>
                     <td width="33%">
                         <form th:action="@{/warehouse/approve-reject}" method="post">
-                            <input type="hidden" name="id" th:value="${warehouse.id}"/>
+                            <input type="hidden" name="id" th:value="${warehouse.warehouse_id}"/>
                             <button type="submit" name="action" value="Rejected" class="btn btn-danger">Reject</button>
                         </form>
                     </td>
