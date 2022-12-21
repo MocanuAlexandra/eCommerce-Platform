@@ -1,14 +1,8 @@
 package com.tw.ecommerceplatform;
 
-import com.tw.ecommerceplatform.entities.ShopEntity;
-import com.tw.ecommerceplatform.repositories.ShopRepository;
+import com.tw.ecommerceplatform.entities.*;
+import com.tw.ecommerceplatform.repositories.*;
 import com.tw.ecommerceplatform.utility.RegistrationStatus;
-import com.tw.ecommerceplatform.entities.RoleEntity;
-import com.tw.ecommerceplatform.entities.UserEntity;
-import com.tw.ecommerceplatform.entities.WarehouseEntity;
-import com.tw.ecommerceplatform.repositories.RoleRepository;
-import com.tw.ecommerceplatform.repositories.UserRepository;
-import com.tw.ecommerceplatform.repositories.WarehouseRepository;
 import com.tw.ecommerceplatform.utility.Role;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -18,12 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class ECommercePlatformApplication {
-    private final ShopRepository shopRepository;
-
-    public ECommercePlatformApplication(ShopRepository shopRepository) {
-        this.shopRepository = shopRepository;
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(ECommercePlatformApplication.class, args);
     }
@@ -33,6 +21,9 @@ public class ECommercePlatformApplication {
     public CommandLineRunner insert(RoleRepository roleRepository,
                                     UserRepository userRepository,
                                     WarehouseRepository warehouseRepository,
+                                    ShopRepository shopRepository,
+                                    ItemRepository itemRepository,
+                                    ItemWarehouseRepository itemWarehouseRepository,
                                     PasswordEncoder passwordEncoder) {
         return args -> {
             RoleEntity role_user = new RoleEntity(Role.CUSTOMER.getName());
@@ -79,6 +70,17 @@ public class ECommercePlatformApplication {
             shopRepository.save(shop);
             shopRepository.save(shop2);
 
+            ItemEntity item = new ItemEntity("Faina");
+            ItemEntity item2 = new ItemEntity("Zahar");
+            itemRepository.save(item);
+            itemRepository.save(item2);
+
+            ItemWarehouseEntity itemWarehouse = new ItemWarehouseEntity(item, warehouse, 100);
+            ItemWarehouseEntity itemWarehouse2 = new ItemWarehouseEntity(item2, warehouse, 100);
+            ItemWarehouseEntity itemWarehouse3 = new ItemWarehouseEntity(item2, warehouse2, 10);
+            itemWarehouseRepository.save(itemWarehouse);
+            itemWarehouseRepository.save(itemWarehouse2);
+            itemWarehouseRepository.save(itemWarehouse3);
         };
     }
 }

@@ -53,6 +53,11 @@ public class WarehouseService {
         return warehouseRepository.findById(warehouseId).get();
     }
 
+    // Get warehouse by user's email
+    public WarehouseEntity getWarehouseByAdminEmail(String email) {
+        return warehouseRepository.findByAdminWarehouse_Email(email);
+    }
+
     // Save warehouse into database
     public void saveWarehouse(WarehouseEntity warehouse) {
         warehouseRepository.save(warehouse);

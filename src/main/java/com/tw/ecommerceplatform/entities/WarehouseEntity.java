@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -16,7 +18,7 @@ public class WarehouseEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private long id;
+    private long warehouse_id;
     @Column(name = "name", unique = true)
     private String name;
 
@@ -26,7 +28,6 @@ public class WarehouseEntity {
     @Column(name = "business_code")
     private String business_code;
 
-    // TODO add itemes many to many
     @OneToOne
     @JoinColumn(name = "admin_id")
     private UserEntity adminWarehouse;
@@ -37,5 +38,8 @@ public class WarehouseEntity {
         this.business_code = business_code;
         this.adminWarehouse = admin;
     }
+
+    @OneToMany(mappedBy = "warehouse")
+    private List<ItemWarehouseEntity> items;
 }
 

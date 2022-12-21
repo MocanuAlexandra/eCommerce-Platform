@@ -26,7 +26,7 @@ public class ShopEntity {
     @Column(name = "business_code")
     private String business_code;
 
-    // TODO add itemes many to many
+    //TODO add itemes many to many
     @OneToOne
     @JoinColumn(name = "admin_id")
     private UserEntity adminShop;
