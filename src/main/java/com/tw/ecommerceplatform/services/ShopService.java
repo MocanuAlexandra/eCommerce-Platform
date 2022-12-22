@@ -81,4 +81,9 @@ public class ShopService {
         shop.getAdminShop().setStatus(RegistrationStatus.APPROVED);
         saveShop(shop);
     }
+
+    // Get shop by user's email
+    public ShopEntity getShopByAdminEmail(String username) {
+        return   shopRepository.findByAdminShop_Email(username);
+    }
 }

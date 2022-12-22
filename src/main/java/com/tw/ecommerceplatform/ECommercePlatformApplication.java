@@ -45,18 +45,14 @@ public class ECommercePlatformApplication {
                     passwordEncoder.encode("admin"), role_warehouse_admin, RegistrationStatus.APPROVED);
             UserEntity warehouse_admin2 = new UserEntity("warehouse2@gmail.com",
                     passwordEncoder.encode("admin"), role_warehouse_admin, RegistrationStatus.APPROVED);
-            UserEntity shop_admin = new UserEntity("shop@gmail.com",
+            UserEntity shop_admin = new UserEntity("shopp@gmail.com",
                     passwordEncoder.encode("admin"), role_shop_admin, RegistrationStatus.APPROVED);
-            UserEntity shop_admin2 = new UserEntity("shop2@gmail.com",
-                    passwordEncoder.encode("admin"), role_shop_admin, RegistrationStatus.PENDING);
-
 
             userRepository.save(user);
             userRepository.save(admin);
             userRepository.save(warehouse_admin);
             userRepository.save(warehouse_admin2);
             userRepository.save(shop_admin);
-            userRepository.save(shop_admin2);
 
             WarehouseEntity warehouse = new WarehouseEntity("Warehouse Name", "Street 56", "12345",
                     warehouse_admin);
@@ -65,23 +61,17 @@ public class ECommercePlatformApplication {
             warehouseRepository.save(warehouse);
             warehouseRepository.save(warehouse2);
 
-            ShopEntity shop = new ShopEntity("Shop Name", "Strada 34", "12345", shop_admin);
-            ShopEntity shop2 = new ShopEntity("Magazinul Meu", "Strada 4", "12395", shop_admin2);
+            ShopEntity shop = new ShopEntity("Magazinul de smekeri", "Strada 34", "12345", shop_admin);
             shopRepository.save(shop);
-            shopRepository.save(shop2);
 
             ItemEntity item = new ItemEntity("Faina");
             ItemEntity item2 = new ItemEntity("Zahar");
-            ItemEntity item3 = new ItemEntity("Oua");
             itemRepository.save(item);
             itemRepository.save(item2);
-            itemRepository.save(item3);
 
             ItemWarehouse itemWarehouse = new ItemWarehouse(item, warehouse, 100);
-            ItemWarehouse itemWarehouse2 = new ItemWarehouse(item3, warehouse, 100);
             ItemWarehouse itemWarehouse3 = new ItemWarehouse(item2, warehouse2, 10);
             itemWarehouseRepository.save(itemWarehouse);
-            itemWarehouseRepository.save(itemWarehouse2);
             itemWarehouseRepository.save(itemWarehouse3);
         };
     }

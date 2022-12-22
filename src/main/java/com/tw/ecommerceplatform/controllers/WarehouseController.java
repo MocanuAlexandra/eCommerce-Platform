@@ -37,6 +37,7 @@ public class WarehouseController {
         return "register/registrationPending";
     }
 
+    // TODO add pending orders from shop to warehouse
     // Endpoint to main page of warehouse' admin
     @PreAuthorize("hasRole('WAREHOUSE_ADMIN')")
     @RequestMapping("/warehouse")
@@ -58,8 +59,10 @@ public class WarehouseController {
                 .collect(Collectors.toMap(ItemWarehouse::getItem, ItemWarehouse::getQuantity));
 
         // Add the items and their quantity to the model
+        // Also add the warehouse to the model
         model.addAttribute("items", items);
         model.addAttribute("itemQuantities", itemQuantities);
+        model.addAttribute("warehouse", warehouse);
         return "warehouse/warehousePanel";
     }
 
@@ -137,38 +140,34 @@ public class WarehouseController {
                            BindingResult bindingResult) {
 
         // TODO validate the edit item form
-        if (form != null) {
-            form.setId(itemId);
 
-            try {
-                // Get the item object
-                ItemEntity updatedItem = itemService.getById(itemId);
+        try {
+            // Get the item object
+            ItemEntity updatedItem = itemService.getById(itemId);
 
-                // Get the itemWarehouse object
-                String username = authentication.getName();
-                WarehouseEntity warehouse = warehouseService.getWarehouseByAdminEmail(username);
-                ItemWarehouse updatedItemWarehouse = itemWarehouseService.getItemWarehouseByItemId(itemId, warehouse);
+            // Get the itemWarehouse object
+            String username = authentication.getName();
+            WarehouseEntity warehouse = warehouseService.getWarehouseByAdminEmail(username);
+            ItemWarehouse updatedItemWarehouse = itemWarehouseService.getItemWarehouseByItemId(itemId, warehouse);
 
-                // Update the item object
-                if (updatedItem != null) {
-                    itemService.updateItem(updatedItem, form);
-                }
-
-                // Update the itemWarehouse object
-                if (updatedItemWarehouse != null) {
-                    updatedItemWarehouse.setQuantity(form.getQuantity());
-                    itemWarehouseRepository.save(updatedItemWarehouse);
-                }
-            } catch (Exception e) {
-                if (e.getMessage().equals("Item already exists in another warehouse")) {
-                    bindingResult.rejectValue("name", "error.form",
-                            "Item already exists in another warehouse. Try a different name");
-                } else if (e.getMessage().equals("Quantity cannot be less than the current quantity")) {
-                    bindingResult.rejectValue("quantity", "error.form",
-                            "Quantity cannot be less than the current quantity");
-                }
-                return "warehouse/editItem";
+            // Update the item object
+            if (updatedItem != null) {
+                itemService.updateItem(updatedItem, form);
             }
+
+            // Update the itemWarehouse object
+            if (updatedItemWarehouse != null) {
+                itemWarehouseService.updateItemWarehouse(updatedItemWarehouse, form);
+            }
+        } catch (Exception e) {
+            if (e.getMessage().equals("Item already exists in another warehouse")) {
+                bindingResult.rejectValue("name", "error.form",
+                        "Item already exists in another warehouse. Try a different name");
+            } else if (e.getMessage().equals("Quantity cannot be less than the current quantity")) {
+                bindingResult.rejectValue("quantity", "error.form",
+                        "Quantity cannot be less than the current quantity");
+            }
+            return "warehouse/editItem";
         }
 
         // Redirect to the warehouse admin page

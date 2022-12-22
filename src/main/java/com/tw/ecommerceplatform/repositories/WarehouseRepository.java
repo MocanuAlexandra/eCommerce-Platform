@@ -15,4 +15,7 @@ public interface WarehouseRepository extends JpaRepository<WarehouseEntity, Long
     List<WarehouseEntity> getAllPendingWarehouses();
 
     void deleteById(Long id);
+
+    @Query("SELECT w FROM WarehouseEntity w WHERE w.adminWarehouse.status = 'APPROVED'")
+    List<WarehouseEntity> getAllApprovedWarehouses();
 }

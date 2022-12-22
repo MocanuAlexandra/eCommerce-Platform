@@ -63,8 +63,9 @@ public class ItemWarehouseService {
     // Edit an item in a warehouse
     public void updateItemWarehouse(ItemWarehouse updatedItemWarehouse, EditItemModel form) throws Exception {
 
-        if (form.getQuantity() < updatedItemWarehouse.getQuantity())
-            throw new Exception("Quantity cannot be less than the current quantity");
+        // TODO decom this when validate
+//        if (form.getQuantity() < updatedItemWarehouse.getQuantity())
+//            throw new Exception("Quantity cannot be less than the current quantity");
         updatedItemWarehouse.setQuantity(form.getQuantity());
         itemWarehouseRepository.save(updatedItemWarehouse);
     }

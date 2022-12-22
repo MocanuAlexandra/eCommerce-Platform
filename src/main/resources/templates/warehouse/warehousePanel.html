@@ -10,10 +10,14 @@
 </head>
 <body>
 
+<div class="titles" th:object="${warehouse}">
+    <h1><span th:text="${warehouse.name}"></span>' Admin panel</h1><br>
+</div>
+
 <!-- Create product -->
 <form th:action="@{/warehouse/createItem}" method="get">
     <div class="buttons">
-        <button type="submit" class="btn btn-primary">Create new item</button>
+        <button type="submit" class="btn btn-success">Create new item</button>
     </div>
 </form>
 

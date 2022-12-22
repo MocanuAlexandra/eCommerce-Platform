@@ -68,6 +68,11 @@ public class WarehouseService {
         return warehouseRepository.getAllPendingWarehouses();
     }
 
+    // Get all warehouses that are in approved status
+    public List<WarehouseEntity> getAllApprovedWarehouses() {
+        return warehouseRepository.getAllApprovedWarehouses();
+    }
+
     // Delete warehouse
     public void deleteWarehouse(Long id) {
         warehouseRepository.deleteById(id);

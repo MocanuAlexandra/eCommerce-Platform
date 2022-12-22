@@ -15,4 +15,5 @@ public interface ShopRepository extends JpaRepository<ShopEntity, Long> {
 
     void deleteById(Long id);
 
+    ShopEntity findByAdminShop_Email(String username);
 }
