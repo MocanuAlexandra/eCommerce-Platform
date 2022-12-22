@@ -4,6 +4,7 @@ import com.tw.ecommerceplatform.entities.ItemEntity;
 import com.tw.ecommerceplatform.entities.ItemWarehouse;
 import com.tw.ecommerceplatform.entities.WarehouseEntity;
 import com.tw.ecommerceplatform.models.CreateItemModel;
+import com.tw.ecommerceplatform.models.EditItemModel;
 import com.tw.ecommerceplatform.repositories.ItemRepository;
 import com.tw.ecommerceplatform.repositories.ItemWarehouseRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,12 @@ public class ItemWarehouseService {
     // Get all items in a warehouse
     public List<ItemWarehouse> getItemsByWarehouse(WarehouseEntity warehouse) {
         return itemWarehouseRepository.findByWarehouse(warehouse);
+    }
+
+
+    // Get item warehouse by item id
+    public ItemWarehouse getItemWarehouseByItemId(Long id, WarehouseEntity warehouse) {
+        return itemWarehouseRepository.findByItem_Id(warehouse, id);
     }
 
     // Save an item in a warehouse
@@ -51,5 +58,14 @@ public class ItemWarehouseService {
         }
         // Save into db
         itemWarehouseRepository.save(itemWarehouse);
+    }
+
+    // Edit an item in a warehouse
+    public void updateItemWarehouse(ItemWarehouse updatedItemWarehouse, EditItemModel form) throws Exception {
+
+        if (form.getQuantity() < updatedItemWarehouse.getQuantity())
+            throw new Exception("Quantity cannot be less than the current quantity");
+        updatedItemWarehouse.setQuantity(form.getQuantity());
+        itemWarehouseRepository.save(updatedItemWarehouse);
     }
 }

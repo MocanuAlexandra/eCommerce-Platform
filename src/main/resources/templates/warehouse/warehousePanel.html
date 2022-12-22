@@ -35,6 +35,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Quantity</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -43,6 +44,9 @@
                 <tr th:each="item : ${items}">
                     <td th:text="${item.name}"></td>
                     <td th:text="${itemQuantities.get(item)}"></td>
+                    <td>
+                        <a th:href="@{/warehouse/editItem/{itemId}(itemId=${item.id})}" class="btn btn-primary">Edit</a>
+                    </td>
                 </tr>
                 </tbody>
             </table>

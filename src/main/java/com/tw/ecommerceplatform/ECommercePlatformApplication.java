@@ -44,7 +44,7 @@ public class ECommercePlatformApplication {
             UserEntity warehouse_admin = new UserEntity("warehouse@gmail.com",
                     passwordEncoder.encode("admin"), role_warehouse_admin, RegistrationStatus.APPROVED);
             UserEntity warehouse_admin2 = new UserEntity("warehouse2@gmail.com",
-                    passwordEncoder.encode("admin"), role_warehouse_admin, RegistrationStatus.PENDING);
+                    passwordEncoder.encode("admin"), role_warehouse_admin, RegistrationStatus.APPROVED);
             UserEntity shop_admin = new UserEntity("shop@gmail.com",
                     passwordEncoder.encode("admin"), role_shop_admin, RegistrationStatus.APPROVED);
             UserEntity shop_admin2 = new UserEntity("shop2@gmail.com",
@@ -72,11 +72,13 @@ public class ECommercePlatformApplication {
 
             ItemEntity item = new ItemEntity("Faina");
             ItemEntity item2 = new ItemEntity("Zahar");
+            ItemEntity item3 = new ItemEntity("Oua");
             itemRepository.save(item);
             itemRepository.save(item2);
+            itemRepository.save(item3);
 
             ItemWarehouse itemWarehouse = new ItemWarehouse(item, warehouse, 100);
-            ItemWarehouse itemWarehouse2 = new ItemWarehouse(item2, warehouse, 100);
+            ItemWarehouse itemWarehouse2 = new ItemWarehouse(item3, warehouse, 100);
             ItemWarehouse itemWarehouse3 = new ItemWarehouse(item2, warehouse2, 10);
             itemWarehouseRepository.save(itemWarehouse);
             itemWarehouseRepository.save(itemWarehouse2);

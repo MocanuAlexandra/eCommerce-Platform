@@ -8,7 +8,7 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 @Service
-public class CreateItemValidatorService implements Validator {
+public class CreatItemValidatorService implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {

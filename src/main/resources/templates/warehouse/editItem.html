@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <title>Create product</title>
+</head>
+<body>
+<div class="form-container">
+    <form th:action="@{/warehouse/editItem/{itemId}(itemId=${form.id})}"
+          th:object="${form}"
+          method="post">
+        <div class="form-group">
+            <h1>Edit item</h1>
+
+            <!-- Name -->
+            <div class="form-group">
+                <label for="nameInput">Name</label>
+                <input id="nameInput"
+                       name="name"
+                       type="text"
+                       class="form-control"
+                       placeholder="Name"
+                       th:field="*{name}"
+                       autofocus="autofocus">
+            </div>
+
+            <!-- Quantity -->
+            <div class="form-group">
+                <label for="quantityInput">Quantity</label>
+                <input id="quantityInput"
+                       name="quantity"
+                       type="number"
+                       class="form-control"
+                       placeholder="Quantity"
+                       th:field="*{quantity}"
+                       autofocus="autofocus">
+            </div>
+
+            <!-- Buttons aria -->
+            <div class="buttons">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="/warehouse" class="btn btn-secondary">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
