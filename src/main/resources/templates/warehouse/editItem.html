@@ -4,12 +4,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <title>Create product</title>
+    <title>Edit item</title>
 </head>
 <body>
 <div class="form-container">
     <form th:action="@{/warehouse/editItem/{itemId}(itemId=${form.id})}"
-          th:object="${form}"
           method="post">
         <div class="form-group">
             <h1>Edit item</h1>
@@ -22,7 +21,7 @@
                        type="text"
                        class="form-control"
                        placeholder="Name"
-                       th:field="*{name}"
+                       th:field="*{form.name}"
                        autofocus="autofocus">
             </div>
 
@@ -34,7 +33,7 @@
                        type="number"
                        class="form-control"
                        placeholder="Quantity"
-                       th:field="*{quantity}"
+                       th:field="*{form.quantity}"
                        autofocus="autofocus">
             </div>
 

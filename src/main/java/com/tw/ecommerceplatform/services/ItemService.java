@@ -15,7 +15,7 @@ public class ItemService {
 
         //Check if the item already exists in the database (so is in another warehouse)
         ItemEntity savedItem = itemRepository.findByName(form.getName());
-        if (savedItem != null)
+        if (savedItem != null && savedItem.getId() != item.getId())
             throw new Exception("Item already exists in another warehouse");
         else {
             item.setName(form.getName());
