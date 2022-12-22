@@ -23,6 +23,10 @@ public class ItemEntity {
     @OneToMany(mappedBy = "item")
     private List<ItemWarehouse> warehouses;
 
+    // TODO decom at order
+//    @OneToMany(mappedBy = "item")
+//    private List<OrderItem> orders;
+
     public ItemEntity(String itemName) {
         this.name = itemName;
     }

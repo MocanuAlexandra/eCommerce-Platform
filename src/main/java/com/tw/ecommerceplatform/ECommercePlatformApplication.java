@@ -54,9 +54,9 @@ public class ECommercePlatformApplication {
             userRepository.save(warehouse_admin2);
             userRepository.save(shop_admin);
 
-            WarehouseEntity warehouse = new WarehouseEntity("Warehouse Name", "Street 56", "12345",
+            WarehouseEntity warehouse = new WarehouseEntity("Metro", "Street 56", "12345",
                     warehouse_admin);
-            WarehouseEntity warehouse2 = new WarehouseEntity("Firma Mea", "Street 57", "12385",
+            WarehouseEntity warehouse2 = new WarehouseEntity("Selgros", "Street 57", "12385",
                     warehouse_admin2);
             warehouseRepository.save(warehouse);
             warehouseRepository.save(warehouse2);
@@ -70,8 +70,10 @@ public class ECommercePlatformApplication {
             itemRepository.save(item2);
 
             ItemWarehouse itemWarehouse = new ItemWarehouse(item, warehouse, 100);
+            ItemWarehouse itemWarehouse2 = new ItemWarehouse(item2, warehouse, 120);
             ItemWarehouse itemWarehouse3 = new ItemWarehouse(item2, warehouse2, 10);
             itemWarehouseRepository.save(itemWarehouse);
+            itemWarehouseRepository.save(itemWarehouse2);
             itemWarehouseRepository.save(itemWarehouse3);
         };
     }

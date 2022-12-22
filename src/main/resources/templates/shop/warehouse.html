@@ -10,8 +10,8 @@
 </head>
 <body>
 
-<div class="titles" th:object="${shop}">
-    <h1><span th:text="${shop.name}"></span>' Admin panel</h1><br>
+<div class="titles" th:object="${warehouse}">
+    <h1><span th:text="${warehouse.name}"></span>' inventory</h1><br>
 </div>
 
 <!-- Tabs with view all items and also view orders coming from shops -->
@@ -19,30 +19,41 @@
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="item-tab" data-toggle="tab" href="#item"
-               role="tab" aria-controls="items" aria-selected="true">All warehouses</a>
+               role="tab" aria-controls="items" aria-selected="true">All items</a>
         </li>
     </ul>
 
     <div class="tab-content" id="myTabContent">
 
+        <!-- All items -->
         <div class="tab-pane fade show active" id="item" role="tabpanel" aria-labelledby="item-tab">
             <table class="table">
                 <thead>
                 <tr>
-                    <th>Warehouse Name</th>
+                    <th>Name</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
 
-                <tr th:each="warehouse : ${warehouses}">
-                    <td th:text="${warehouse.name}"></td>
-                    <td>
-                        <a th:href="@{/shop/pickWarehouse/{warehouseId}(warehouseId=${warehouse.warehouse_id})}" class="btn btn-primary">Pick</a>
+                <!-- Loop through the items and display a row for each one -->
+                <tr th:each="item : ${items}">
+                    <td width="50%" th:text="${item.name}"></td>
+                    <td width="50%">
+                        <label for="inputQuantity">Enter quantity</label>
+                        <input id="inputQuantity"
+                               name="quantity"
+                               type="number"
+                               min="0"
+                               class="form-control"
+                               placeholder="Quantity"
+                               autofocus="autofocus">
                     </td>
                 </tr>
                 </tbody>
             </table>
+
+            <button type="submit" class="btn btn-primary">Place order</button>
         </div>
     </div>
 </div>
