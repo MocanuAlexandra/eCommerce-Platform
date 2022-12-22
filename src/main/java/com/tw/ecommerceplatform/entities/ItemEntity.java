@@ -17,11 +17,11 @@ public class ItemEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private long item_id;
-    @Column(name = "name")
+    @Column(name = "name",unique = true)
     private String name;
 
     @OneToMany(mappedBy = "item")
-    private List<ItemWarehouseEntity> warehouses;
+    private List<ItemWarehouse> warehouses;
 
     public ItemEntity(String itemName) {
         this.name = itemName;

@@ -1,7 +1,7 @@
 package com.tw.ecommerceplatform.services;
 
 import com.tw.ecommerceplatform.entities.ItemEntity;
-import com.tw.ecommerceplatform.entities.ItemWarehouseEntity;
+import com.tw.ecommerceplatform.entities.ItemWarehouse;
 import com.tw.ecommerceplatform.entities.WarehouseEntity;
 import com.tw.ecommerceplatform.models.CreateItemModel;
 import com.tw.ecommerceplatform.repositories.ItemRepository;
@@ -19,26 +19,33 @@ public class ItemWarehouseService {
     private final ItemRepository itemRepository;
 
     // Get all items in a warehouse
-    public List<ItemWarehouseEntity> getItemsByWarehouse(WarehouseEntity warehouse) {
+    public List<ItemWarehouse> getItemsByWarehouse(WarehouseEntity warehouse) {
         return itemWarehouseRepository.findByWarehouse(warehouse);
     }
 
     // Save an item in a warehouse
     public void saveItemWarehouse(CreateItemModel createItemModel, WarehouseEntity warehouse) throws Exception {
-        ItemWarehouseEntity itemWarehouse = new ItemWarehouseEntity();
+        ItemWarehouse itemWarehouse = new ItemWarehouse();
 
         // Check if the item already exists in the warehouse
-        List<ItemWarehouseEntity> items = itemWarehouseRepository.findByWarehouse(warehouse);
+        List<ItemWarehouse> items = itemWarehouseRepository.findByWarehouse(warehouse);
         if (items.stream().anyMatch(item -> item.getItem().getName().equals(createItemModel.getName()))) {
             throw new Exception("Item already exists in the warehouse");
         } else {
-            // Save the item in db
-            ItemEntity item = new ItemEntity();
-            item.setName(createItemModel.getName());
-            itemRepository.save(item);
+
+            //Check if the item already exists in the database (so is in another warehouse)
+            ItemEntity savedItem = itemRepository.findByName(createItemModel.getName());
+            ItemEntity newItem = new ItemEntity();
+
+            if (savedItem != null)
+                throw new Exception("Item already exists in another warehouse");
+            else {
+                newItem.setName(createItemModel.getName());
+                itemRepository.save(newItem);
+            }
 
             // Save the item in warehouse
-            itemWarehouse.setItem(item);
+            itemWarehouse.setItem(newItem);
             itemWarehouse.setWarehouse(warehouse);
             itemWarehouse.setQuantity(createItemModel.getQuantity());
         }

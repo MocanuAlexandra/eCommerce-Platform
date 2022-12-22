@@ -75,9 +75,9 @@ public class ECommercePlatformApplication {
             itemRepository.save(item);
             itemRepository.save(item2);
 
-            ItemWarehouseEntity itemWarehouse = new ItemWarehouseEntity(item, warehouse, 100);
-            ItemWarehouseEntity itemWarehouse2 = new ItemWarehouseEntity(item2, warehouse, 100);
-            ItemWarehouseEntity itemWarehouse3 = new ItemWarehouseEntity(item2, warehouse2, 10);
+            ItemWarehouse itemWarehouse = new ItemWarehouse(item, warehouse, 100);
+            ItemWarehouse itemWarehouse2 = new ItemWarehouse(item2, warehouse, 100);
+            ItemWarehouse itemWarehouse3 = new ItemWarehouse(item2, warehouse2, 10);
             itemWarehouseRepository.save(itemWarehouse);
             itemWarehouseRepository.save(itemWarehouse2);
             itemWarehouseRepository.save(itemWarehouse3);

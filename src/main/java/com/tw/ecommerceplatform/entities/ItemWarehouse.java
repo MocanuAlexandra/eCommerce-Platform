@@ -12,7 +12,7 @@ import lombok.ToString;
 @ToString
 @RequiredArgsConstructor
 @Table(name = "item_warehouse", schema = "public")
-public class ItemWarehouseEntity {
+public class ItemWarehouse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,7 +27,7 @@ public class ItemWarehouseEntity {
 
     private int quantity;
 
-    public ItemWarehouseEntity(ItemEntity item, WarehouseEntity warehouse, int quantity) {
+    public ItemWarehouse(ItemEntity item, WarehouseEntity warehouse, int quantity) {
         this.item = item;
         this.warehouse = warehouse;
         this.quantity = quantity;

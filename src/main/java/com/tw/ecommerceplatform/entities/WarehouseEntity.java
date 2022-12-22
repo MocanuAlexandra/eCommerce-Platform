@@ -40,6 +40,6 @@ public class WarehouseEntity {
     }
 
     @OneToMany(mappedBy = "warehouse")
-    private List<ItemWarehouseEntity> items;
+    private List<ItemWarehouse> items;
 }
 

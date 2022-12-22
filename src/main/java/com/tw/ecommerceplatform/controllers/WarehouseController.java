@@ -1,7 +1,7 @@
 package com.tw.ecommerceplatform.controllers;
 
 import com.tw.ecommerceplatform.entities.ItemEntity;
-import com.tw.ecommerceplatform.entities.ItemWarehouseEntity;
+import com.tw.ecommerceplatform.entities.ItemWarehouse;
 import com.tw.ecommerceplatform.entities.WarehouseEntity;
 import com.tw.ecommerceplatform.models.CreateItemModel;
 import com.tw.ecommerceplatform.services.ItemWarehouseService;
@@ -47,14 +47,14 @@ public class WarehouseController {
         WarehouseEntity warehouse = warehouseService.getWarehouseByAdminEmail(username);
 
         // Get all items in the warehouse along with their quantity
-        List<ItemWarehouseEntity> itemWarehouses = itemWarehouseService.getItemsByWarehouse(warehouse);
+        List<ItemWarehouse> itemWarehouses = itemWarehouseService.getItemsByWarehouse(warehouse);
 
         List<ItemEntity> items = itemWarehouses.stream()
-                .map(ItemWarehouseEntity::getItem)
+                .map(ItemWarehouse::getItem)
                 .collect(Collectors.toList());
 
         Map<ItemEntity, Integer> itemQuantities = itemWarehouses.stream()
-                .collect(Collectors.toMap(ItemWarehouseEntity::getItem, ItemWarehouseEntity::getQuantity));
+                .collect(Collectors.toMap(ItemWarehouse::getItem, ItemWarehouse::getQuantity));
 
         // Add the items and their quantity to the model
         model.addAttribute("items", items);
@@ -92,8 +92,11 @@ public class WarehouseController {
         } catch (Exception e) {
             if (e.getMessage().equals("Item already exists in the warehouse")) {
                 bindingResult.rejectValue("name", "error.form", "Item already exists in the warehouse");
-                return "warehouse/createItem";
+            } else if (e.getMessage().equals("Item already exists in another warehouse")) {
+                bindingResult.rejectValue("name", "error.form",
+                        "Item already exists in another warehouse. Try a different name");
             }
+            return "warehouse/createItem";
         }
 
         return "redirect:/warehouse";
