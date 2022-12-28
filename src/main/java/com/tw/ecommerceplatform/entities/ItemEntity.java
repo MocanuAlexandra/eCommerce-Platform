@@ -21,11 +21,12 @@ public class ItemEntity {
     private String name;
 
     @OneToMany(mappedBy = "item")
-    private List<ItemWarehouse> warehouses;
+    private List<WarehouseItem> warehouses;
 
-    // TODO decom at order
-//    @OneToMany(mappedBy = "item")
-//    private List<OrderItem> orders;
+    @OneToMany(mappedBy = "item")
+    private List<ShopItem> shops;
+    @OneToMany(mappedBy = "item")
+    private List<OrderItem> orders;
 
     public ItemEntity(String itemName) {
         this.name = itemName;

@@ -30,6 +30,9 @@ public class WarehouseEntity {
     @JoinColumn(name = "admin_id")
     private UserEntity adminWarehouse;
 
+    @OneToMany(mappedBy = "warehouse")
+    private List<OrderEntity> orders;
+
     public WarehouseEntity(String name, String address, String business_code, UserEntity admin) {
         this.name = name;
         this.address = address;
@@ -38,6 +41,6 @@ public class WarehouseEntity {
     }
 
     @OneToMany(mappedBy = "warehouse")
-    private List<ItemWarehouse> items;
+    private List<WarehouseItem> items;
 }
 

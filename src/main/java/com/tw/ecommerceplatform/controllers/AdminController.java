@@ -5,6 +5,7 @@ import com.tw.ecommerceplatform.entities.WarehouseEntity;
 import com.tw.ecommerceplatform.models.ChangePasswordUserModel;
 import com.tw.ecommerceplatform.services.JpaUserDetailsService;
 import com.tw.ecommerceplatform.services.ShopService;
+import com.tw.ecommerceplatform.services.ShopWarehouseContractService;
 import com.tw.ecommerceplatform.services.WarehouseService;
 import com.tw.ecommerceplatform.utility.RegistrationStatus;
 import com.tw.ecommerceplatform.validators.ChangePasswordValidatorService;
@@ -28,6 +29,7 @@ public class AdminController {
     private final JpaUserDetailsService userService;
     private final WarehouseService warehouseService;
     private final ShopService shopService;
+    private final ShopWarehouseContractService shopWarehouseContractService;
 
     // Endpoint to main page of admin
     @PreAuthorize("hasRole('ADMIN')")
@@ -80,6 +82,9 @@ public class AdminController {
 
             // Approve registration
             shopService.approveShop(id);
+
+            // Add non-existing contracts between this shop and all warehouses approved by admin
+            shopWarehouseContractService.addNonExistingContracts(id);
 
         } else if (action.equalsIgnoreCase(RegistrationStatus.REJECTED.getName())) {
 

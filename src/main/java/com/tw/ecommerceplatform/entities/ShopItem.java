@@ -11,8 +11,8 @@ import lombok.ToString;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Table(name = "item_warehouse", schema = "public")
-public class ItemWarehouse {
+@Table(name = "shop_item", schema = "public")
+public class ShopItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,14 +22,15 @@ public class ItemWarehouse {
     private ItemEntity item;
 
     @ManyToOne
-    @JoinColumn(name = "warehouse_id")
-    private WarehouseEntity warehouse;
+    @JoinColumn(name = "shop_id")
+    private ShopEntity shop;
 
     private int quantity;
 
-    public ItemWarehouse(ItemEntity item, WarehouseEntity warehouse, int quantity) {
+    public ShopItem(ItemEntity item, ShopEntity shop, int quantity) {
         this.item = item;
-        this.warehouse = warehouse;
+        this.shop = shop;
         this.quantity = quantity;
     }
 }
+

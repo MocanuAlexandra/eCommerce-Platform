@@ -1,12 +1,12 @@
 package com.tw.ecommerceplatform.services;
 
 import com.tw.ecommerceplatform.entities.ItemEntity;
-import com.tw.ecommerceplatform.entities.ItemWarehouse;
 import com.tw.ecommerceplatform.entities.WarehouseEntity;
+import com.tw.ecommerceplatform.entities.WarehouseItem;
 import com.tw.ecommerceplatform.models.CreateItemModel;
 import com.tw.ecommerceplatform.models.EditItemModel;
 import com.tw.ecommerceplatform.repositories.ItemRepository;
-import com.tw.ecommerceplatform.repositories.ItemWarehouseRepository;
+import com.tw.ecommerceplatform.repositories.WarehouseItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,27 +15,27 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 
-public class ItemWarehouseService {
-    private final ItemWarehouseRepository itemWarehouseRepository;
+public class WarehouseItemService {
+    private final WarehouseItemRepository warehouseItemRepository;
     private final ItemRepository itemRepository;
 
     // Get all items in a warehouse
-    public List<ItemWarehouse> getItemsByWarehouse(WarehouseEntity warehouse) {
-        return itemWarehouseRepository.findByWarehouse(warehouse);
+    public List<WarehouseItem> getItemsByWarehouse(WarehouseEntity warehouse) {
+        return warehouseItemRepository.findByWarehouse(warehouse);
     }
 
 
     // Get item warehouse by item id
-    public ItemWarehouse getItemWarehouseByItemId(Long id, WarehouseEntity warehouse) {
-        return itemWarehouseRepository.findByItem_Id(warehouse, id);
+    public WarehouseItem getItemWarehouseByItemId(Long id, WarehouseEntity warehouse) {
+        return warehouseItemRepository.findByItem_Id(warehouse, id);
     }
 
     // Save an item in a warehouse
     public void saveItemWarehouse(CreateItemModel createItemModel, WarehouseEntity warehouse) throws Exception {
-        ItemWarehouse itemWarehouse = new ItemWarehouse();
+        WarehouseItem warehouseItem = new WarehouseItem();
 
         // Check if the item already exists in the warehouse
-        List<ItemWarehouse> items = itemWarehouseRepository.findByWarehouse(warehouse);
+        List<WarehouseItem> items = warehouseItemRepository.findByWarehouse(warehouse);
         if (items.stream().anyMatch(item -> item.getItem().getName().equals(createItemModel.getName()))) {
             throw new Exception("Item already exists in the warehouse");
         } else {
@@ -52,21 +52,21 @@ public class ItemWarehouseService {
             }
 
             // Save the item in warehouse
-            itemWarehouse.setItem(newItem);
-            itemWarehouse.setWarehouse(warehouse);
-            itemWarehouse.setQuantity(createItemModel.getQuantity());
+            warehouseItem.setItem(newItem);
+            warehouseItem.setWarehouse(warehouse);
+            warehouseItem.setQuantity(createItemModel.getQuantity());
         }
         // Save into db
-        itemWarehouseRepository.save(itemWarehouse);
+        warehouseItemRepository.save(warehouseItem);
     }
 
     // Edit an item in a warehouse
-    public void updateItemWarehouse(ItemWarehouse updatedItemWarehouse, EditItemModel form) throws Exception {
+    public void updateItemWarehouse(WarehouseItem updatedWarehouseItem, EditItemModel form) throws Exception {
 
-        // TODO decom this when validate
+        //TODO decom this when validate
 //        if (form.getQuantity() < updatedItemWarehouse.getQuantity())
 //            throw new Exception("Quantity cannot be less than the current quantity");
-        updatedItemWarehouse.setQuantity(form.getQuantity());
-        itemWarehouseRepository.save(updatedItemWarehouse);
+        updatedWarehouseItem.setQuantity(form.getQuantity());
+        warehouseItemRepository.save(updatedWarehouseItem);
     }
 }

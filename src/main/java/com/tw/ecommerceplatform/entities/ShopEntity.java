@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -29,6 +31,12 @@ public class ShopEntity {
     @OneToOne
     @JoinColumn(name = "admin_id")
     private UserEntity adminShop;
+
+    @OneToMany(mappedBy = "shop")
+    private List<OrderEntity> orders;
+
+    @OneToMany(mappedBy = "shop")
+    private List<ShopItem> items;
 
     public ShopEntity(String name, String address, String business_code, UserEntity admin) {
         this.name = name;

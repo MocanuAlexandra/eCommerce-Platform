@@ -1,13 +1,12 @@
 package com.tw.ecommerceplatform.controllers;
 
 import com.tw.ecommerceplatform.entities.ItemEntity;
-import com.tw.ecommerceplatform.entities.ItemWarehouse;
 import com.tw.ecommerceplatform.entities.WarehouseEntity;
+import com.tw.ecommerceplatform.entities.WarehouseItem;
 import com.tw.ecommerceplatform.models.CreateItemModel;
 import com.tw.ecommerceplatform.models.EditItemModel;
-import com.tw.ecommerceplatform.repositories.ItemWarehouseRepository;
 import com.tw.ecommerceplatform.services.ItemService;
-import com.tw.ecommerceplatform.services.ItemWarehouseService;
+import com.tw.ecommerceplatform.services.WarehouseItemService;
 import com.tw.ecommerceplatform.services.WarehouseService;
 import com.tw.ecommerceplatform.validators.CreatItemValidatorService;
 import lombok.RequiredArgsConstructor;
@@ -26,15 +25,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class WarehouseController {
     private final ItemService itemService;
-    private final ItemWarehouseService itemWarehouseService;
+    private final WarehouseItemService warehouseItemService;
     private final WarehouseService warehouseService;
     private final CreatItemValidatorService createEditItemValidatorService;
-    private final ItemWarehouseRepository itemWarehouseRepository;
 
     // Endpoint to pending approval page
     @GetMapping("/register/warehouse/pending")
     public String pending() {
-        return "register/registrationPending";
+        return "register/pendingRegistrationPage";
     }
 
     // TODO add pending orders from shop to warehouse
@@ -49,14 +47,14 @@ public class WarehouseController {
         WarehouseEntity warehouse = warehouseService.getWarehouseByAdminEmail(username);
 
         // Get all items in the warehouse along with their quantity
-        List<ItemWarehouse> itemWarehouses = itemWarehouseService.getItemsByWarehouse(warehouse);
+        List<WarehouseItem> warehouseItems = warehouseItemService.getItemsByWarehouse(warehouse);
 
-        List<ItemEntity> items = itemWarehouses.stream()
-                .map(ItemWarehouse::getItem)
-                .collect(Collectors.toList());
+        List<ItemEntity> items = warehouseItems.stream()
+                .map(WarehouseItem::getItem)
+                .toList();
 
-        Map<ItemEntity, Integer> itemQuantities = itemWarehouses.stream()
-                .collect(Collectors.toMap(ItemWarehouse::getItem, ItemWarehouse::getQuantity));
+        Map<ItemEntity, Integer> itemQuantities = warehouseItems.stream()
+                .collect(Collectors.toMap(WarehouseItem::getItem, WarehouseItem::getQuantity));
 
         // Add the items and their quantity to the model
         // Also add the warehouse to the model
@@ -92,7 +90,7 @@ public class WarehouseController {
             WarehouseEntity warehouse = warehouseService.getWarehouseByAdminEmail(authentication.getName());
 
             //Add the item to the warehouse
-            itemWarehouseService.saveItemWarehouse(form, warehouse);
+            warehouseItemService.saveItemWarehouse(form, warehouse);
         } catch (Exception e) {
             if (e.getMessage().equals("Item already exists in the warehouse")) {
                 bindingResult.rejectValue("name", "error.form", "Item already exists in the warehouse");
@@ -120,13 +118,13 @@ public class WarehouseController {
         WarehouseEntity warehouse = warehouseService.getWarehouseByAdminEmail(username);
 
         // Get the itemWarehouse object by the item id and warehouse id
-        ItemWarehouse itemWarehouse = itemWarehouseService.getItemWarehouseByItemId(itemId, warehouse);
+        WarehouseItem warehouseItem = warehouseItemService.getItemWarehouseByItemId(itemId, warehouse);
 
         // Create a new edit item form object and set the id, name and quantity
         EditItemModel form = new EditItemModel();
         form.setId(itemId);
-        form.setName(itemWarehouse.getItem().getName());
-        form.setQuantity(itemWarehouse.getQuantity());
+        form.setName(warehouseItem.getItem().getName());
+        form.setQuantity(warehouseItem.getQuantity());
 
         model.addAttribute("form", form);
         return "warehouse/editItem";
@@ -148,7 +146,7 @@ public class WarehouseController {
             // Get the itemWarehouse object
             String username = authentication.getName();
             WarehouseEntity warehouse = warehouseService.getWarehouseByAdminEmail(username);
-            ItemWarehouse updatedItemWarehouse = itemWarehouseService.getItemWarehouseByItemId(itemId, warehouse);
+            WarehouseItem updatedWarehouseItem = warehouseItemService.getItemWarehouseByItemId(itemId, warehouse);
 
             // Update the item object
             if (updatedItem != null) {
@@ -156,8 +154,8 @@ public class WarehouseController {
             }
 
             // Update the itemWarehouse object
-            if (updatedItemWarehouse != null) {
-                itemWarehouseService.updateItemWarehouse(updatedItemWarehouse, form);
+            if (updatedWarehouseItem != null) {
+                warehouseItemService.updateItemWarehouse(updatedWarehouseItem, form);
             }
         } catch (Exception e) {
             if (e.getMessage().equals("Item already exists in another warehouse")) {
