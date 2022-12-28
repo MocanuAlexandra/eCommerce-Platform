@@ -131,6 +131,7 @@ public class RegisterController {
                 bindingResult.rejectValue("name", "error.shop", "Warehouse already exists");
             } else if (Objects.equals(e.getMessage(), "User already exists"))
                 bindingResult.rejectValue("username", "error.user", "User already exists");
+
             return "register/registerShop";
         }
 

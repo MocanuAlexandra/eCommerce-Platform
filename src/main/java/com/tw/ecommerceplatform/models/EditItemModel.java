@@ -8,5 +8,4 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 public class EditItemModel extends CreateItemModel {
-    private Long id;
 }

@@ -1,10 +1,9 @@
 package com.tw.ecommerceplatform.validators;
 
-import com.tw.ecommerceplatform.models.RegisterUserModel;
 import com.tw.ecommerceplatform.entities.UserEntity;
+import com.tw.ecommerceplatform.models.RegisterUserModel;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 @Service
@@ -17,9 +16,6 @@ public class RegisterUserValidatorService implements Validator {
     @Override
     public void validate(Object registerUserModel, Errors errors) {
         RegisterUserModel model = (RegisterUserModel) registerUserModel;
-
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "form.isEmailEmpty");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "form.isPasswordEmpty");
 
         /* Valid email regex pattern - https://owasp.org/www-community/OWASP_Validation_Regex_Repository */
         /* Typical email format: email@domain.com */

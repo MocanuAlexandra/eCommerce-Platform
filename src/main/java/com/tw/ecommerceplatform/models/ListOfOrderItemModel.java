@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @RequiredArgsConstructor
-public class ListOrderItemModel {
+public class ListOfOrderItemModel {
     private List<OrderItemModel> orderItems = new ArrayList<>();
 
     public void addOrderItem(OrderItemModel item) {

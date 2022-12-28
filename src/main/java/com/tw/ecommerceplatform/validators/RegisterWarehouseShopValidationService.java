@@ -4,7 +4,6 @@ import com.tw.ecommerceplatform.entities.UserEntity;
 import com.tw.ecommerceplatform.models.RegisterWarehouseShopModel;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 @Service
@@ -18,13 +17,6 @@ public class RegisterWarehouseShopValidationService implements Validator {
     @Override
     public void validate(Object registerWarehouseShopModel, Errors errors) {
         RegisterWarehouseShopModel model = (RegisterWarehouseShopModel) registerWarehouseShopModel;
-
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "form.isFieldEmpty");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "form.isFieldEmpty");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "form.isFieldEmpty");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "address", "form.isFieldEmpty");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "code", "form.isFieldEmpty");
-
 
         /* Valid email regex pattern - https://owasp.org/www-community/OWASP_Validation_Regex_Repository */
         /* Typical email format: email@domain.com */
@@ -57,13 +49,12 @@ public class RegisterWarehouseShopValidationService implements Validator {
 
         For example, the following company names would be matched by this regex:
 
-             "Firma"
-             "Ceva Numa"
-             "Alt Nume"
-             "Companie Cu Nume Lung"
+             "Acme Corporation"
+             "Big Corp Inc."
+             "Small Business LLC"
 
         */
-        String nameRegexPattern = "^[A-Z][a-zA-Z]*(\\s[A-Z][a-zA-Z]*)+$";
+        String nameRegexPattern = "^[A-Z][a-zA-Z]+(?: [A-Z][a-zA-Z]+)*$\n";
 
         /* Code format by 5 digits */
         String codeRegexPattern = "^[0-9]{5}$";

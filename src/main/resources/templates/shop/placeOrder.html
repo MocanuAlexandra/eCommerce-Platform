@@ -25,7 +25,7 @@
 
     <div class="tab-content" id="myTabContent">
 
-        <form method="post" th:object="${listOrderItemsModel}"
+        <form method="post" th:object="${listOfOrderItemModel}"
               th:action="@{/shop/placeOrder/{warehouseId}(warehouseId=${warehouse.warehouse_id})}">
 
             <!-- All items -->
@@ -58,11 +58,6 @@
                     </tr>
                     </tbody>
                 </table>
-
-                <div th:if="${errorMessage}" class="has-error">
-                    <p th:text="${errorMessage}"></p>
-                </div>
-
                 <button type="submit" class="btn btn-primary">Place order</button>
             </div>
         </form>

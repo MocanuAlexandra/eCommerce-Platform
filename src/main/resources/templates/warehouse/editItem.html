@@ -8,7 +8,8 @@
 </head>
 <body>
 <div class="form-container">
-    <form th:action="@{/warehouse/editItem/{itemId}(itemId=${form.id})}"
+    <form th:action="@{/warehouse/editItem/{itemId}(itemId=${warehouseItem.id})}"
+          th:object="${form}"
           method="post">
         <div class="form-group">
             <h1>Edit item</h1>
@@ -19,11 +20,13 @@
                 <input id="nameInput"
                        name="name"
                        type="text"
+                       required="required"
                        class="form-control"
                        placeholder="Name"
-                       th:field="*{form.name}"
+                       th:field="*{name}"
                        autofocus="autofocus">
             </div>
+            <span class="has-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 
             <!-- Quantity -->
             <div class="form-group">
@@ -32,10 +35,12 @@
                        name="quantity"
                        type="number"
                        class="form-control"
+                       required="required"
                        placeholder="Quantity"
-                       th:field="*{form.quantity}"
+                       th:field="*{quantity}"
                        autofocus="autofocus">
             </div>
+            <span class="has-error" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></span>
 
             <!-- Buttons aria -->
             <div class="buttons">

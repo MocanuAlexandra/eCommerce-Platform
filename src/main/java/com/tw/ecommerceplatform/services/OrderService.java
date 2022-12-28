@@ -1,7 +1,7 @@
 package com.tw.ecommerceplatform.services;
 
 import com.tw.ecommerceplatform.entities.*;
-import com.tw.ecommerceplatform.models.ListOrderItemModel;
+import com.tw.ecommerceplatform.models.ListOfOrderItemModel;
 import com.tw.ecommerceplatform.models.OrderItemModel;
 import com.tw.ecommerceplatform.repositories.*;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class OrderService {
     public void placeOrder(WarehouseEntity warehouse,
                            ShopEntity shop,
                            List<OrderItemModel> orderItems,
-                           ListOrderItemModel listOrderItemsModel) throws Exception {
+                           ListOfOrderItemModel listOrderItemsModel) throws Exception {
 
         // Attach the name of the items to the order items
         for (int i = 0; i < orderItems.size(); i++) {

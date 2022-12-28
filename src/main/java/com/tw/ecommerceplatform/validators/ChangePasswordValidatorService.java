@@ -1,10 +1,9 @@
 package com.tw.ecommerceplatform.validators;
 
-import com.tw.ecommerceplatform.models.ChangePasswordUserModel;
 import com.tw.ecommerceplatform.entities.UserEntity;
+import com.tw.ecommerceplatform.models.ChangePasswordUserModel;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 @Service
@@ -18,9 +17,6 @@ public class ChangePasswordValidatorService implements Validator {
     @Override
     public void validate(Object changePasswordModel, Errors errors) {
         ChangePasswordUserModel model = (ChangePasswordUserModel) changePasswordModel;
-
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "currentPassword", "form.isFieldEmpty");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "newPassword", "form.isFieldEmpty");
 
         /*
            at least 8 digits {8,}

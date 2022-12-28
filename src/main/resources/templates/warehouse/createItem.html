@@ -18,6 +18,7 @@
                    name="name"
                    type="text"
                    class="form-control"
+                   required="required"
                    placeholder="Name"
                    th:field="*{name}"
                    autofocus="autofocus">
@@ -30,7 +31,8 @@
             <input id="quantityInput"
                    name="quantity"
                    type="number"
-                   min="0"
+                   required="required"
+                   min="1"
                    class="form-control"
                    placeholder="Initial quantity"
                    th:field="*{quantity}"

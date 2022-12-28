@@ -13,8 +13,8 @@ public interface ShopWarehouseContractRepository extends JpaRepository<ShopWareh
     @Query("SELECT c FROM ShopWarehouseContract c WHERE c.shop.id=:shopId and c.status = 'APPROVED'")
     List<ShopWarehouseContract> getAllByShopAndApprovedStatus(Long shopId);
 
-    @Query("SELECT c FROM ShopWarehouseContract c WHERE c.shop.id=:shopId and c.status = 'PENDING'")
-    List<ShopWarehouseContract> getAllByShopAndPendingStatus(Long shopId);
+    @Query("SELECT c FROM ShopWarehouseContract c WHERE c.warehouse.id=:warehouseId and c.status = 'PENDING'")
+    List<ShopWarehouseContract> getAllByWarehouseAndPendingStatus(Long warehouseId);
 
     @Query("SELECT c FROM ShopWarehouseContract c WHERE c.shop.id=:shopId and c.status = 'NON_EXISTENT'")
     List<ShopWarehouseContract> getAllByShopAndNonExistingStatus(Long shopId);

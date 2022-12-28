@@ -1,14 +1,13 @@
 package com.tw.ecommerceplatform.controllers;
 
-import com.tw.ecommerceplatform.entities.ItemEntity;
-import com.tw.ecommerceplatform.entities.WarehouseEntity;
-import com.tw.ecommerceplatform.entities.WarehouseItem;
+import com.tw.ecommerceplatform.entities.*;
 import com.tw.ecommerceplatform.models.CreateItemModel;
 import com.tw.ecommerceplatform.models.EditItemModel;
 import com.tw.ecommerceplatform.services.ItemService;
+import com.tw.ecommerceplatform.services.ShopWarehouseContractService;
 import com.tw.ecommerceplatform.services.WarehouseItemService;
 import com.tw.ecommerceplatform.services.WarehouseService;
-import com.tw.ecommerceplatform.validators.CreatItemValidatorService;
+import com.tw.ecommerceplatform.utility.ContractStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -27,7 +26,7 @@ public class WarehouseController {
     private final ItemService itemService;
     private final WarehouseItemService warehouseItemService;
     private final WarehouseService warehouseService;
-    private final CreatItemValidatorService createEditItemValidatorService;
+    private final ShopWarehouseContractService shopWarehouseContractService;
 
     // Endpoint to pending approval page
     @GetMapping("/register/warehouse/pending")
@@ -35,7 +34,6 @@ public class WarehouseController {
         return "register/pendingRegistrationPage";
     }
 
-    // TODO add pending orders from shop to warehouse
     // Endpoint to main page of warehouse' admin
     @PreAuthorize("hasRole('WAREHOUSE_ADMIN')")
     @RequestMapping("/warehouse")
@@ -46,21 +44,27 @@ public class WarehouseController {
         String username = authentication.getName();
         WarehouseEntity warehouse = warehouseService.getWarehouseByAdminEmail(username);
 
+        // Get all the pending contracts to the model
+        List<ShopWarehouseContract> approvedContracts = shopWarehouseContractService.getAllPendingContracts(warehouse);
+        List<ShopEntity> pendingContracts = approvedContracts.stream()
+                .map(ShopWarehouseContract::getShop)
+                .toList();
+
         // Get all items in the warehouse along with their quantity
         List<WarehouseItem> warehouseItems = warehouseItemService.getItemsByWarehouse(warehouse);
-
         List<ItemEntity> items = warehouseItems.stream()
                 .map(WarehouseItem::getItem)
                 .toList();
-
         Map<ItemEntity, Integer> itemQuantities = warehouseItems.stream()
                 .collect(Collectors.toMap(WarehouseItem::getItem, WarehouseItem::getQuantity));
 
         // Add the items and their quantity to the model
-        // Also add the warehouse to the model
+        // Also add the warehouse to the model and the pending contracts
         model.addAttribute("items", items);
         model.addAttribute("itemQuantities", itemQuantities);
         model.addAttribute("warehouse", warehouse);
+        model.addAttribute("pendingContracts", pendingContracts);
+
         return "warehouse/warehousePanel";
     }
 
@@ -79,12 +83,6 @@ public class WarehouseController {
                              Authentication authentication,
                              BindingResult bindingResult) {
 
-        // Validate the form
-        createEditItemValidatorService.validate(form, bindingResult);
-        if (bindingResult.hasErrors()) {
-            return "warehouse/createItem";
-        }
-
         try {
             // Get the warehouse id by the username of the logged-in user
             WarehouseEntity warehouse = warehouseService.getWarehouseByAdminEmail(authentication.getName());
@@ -92,16 +90,17 @@ public class WarehouseController {
             //Add the item to the warehouse
             warehouseItemService.saveItemWarehouse(form, warehouse);
         } catch (Exception e) {
-            if (e.getMessage().equals("Item already exists in the warehouse")) {
-                bindingResult.rejectValue("name", "error.form", "Item already exists in the warehouse");
-            } else if (e.getMessage().equals("Item already exists in another warehouse")) {
+            if (e.getMessage().equals("Item already exists in the warehouse"))
+                bindingResult.rejectValue("name", "error.form",
+                        "Item already exists in the warehouse");
+            else if (e.getMessage().equals("Item already exists in another warehouse"))
                 bindingResult.rejectValue("name", "error.form",
                         "Item already exists in another warehouse. Try a different name");
-            }
+
             return "warehouse/createItem";
         }
 
-        // Redirect to the warehouse admin page
+        // After adding new item, redirect to the warehouse admin page
         return "redirect:/warehouse";
     }
 
@@ -122,10 +121,10 @@ public class WarehouseController {
 
         // Create a new edit item form object and set the id, name and quantity
         EditItemModel form = new EditItemModel();
-        form.setId(itemId);
         form.setName(warehouseItem.getItem().getName());
         form.setQuantity(warehouseItem.getQuantity());
 
+        model.addAttribute("warehouseItem", warehouseItem);
         model.addAttribute("form", form);
         return "warehouse/editItem";
     }
@@ -134,10 +133,7 @@ public class WarehouseController {
     @PostMapping("/warehouse/editItem/{itemId}")
     public String editItem(@PathVariable Long itemId,
                            @ModelAttribute EditItemModel form,
-                           Authentication authentication,
-                           BindingResult bindingResult) {
-
-        // TODO validate the edit item form
+                           Authentication authentication) {
 
         try {
             // Get the item object
@@ -158,17 +154,56 @@ public class WarehouseController {
                 warehouseItemService.updateItemWarehouse(updatedWarehouseItem, form);
             }
         } catch (Exception e) {
-            if (e.getMessage().equals("Item already exists in another warehouse")) {
-                bindingResult.rejectValue("name", "error.form",
-                        "Item already exists in another warehouse. Try a different name");
-            } else if (e.getMessage().equals("Quantity cannot be less than the current quantity")) {
-                bindingResult.rejectValue("quantity", "error.form",
-                        "Quantity cannot be less than the current quantity");
-            }
-            return "warehouse/editItem";
+            return "redirect:/warehouse/editItem/" + itemId;
+
+            // TODO add error message, then reload the page
+//            if (e.getMessage().equals("Item already exists in another warehouse")) {
+//                bindingResult.rejectValue("name", "error.form",
+//                        "Item already exists in another warehouse. Try a different name");
+//                return "warehouse/editItem";
+//            } else if (e.getMessage().equals("Quantity cannot be less than the current quantity")) {
+//                bindingResult.rejectValue("quantity", "error.form",
+//                        "Quantity cannot be less than the current quantity");
+//                return "warehouse/editItem";
+//            }
         }
 
         // Redirect to the warehouse admin page
+        return "redirect:/warehouse";
+    }
+
+    //Endpoint to approve/reject contracts coming from shop admin
+    @PreAuthorize("hasRole('WAREHOUSE_ADMIN')")
+    @PostMapping("contract/approve-reject")
+    public String approveRejectShop(@RequestParam("action") String action,
+                                    @RequestParam("id") Long id,
+                                    Model model,
+                                    Authentication authentication) {
+
+        // Get the warehouse id by the username of the logged in user
+        String username = authentication.getName();
+        WarehouseEntity warehouse = warehouseService.getWarehouseByAdminEmail(username);
+
+        if (action.equalsIgnoreCase(ContractStatus.APPROVED.getName())) {
+
+            // Approve contract
+            shopWarehouseContractService.approveContract(id, warehouse);
+
+        } else if (action.equalsIgnoreCase(ContractStatus.REJECTED.getName())) {
+
+            // Reject contract -> set status to 'non-existing'
+            shopWarehouseContractService.rejectContract(id, warehouse);
+        }
+
+        // Reload the contracts with pending state to the model
+
+        // Get all the pending contracts to the model
+        List<ShopWarehouseContract> approvedContracts = shopWarehouseContractService.getAllPendingContracts(warehouse);
+        List<ShopEntity> pendingContracts = approvedContracts.stream()
+                .map(ShopWarehouseContract::getShop)
+                .toList();
+        model.addAttribute("pendingContracts", pendingContracts);
+
         return "redirect:/warehouse";
     }
 }

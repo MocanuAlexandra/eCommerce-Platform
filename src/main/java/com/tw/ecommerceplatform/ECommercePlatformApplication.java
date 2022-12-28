@@ -50,11 +50,14 @@ public class ECommercePlatformApplication {
                     passwordEncoder.encode("admin"), role_warehouse_admin, RegistrationStatus.APPROVED);
             UserEntity shop_admin = new UserEntity("shop@gmail.com",
                     passwordEncoder.encode("admin"), role_shop_admin, RegistrationStatus.APPROVED);
+            UserEntity shop_admin2 = new UserEntity("shop2@gmail.com",
+                    passwordEncoder.encode("admin"), role_shop_admin, RegistrationStatus.PENDING);
             userRepository.save(user);
             userRepository.save(admin);
             userRepository.save(warehouse_admin);
             userRepository.save(warehouse_admin2);
             userRepository.save(shop_admin);
+            userRepository.save(shop_admin2);
 
             WarehouseEntity warehouse = new WarehouseEntity("Metro", "Street 56", "12345",
                     warehouse_admin);
@@ -65,15 +68,19 @@ public class ECommercePlatformApplication {
 
             ShopEntity shop = new ShopEntity("Lidl", "Strada 34", "12345", shop_admin);
             shopRepository.save(shop);
+            ShopEntity shop2 = new ShopEntity("Carrefour", "Strada 35", "12345", shop_admin2);
+            shopRepository.save(shop2);
 
-            ItemEntity item = new ItemEntity("Faina");
-            ItemEntity item2 = new ItemEntity("Zahar");
+            ItemEntity item = new ItemEntity("Flour");
+            ItemEntity item2 = new ItemEntity("Sugar");
+            ItemEntity item3 = new ItemEntity("Salt");
             itemRepository.save(item);
             itemRepository.save(item2);
+            itemRepository.save(item3);
 
             WarehouseItem warehouseItem = new WarehouseItem(item, warehouse, 100);
             WarehouseItem warehouseItem2 = new WarehouseItem(item2, warehouse, 120);
-            WarehouseItem warehouseItem3 = new WarehouseItem(item2, warehouse2, 10);
+            WarehouseItem warehouseItem3 = new WarehouseItem(item3, warehouse2, 10);
             warehouseItemRepository.save(warehouseItem);
             warehouseItemRepository.save(warehouseItem2);
             warehouseItemRepository.save(warehouseItem3);
@@ -82,7 +89,7 @@ public class ECommercePlatformApplication {
             shopItemRepository.save(shopItem);
 
             ShopWarehouseContract shopWarehouseContract = new ShopWarehouseContract(shop, warehouse, ContractStatus.APPROVED);
-            ShopWarehouseContract shopWarehouseContract2 = new ShopWarehouseContract(shop, warehouse2, ContractStatus.NON_EXISTENT);
+            ShopWarehouseContract shopWarehouseContract2 = new ShopWarehouseContract(shop, warehouse2, ContractStatus.PENDING);
             shopWarehouseContractRepository.save(shopWarehouseContract);
             shopWarehouseContractRepository.save(shopWarehouseContract2);
         };

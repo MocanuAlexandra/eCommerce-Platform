@@ -35,8 +35,8 @@ public class ShopWarehouseContractService {
         return shopWarehouseContractRepository.getAllByShopAndApprovedStatus(shop.getId());
     }
 
-    public List<ShopWarehouseContract> getAllPendingContracts(ShopEntity shop) {
-        return shopWarehouseContractRepository.getAllByShopAndPendingStatus(shop.getId());
+    public List<ShopWarehouseContract> getAllPendingContracts(WarehouseEntity warehouse) {
+        return shopWarehouseContractRepository.getAllByWarehouseAndPendingStatus(warehouse.getWarehouse_id());
     }
 
     public List<ShopWarehouseContract> getAllNonExistingContracts(ShopEntity shop) {
@@ -48,10 +48,22 @@ public class ShopWarehouseContractService {
     }
 
     public void saveContract(ShopEntity shop, WarehouseEntity warehouse) {
-        ShopWarehouseContract shopWarehouseContract =
-                getContractByShopAndWarehouse(shop, warehouse);
-
+        ShopWarehouseContract shopWarehouseContract = getContractByShopAndWarehouse(shop, warehouse);
         shopWarehouseContract.setStatus(ContractStatus.PENDING);
+        shopWarehouseContractRepository.save(shopWarehouseContract);
+    }
+
+    public void approveContract(Long id,WarehouseEntity warehouse) {
+        ShopEntity shop = shopRepository.findById(id).get();
+        ShopWarehouseContract shopWarehouseContract = getContractByShopAndWarehouse(shop, warehouse);
+        shopWarehouseContract.setStatus(ContractStatus.APPROVED);
+        shopWarehouseContractRepository.save(shopWarehouseContract);
+    }
+
+    public void rejectContract(Long id,WarehouseEntity warehouse) {
+        ShopEntity shop = shopRepository.findById(id).get();
+        ShopWarehouseContract shopWarehouseContract = getContractByShopAndWarehouse(shop, warehouse);
+        shopWarehouseContract.setStatus(ContractStatus.NON_EXISTENT);
         shopWarehouseContractRepository.save(shopWarehouseContract);
     }
 }

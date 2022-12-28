@@ -19,6 +19,7 @@
                    type="text"
                    class="form-control"
                    placeholder="Email"
+                   required="required"
                    th:field="*{username}"
                    autofocus="autofocus">
             <span class="has-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
@@ -31,6 +32,7 @@
                    name="password"
                    type="password"
                    class="form-control"
+                   required="required"
                    th:field="*{password}"
                    placeholder="Password">
             <span class="has-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
@@ -43,6 +45,7 @@
                    name="confirmPassword"
                    type="password"
                    class="form-control"
+                   required="required"
                    th:field="*{confirmPassword}"
                    placeholder="Confirm your password">
             <span class="has-error" th:if="${#fields.hasErrors('confirmPassword')}"

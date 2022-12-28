@@ -1,7 +1,7 @@
 package com.tw.ecommerceplatform.controllers;
 
 import com.tw.ecommerceplatform.entities.*;
-import com.tw.ecommerceplatform.models.ListOrderItemModel;
+import com.tw.ecommerceplatform.models.ListOfOrderItemModel;
 import com.tw.ecommerceplatform.models.OrderItemModel;
 import com.tw.ecommerceplatform.services.*;
 import lombok.RequiredArgsConstructor;
@@ -58,8 +58,6 @@ public class ShopController {
         List<WarehouseEntity> providers = approvedContracts.stream()
                 .map(ShopWarehouseContract::getWarehouse)
                 .toList();
-        model.addAttribute("providers", providers);
-
 
         // Add all the available warehouses to the model
         // A warehouse is available if it has a contract with the shop with 'non-exiting' status
@@ -68,7 +66,6 @@ public class ShopController {
         List<WarehouseEntity> warehouses = nonExistingContracts.stream()
                 .map(ShopWarehouseContract::getWarehouse)
                 .toList();
-        model.addAttribute("warehouses", warehouses);
 
         //Get the shop name by the username of the logged in user
         String username = authentication.getName();
@@ -84,10 +81,12 @@ public class ShopController {
                 .collect(Collectors.toMap(ShopItem::getItem, ShopItem::getQuantity));
 
         // Add the items and their quantity to the model
-        // Also add the shop to the model
+        // Also add the shop to the model, the providers and the available warehouses
         model.addAttribute("items", items);
         model.addAttribute("itemQuantities", itemQuantities);
         model.addAttribute("shop", shop);
+        model.addAttribute("providers", providers);
+        model.addAttribute("warehouses", warehouses);
 
         return "shop/shopPanel";
     }
@@ -127,20 +126,20 @@ public class ShopController {
                 .toList();
 
         // Add the items in a list of OrderItemModel to the model
-        List<OrderItemModel> orderItems = new ArrayList<>();
+        List<OrderItemModel> orderItemsModel = new ArrayList<>();
         for (ItemEntity item : items) {
-            orderItems.add(new OrderItemModel(item.getName(), 0));
+            orderItemsModel.add(new OrderItemModel(item.getName(), 0));
         }
 
         // Cast the list to a ListOrderItemModel
-        ListOrderItemModel listOrderItemModel = new ListOrderItemModel();
-        for (OrderItemModel orderItem : orderItems) {
-            listOrderItemModel.addOrderItem(orderItem);
+        ListOfOrderItemModel listOfOrderItemModel = new ListOfOrderItemModel();
+        for (OrderItemModel orderItem : orderItemsModel) {
+            listOfOrderItemModel.addOrderItem(orderItem);
         }
 
         // Add the order items to the model
-        model.addAttribute("listOrderItemsModel", listOrderItemModel);
-        model.addAttribute("orderItems", orderItems);
+        model.addAttribute("listOfOrderItemModel", listOfOrderItemModel);
+        model.addAttribute("orderItems", orderItemsModel);
         model.addAttribute("warehouse", warehouse);
 
         return "shop/placeOrder";
@@ -153,7 +152,7 @@ public class ShopController {
                              Authentication authentication,
                              Model model,
                              @ModelAttribute("orderItems") List<OrderItemModel> orderItems,
-                             @ModelAttribute("listOrderItemsModel") ListOrderItemModel listOrderItemsModel) {
+                             @ModelAttribute("listOfOrderItemModel") ListOfOrderItemModel listOrderItemsModel) {
 
         // Get the warehouse by id
         WarehouseEntity warehouse = warehouseService.getWarehouseById(warehouseId);
@@ -170,6 +169,7 @@ public class ShopController {
 
             //TODO add error message when the quantity of all items is 0
             //TODO add error message when the quantity of at least one item is over the available quantity
+            //TODO reload the page with the error messages
         }
 
         // After placing the order, redirect to the shop page
