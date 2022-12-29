@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,7 +151,7 @@ public class ShopController {
     @PostMapping("/shop/placeOrder/{warehouseId}")
     public String placeOrder(@PathVariable Long warehouseId,
                              Authentication authentication,
-                             Model model,
+                             RedirectAttributes redirectAttributes,
                              @ModelAttribute("orderItems") List<OrderItemModel> orderItems,
                              @ModelAttribute("listOfOrderItemModel") ListOfOrderItemModel listOrderItemsModel) {
 
@@ -164,12 +165,14 @@ public class ShopController {
         // Try to place the order
         try {
             orderService.placeOrder(warehouse, shop, orderItems, listOrderItemsModel);
-        } catch (Exception e) {
-            return "redirect:/shop/placeOrder/" + warehouseId;
 
-            //TODO add error message when the quantity of all items is 0
-            //TODO add error message when the quantity of at least one item is over the available quantity
-            //TODO reload the page with the error messages
+            //Handle errors if the order cannot be placed
+        } catch (Exception e) {
+            redirectAttributes
+                    .addAttribute("warehouseId", warehouseId)
+                    .addFlashAttribute("errorMessage", e.getMessage());
+
+            return "redirect:/shop/placeOrder/" + warehouseId;
         }
 
         // After placing the order, redirect to the shop page
