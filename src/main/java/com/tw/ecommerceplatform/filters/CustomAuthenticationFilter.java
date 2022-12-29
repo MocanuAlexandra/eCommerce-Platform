@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-    private String failRedirectURL = "/login?error";
 
     public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -71,7 +70,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(Role.ADMIN.getName()))) {
             response.sendRedirect("/private");
         } else if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(Role.CUSTOMER.getName()))) {
-            response.sendRedirect("/public");
+            response.sendRedirect("/customer");
         } else if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(Role.WAREHOUSE_ADMIN.getName()))) {
             response.sendRedirect("/warehouse");
         } else if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(Role.SHOP_ADMIN.getName()))) {
@@ -82,14 +81,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
+        String failRedirectURL = "/login?error";
         response.sendRedirect(failRedirectURL);
-    }
-
-    public String getFailRedirectURL() {
-        return failRedirectURL;
-    }
-
-    public void setFailRedirectURL(String failRedirectURL) {
-        this.failRedirectURL = failRedirectURL;
     }
 }

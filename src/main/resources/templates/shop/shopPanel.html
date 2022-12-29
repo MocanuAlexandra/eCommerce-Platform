@@ -10,12 +10,17 @@
 </head>
 <body>
 
-<div class="titles" th:object="${shop}">
-    <h1><span th:text="${shop.name}"></span>' admin panel</h1><br>
+<!-- Logout button -->
+<div class="buttons-panel">
+    <a href="/logout" class="btn btn-secondary">Logout</a>
 </div>
 
 <!-- Tabs with all items in that shop and also all warehouses -->
 <div class="container mt-5">
+    <div class="titles" th:object="${shop}">
+        <h1><span th:text="${shop.name}"></span>' admin panel</h1><br>
+    </div>
+
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="item-tab" data-toggle="tab" href="#item"
@@ -46,8 +51,8 @@
 
                 <!-- Loop through the items and display a row for each one -->
                 <tr th:each="item : ${items}">
-                    <td th:text="${item.name}"></td>
-                    <td th:text="${itemQuantities.get(item)}"></td>
+                    <td th:text="${item.name}"  width="50%"></td>
+                    <td th:text="${itemQuantities.get(item)}"  width="50%"></td>
                 </tr>
                 </tbody>
             </table>
@@ -88,8 +93,8 @@
                 <tbody>
 
                 <tr th:each="warehouse : ${warehouses}">
-                    <td th:text="${warehouse.name}"></td>
-                    <td>
+                    <td th:text="${warehouse.name}" width="50%"></td>
+                    <td width="50%" >
                         <a th:href="@{/shop/requestContract/{warehouseId}(warehouseId=${warehouse.warehouse_id})}"
                            th:method="post"
                            class="btn btn-primary">Request contract</a>

@@ -7,18 +7,28 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <title>Admin panel</title>
 </head>
 <body>
 
-<!-- Change password -->
-<form th:action="@{/private/changePassword}" method="get">
-    <div class="buttons">
+<!-- Logout button -->
+<div class="buttons-panel">
+    <a href="/logout" class="btn btn-secondary">Logout</a>
+</div>
+
+<div class="buttons-panel">
+    <!-- Change password -->
+    <form th:action="@{/private/changePassword}" method="get">
         <button type="submit" class="btn btn-primary">Change Password</button>
-    </div>
-</form>
+    </form>
+</div>
 
 <!-- Tabs with pending registrations -->
 <div class="container mt-5">
+    <div class="titles">
+        <h1>Admin panel</h1>
+    </div>
+
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="warehouse-tab" data-toggle="tab" href="#warehouse"

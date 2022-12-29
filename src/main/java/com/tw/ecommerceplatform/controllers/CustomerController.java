@@ -5,10 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class HomeController {
-    @PreAuthorize("hasRole('CUSTOMER') or hasRole('ADMIN') or hasRole('WAREHOUSE_ADMIN')")
-    @RequestMapping("/public")
-    public String publicGet() {
-        return "user";
+public class CustomerController {
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @RequestMapping("/customer")
+    public String getCustomerPanelPage() {
+        return "customer/customerPanel";
     }
 }

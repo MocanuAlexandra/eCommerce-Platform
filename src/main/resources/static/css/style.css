@@ -11,6 +11,7 @@
 
 .titles{
     text-align: center;
+    margin-top: 20px;
 }
 
 .error-message{
@@ -19,11 +20,15 @@
 .has-error {
     color: red;
 }
-
 .buttons {
     text-align: center;
 }
-
+.buttons-panel {
+    display: inline-block;
+    float: right;
+    padding: 5px;
+    margin-top: -50px;
+}
 .btn {
     border-radius: 0.25rem;
     font-size: 1rem;

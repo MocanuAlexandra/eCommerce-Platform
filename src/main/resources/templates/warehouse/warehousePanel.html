@@ -10,19 +10,24 @@
 </head>
 <body>
 
-<div class="titles" th:object="${warehouse}">
-    <h1><span th:text="${warehouse.name}"></span>' Admin panel</h1><br>
+<!-- Logout button -->
+<div class="buttons-panel">
+    <a href="/logout" class="btn btn-secondary">Logout</a>
 </div>
 
 <!-- Create product -->
 <form th:action="@{/warehouse/createItem}" method="get">
-    <div class="buttons">
+    <div class="buttons-panel">
         <button type="submit" class="btn btn-success">Create new item</button>
     </div>
 </form>
 
 <!-- Tabs with view all items and also view orders coming from shops -->
 <div class="container mt-5">
+    <div class="titles" th:object="${warehouse}">
+        <h1><span th:text="${warehouse.name}"></span>' Admin panel</h1><br>
+    </div>
+
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="item-tab" data-toggle="tab" href="#item"
@@ -50,9 +55,9 @@
 
                 <!-- Loop through the items and display a row for each one -->
                 <tr th:each="item : ${items}">
-                    <td th:text="${item.name}"></td>
-                    <td th:text="${itemQuantities.get(item)}"></td>
-                    <td>
+                    <td th:text="${item.name}" width="33%"></td>
+                    <td th:text="${itemQuantities.get(item)}"  width="33%"></td>
+                    <td width="33%">
                         <a th:href="@{/warehouse/editItem/{itemId}(itemId=${item.id})}" class="btn btn-primary">Edit</a>
                     </td>
                 </tr>
@@ -74,7 +79,7 @@
 
                 <!-- Loop through the items and display a row for each one -->
                 <tr th:each="shop : ${pendingContracts}">
-                    <td th:text="${shop.name}"></td>
+                    <td th:text="${shop.name}"  width="33%"></td>
                     <td width="33%">
                         <form th:action="@{/contract/approve-reject}" method="post">
                             <input type="hidden" name="id" th:value="${shop.id}"/>
