@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
@@ -119,12 +120,11 @@ public class WarehouseController {
         // Get the itemWarehouse object by the item id and warehouse id
         WarehouseItem warehouseItem = warehouseItemService.getItemWarehouseByItemId(itemId, warehouse);
 
-        // Create a new edit item form object and set the id, name and quantity
-        EditItemModel form = new EditItemModel();
-        form.setName(warehouseItem.getItem().getName());
-        form.setQuantity(warehouseItem.getQuantity());
+        // Create a new edit item form object
+        EditItemModel form = new EditItemModel(warehouseItem.getItem().getName(), warehouseItem.getQuantity());
 
-        model.addAttribute("warehouseItem", warehouseItem);
+        // Add the item id and the form to the model
+        model.addAttribute("itemId", warehouseItem.getItem().getId());
         model.addAttribute("form", form);
         return "warehouse/editItem";
     }
@@ -133,17 +133,20 @@ public class WarehouseController {
     @PostMapping("/warehouse/editItem/{itemId}")
     public String editItem(@PathVariable Long itemId,
                            @ModelAttribute EditItemModel form,
-                           Authentication authentication) {
+                           Authentication authentication,
+                           RedirectAttributes redirectAttributes) {
+
+        form.setId(itemId);
+
+        // Get the item object
+        ItemEntity updatedItem = itemService.getById(itemId);
+
+        // Get the itemWarehouse object
+        String username = authentication.getName();
+        WarehouseEntity warehouse = warehouseService.getWarehouseByAdminEmail(username);
+        WarehouseItem updatedWarehouseItem = warehouseItemService.getItemWarehouseByItemId(itemId, warehouse);
 
         try {
-            // Get the item object
-            ItemEntity updatedItem = itemService.getById(itemId);
-
-            // Get the itemWarehouse object
-            String username = authentication.getName();
-            WarehouseEntity warehouse = warehouseService.getWarehouseByAdminEmail(username);
-            WarehouseItem updatedWarehouseItem = warehouseItemService.getItemWarehouseByItemId(itemId, warehouse);
-
             // Update the item object
             if (updatedItem != null) {
                 itemService.updateItem(updatedItem, form);
@@ -151,23 +154,15 @@ public class WarehouseController {
 
             // Update the itemWarehouse object
             if (updatedWarehouseItem != null) {
-                warehouseItemService.updateItemWarehouse(updatedWarehouseItem, form);
+                warehouseItemService.updateItemWarehouse(updatedWarehouseItem, form, itemId);
             }
         } catch (Exception e) {
-            return "redirect:/warehouse/editItem/" + itemId;
+            redirectAttributes
+                    .addAttribute("itemId", form.getId())
+                    .addFlashAttribute("errorMessage",  e.getMessage());
 
-            // TODO add error message, then reload the page
-//            if (e.getMessage().equals("Item already exists in another warehouse")) {
-//                bindingResult.rejectValue("name", "error.form",
-//                        "Item already exists in another warehouse. Try a different name");
-//                return "warehouse/editItem";
-//            } else if (e.getMessage().equals("Quantity cannot be less than the current quantity")) {
-//                bindingResult.rejectValue("quantity", "error.form",
-//                        "Quantity cannot be less than the current quantity");
-//                return "warehouse/editItem";
-//            }
+            return "redirect:/warehouse/editItem/{itemId}";
         }
-
         // Redirect to the warehouse admin page
         return "redirect:/warehouse";
     }

@@ -8,4 +8,9 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 public class EditItemModel extends CreateItemModel {
+    Long id;
+
+    public EditItemModel(String name, int quantity) {
+        super(name, quantity);
+    }
 }

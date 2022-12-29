@@ -8,4 +8,9 @@ import lombok.RequiredArgsConstructor;
 public class CreateItemModel {
     private String name;
     private int quantity;
+
+    public CreateItemModel(String name, int quantity) {
+        this.name = name;
+        this.quantity = quantity;
+    }
 }

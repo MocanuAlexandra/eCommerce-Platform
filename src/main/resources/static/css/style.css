@@ -12,6 +12,10 @@
 .titles{
     text-align: center;
 }
+
+.error-message{
+    color: red;
+}
 .has-error {
     color: red;
 }

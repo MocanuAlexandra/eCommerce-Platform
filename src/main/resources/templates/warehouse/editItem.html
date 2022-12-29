@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="form-container">
-    <form th:action="@{/warehouse/editItem/{itemId}(itemId=${warehouseItem.id})}"
+    <form th:action="@{/warehouse/editItem/{id}(id=${itemId})}"
           th:object="${form}"
           method="post">
         <div class="form-group">
@@ -26,7 +26,6 @@
                        th:field="*{name}"
                        autofocus="autofocus">
             </div>
-            <span class="has-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 
             <!-- Quantity -->
             <div class="form-group">
@@ -40,7 +39,8 @@
                        th:field="*{quantity}"
                        autofocus="autofocus">
             </div>
-            <span class="has-error" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></span>
+
+            <div th:if="${errorMessage}" th:text="${errorMessage}"  class="error-message"></div>
 
             <!-- Buttons aria -->
             <div class="buttons">
