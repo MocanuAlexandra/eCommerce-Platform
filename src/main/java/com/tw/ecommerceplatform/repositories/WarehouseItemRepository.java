@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface WarehouseItemRepository extends JpaRepository<WarehouseItem,Long> {
+public interface WarehouseItemRepository extends JpaRepository<WarehouseItem, Long> {
 
     @Query("SELECT iw FROM WarehouseItem iw WHERE iw.warehouse = :warehouse")
     List<WarehouseItem> findByWarehouse(@Param("warehouse") WarehouseEntity warehouse);

@@ -36,11 +36,11 @@ public class AdminController {
     @GetMapping("/private")
     public String getAdminPanel(Model model) {
 
-        //Add the warehouses with pending state to the model
+        //Add the warehouses with registration pending state to the model
         List<WarehouseEntity> warehouses = warehouseService.getAllPendingWarehouses();
         model.addAttribute("warehouses", warehouses);
 
-        // Add the shops wit pending state to the model
+        // Add the shops with registration pending state to the model
         List<ShopEntity> shops = shopService.getAllPendingShops();
         model.addAttribute("shops", shops);
 
@@ -60,11 +60,11 @@ public class AdminController {
 
         } else if (action.equalsIgnoreCase(RegistrationStatus.REJECTED.getName())) {
 
-            // Reject registration -> remove both warehouse and it's admin from db
+            // Reject registration -> remove both warehouse, and it's admin from db
             warehouseService.rejectWarehouse(id);
         }
 
-        // Reload the warehouses with pending state to the model
+        // Reload the warehouses with registration pending state  to the model
         List<WarehouseEntity> warehouses = warehouseService.getAllPendingWarehouses();
         model.addAttribute("warehouses", warehouses);
 

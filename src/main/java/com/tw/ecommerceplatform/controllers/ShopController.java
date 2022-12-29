@@ -77,7 +77,6 @@ public class ShopController {
         List<ItemEntity> items = shopItems.stream()
                 .map(ShopItem::getItem)
                 .toList();
-
         Map<ItemEntity, Integer> itemQuantities = shopItems.stream()
                 .collect(Collectors.toMap(ShopItem::getItem, ShopItem::getQuantity));
 
@@ -111,7 +110,7 @@ public class ShopController {
     }
 
 
-    // Endpoint to place an order to a certain warehouse
+    // Endpoint to place an order to a certain warehouse -> get page
     @PreAuthorize("hasRole('SHOP_ADMIN')")
     @GetMapping("/shop/placeOrder/{warehouseId}")
     public String getWarehousePage(@PathVariable Long warehouseId,
@@ -146,7 +145,7 @@ public class ShopController {
         return "shop/placeOrder";
     }
 
-    // Endpoint to place order to warehouse
+    // Endpoint to place an order to a certain warehouse
     @PreAuthorize("hasRole('SHOP_ADMIN')")
     @PostMapping("/shop/placeOrder/{warehouseId}")
     public String placeOrder(@PathVariable Long warehouseId,

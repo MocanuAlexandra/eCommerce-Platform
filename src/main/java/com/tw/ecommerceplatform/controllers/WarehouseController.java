@@ -126,6 +126,7 @@ public class WarehouseController {
         // Add the item id and the form to the model
         model.addAttribute("itemId", warehouseItem.getItem().getId());
         model.addAttribute("form", form);
+
         return "warehouse/editItem";
     }
 
@@ -159,7 +160,7 @@ public class WarehouseController {
         } catch (Exception e) {
             redirectAttributes
                     .addAttribute("itemId", form.getId())
-                    .addFlashAttribute("errorMessage",  e.getMessage());
+                    .addFlashAttribute("errorMessage", e.getMessage());
 
             return "redirect:/warehouse/editItem/{itemId}";
         }
