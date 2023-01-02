@@ -24,7 +24,14 @@ public class ShopItemService {
     }
 
     // Get all items from all shops according to the search term
-    public List<ShopItem> getSearchItem(String searchedItem) {
-        return shopItemRepository.findByItemNameContainingIgnoreCase(searchedItem);
+    public List<ShopItem> getSearchItem(String searchedItem, List<Long> requiredShop) {
+        if(searchedItem == null || searchedItem.isEmpty()) {
+            return shopItemRepository.findAllByShopIdIn(requiredShop);
+        }
+        if(requiredShop == null||requiredShop.isEmpty()) {
+            return shopItemRepository.findByItemNameContainingIgnoreCase(searchedItem);
+        } else {
+            return shopItemRepository.findByItemNameContainingIgnoreCaseAndShopIdIn(searchedItem, requiredShop);
+        }
     }
 }

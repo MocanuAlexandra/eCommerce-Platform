@@ -86,4 +86,8 @@ public class ShopService {
     public ShopEntity getShopByAdminEmail(String username) {
         return shopRepository.findByAdminShop_Email(username);
     }
+
+    public List<ShopEntity> getAllItems() {
+        return shopRepository.findAll();
+    }
 }

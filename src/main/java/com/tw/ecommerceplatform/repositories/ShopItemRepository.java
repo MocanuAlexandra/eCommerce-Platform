@@ -16,4 +16,7 @@ public interface ShopItemRepository extends org.springframework.data.jpa.reposit
 
     List<ShopItem> findByItemNameContainingIgnoreCase(String term);
 
+    List<ShopItem> findByItemNameContainingIgnoreCaseAndShopIdIn(String searchedItem, List<Long> requiredShop);
+
+    List<ShopItem> findAllByShopIdIn(List<Long> requiredShop);
 }

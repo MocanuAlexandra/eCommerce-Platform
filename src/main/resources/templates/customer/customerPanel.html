@@ -7,6 +7,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css"/>
 </head>
 <body>
 
@@ -17,10 +21,28 @@
 
 <div class="container mt-5">
     <form class="form-inline" th:action="@{/search}" method="get">
-        <input class="form-control mr-sm-2 w-75" type="search" name="searchedItem" placeholder="Search..." aria-label="Search">
+        <input class="form-control mr-sm-2 w-75" type="search" name="searchedItem" placeholder="Search..."
+               aria-label="Search"/>
+        <!-- TODO: add more fancy list of shops -->
+
+<!--                <select name="shops" class="js-example-basic-multiple" aria-label="Select shops" multiple>-->
+<!--                    <option th:each="shop : ${shops}" th:value="${shop.id}" th:text="${shop.name}" name="requiredShop"></option>-->
+<!--                </select>-->
+        <div class="scrollable-list">
+            <ul>
+                <li th:each="shop : ${shops}" class="shop-item">
+                    <label>
+                        <input type="checkbox" name="requiredShop" th:value="${shop.id}"/>
+                    </label>
+                    <label th:text="${shop.name}"></label>
+                </li>
+            </ul>
+        </div>
         <button class="btn btn-outline-info" type="submit">Search</button>
+        <br>
     </form>
 
+    <!-- Shop items -->
     <table class="table">
         <thead>
         <tr>
@@ -32,10 +54,17 @@
 
         <!-- Loop through the items and display a row for each one -->
         <tr th:each="shopItem : ${shopItems}">
-            <td th:text="${shopItem.item.name}"  width="50%"></td>
-            <td th:text="${shopItem.shop.name}"  width="50%"></td>
+            <td th:text="${shopItem.item.name}" width="50%"></td>
+            <td th:text="${shopItem.shop.name}" width="50%"></td>
         </tr>
         </tbody>
     </table>
+</div>
 </body>
 </html>
+
+<script>
+    $(document).ready(function () {
+        $('.js-example-basic-multiple').select2();
+    });
+</script>

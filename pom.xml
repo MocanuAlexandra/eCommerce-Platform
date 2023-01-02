@@ -78,6 +78,14 @@
             <artifactId>jakarta.jakartaee-web-api</artifactId>
             <version>9.1.0</version>
         </dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.webjars/jquery -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>jquery</artifactId>
+			<version>3.6.1</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
