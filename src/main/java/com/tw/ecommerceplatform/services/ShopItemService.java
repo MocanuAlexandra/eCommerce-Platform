@@ -18,4 +18,13 @@ public class ShopItemService {
         return shopItemRepository.findByShop(shop);
     }
 
+    // Get all items from all shops
+    public List<ShopItem> getAllItems() {
+        return shopItemRepository.findAll();
+    }
+
+    // Get all items from all shops according to the search term
+    public List<ShopItem> getSearchItem(String searchedItem) {
+        return shopItemRepository.findByItemNameContainingIgnoreCase(searchedItem);
+    }
 }

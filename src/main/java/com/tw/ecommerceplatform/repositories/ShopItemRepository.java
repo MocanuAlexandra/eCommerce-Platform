@@ -13,4 +13,7 @@ public interface ShopItemRepository extends org.springframework.data.jpa.reposit
 
     @Query("SELECT iw FROM ShopItem iw WHERE iw.shop = :shop and iw.item.name = :name")
     ShopItem findByShopAndItem_Name(ShopEntity shop, String  name);
+
+    List<ShopItem> findByItemNameContainingIgnoreCase(String term);
+
 }

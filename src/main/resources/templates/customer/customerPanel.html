@@ -10,7 +10,32 @@
 </head>
 <body>
 
-Customer page
+<!-- Logout button -->
+<div class="buttons-panel">
+    <a href="/logout" class="btn btn-secondary">Logout</a>
+</div>
 
+<div class="container mt-5">
+    <form class="form-inline" th:action="@{/search}" method="get">
+        <input class="form-control mr-sm-2 w-75" type="search" name="searchedItem" placeholder="Search..." aria-label="Search">
+        <button class="btn btn-outline-info" type="submit">Search</button>
+    </form>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Shop</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <!-- Loop through the items and display a row for each one -->
+        <tr th:each="shopItem : ${shopItems}">
+            <td th:text="${shopItem.item.name}"  width="50%"></td>
+            <td th:text="${shopItem.shop.name}"  width="50%"></td>
+        </tr>
+        </tbody>
+    </table>
 </body>
 </html>

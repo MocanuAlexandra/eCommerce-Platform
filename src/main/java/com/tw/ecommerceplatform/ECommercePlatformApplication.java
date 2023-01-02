@@ -51,7 +51,7 @@ public class ECommercePlatformApplication {
             UserEntity shop_admin = new UserEntity("shop@gmail.com",
                     passwordEncoder.encode("admin"), role_shop_admin, RegistrationStatus.APPROVED);
             UserEntity shop_admin2 = new UserEntity("shop2@gmail.com",
-                    passwordEncoder.encode("admin"), role_shop_admin, RegistrationStatus.PENDING);
+                    passwordEncoder.encode("admin"), role_shop_admin, RegistrationStatus.APPROVED);
             userRepository.save(user);
             userRepository.save(admin);
             userRepository.save(warehouse_admin);
@@ -86,7 +86,9 @@ public class ECommercePlatformApplication {
             warehouseItemRepository.save(warehouseItem3);
 
             ShopItem shopItem = new ShopItem(item, shop, 10);
+            ShopItem shopItem2 = new ShopItem(item2, shop2, 12);
             shopItemRepository.save(shopItem);
+            shopItemRepository.save(shopItem2);
 
             ShopWarehouseContract shopWarehouseContract = new ShopWarehouseContract(shop, warehouse, ContractStatus.APPROVED);
             ShopWarehouseContract shopWarehouseContract2 = new ShopWarehouseContract(shop, warehouse2, ContractStatus.PENDING);
