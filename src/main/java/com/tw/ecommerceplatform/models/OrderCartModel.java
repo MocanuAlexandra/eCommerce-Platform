@@ -8,10 +8,10 @@ import java.util.List;
 
 @Data
 @RequiredArgsConstructor
-public class ListOfOrderItemModel {
+public class OrderCartModel {
     private List<OrderItemModel> orderItems = new ArrayList<>();
 
-    public void addOrderItem(OrderItemModel item) {
+    public void addToOrderCart(OrderItemModel item) {
         this.orderItems.add(item);
     }
 }

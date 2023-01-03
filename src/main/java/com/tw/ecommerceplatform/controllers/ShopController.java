@@ -1,7 +1,7 @@
 package com.tw.ecommerceplatform.controllers;
 
 import com.tw.ecommerceplatform.entities.*;
-import com.tw.ecommerceplatform.models.ListOfOrderItemModel;
+import com.tw.ecommerceplatform.models.OrderCartModel;
 import com.tw.ecommerceplatform.models.OrderItemModel;
 import com.tw.ecommerceplatform.services.*;
 import lombok.RequiredArgsConstructor;
@@ -131,14 +131,14 @@ public class ShopController {
             orderItemsModel.add(new OrderItemModel(item.getName(), 0));
         }
 
-        // Cast the list to a ListOrderItemModel
-        ListOfOrderItemModel listOfOrderItemModel = new ListOfOrderItemModel();
+        // Add the order items into the order cart model
+        OrderCartModel orderCartModel = new OrderCartModel();
         for (OrderItemModel orderItem : orderItemsModel) {
-            listOfOrderItemModel.addOrderItem(orderItem);
+            orderCartModel.addToOrderCart(orderItem);
         }
 
-        // Add the order items to the model
-        model.addAttribute("listOfOrderItemModel", listOfOrderItemModel);
+        // Add to the model
+        model.addAttribute("orderCartModel", orderCartModel);
         model.addAttribute("orderItems", orderItemsModel);
         model.addAttribute("warehouse", warehouse);
 
@@ -152,7 +152,7 @@ public class ShopController {
                              Authentication authentication,
                              RedirectAttributes redirectAttributes,
                              @ModelAttribute("orderItems") List<OrderItemModel> orderItems,
-                             @ModelAttribute("listOfOrderItemModel") ListOfOrderItemModel listOrderItemsModel) {
+                             @ModelAttribute("orderCartModel") OrderCartModel orderCartModel) {
 
         // Get the warehouse by id
         WarehouseEntity warehouse = warehouseService.getWarehouseById(warehouseId);
@@ -163,7 +163,7 @@ public class ShopController {
 
         // Try to place the order
         try {
-            orderService.placeOrder(warehouse, shop, orderItems, listOrderItemsModel);
+            orderService.placeOrder(warehouse, shop, orderItems, orderCartModel);
 
             //Handle errors if the order cannot be placed
         } catch (Exception e) {

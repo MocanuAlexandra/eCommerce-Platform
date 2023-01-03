@@ -15,19 +15,26 @@
 <body>
 
 <!-- Logout button -->
-<div class="buttons-panel">
+<div class="buttons-panel2">
     <a href="/logout" class="btn btn-secondary">Logout</a>
 </div>
 
+<div></div>
 <div class="container mt-5">
+    <div class="titles">
+        <h1>E-Commerce platform</h1>
+    </div>
+    <br><br>
+
+    <!-- Search form-->
     <form class="form-inline" th:action="@{/search}" method="get">
         <input class="form-control mr-sm-2 w-75" type="search" name="searchedItem" placeholder="Search..."
                aria-label="Search"/>
         <!-- TODO: add more fancy list of shops -->
 
-<!--                <select name="shops" class="js-example-basic-multiple" aria-label="Select shops" multiple>-->
-<!--                    <option th:each="shop : ${shops}" th:value="${shop.id}" th:text="${shop.name}" name="requiredShop"></option>-->
-<!--                </select>-->
+        <!--                <select name="shops" class="js-example-basic-multiple" aria-label="Select shops" multiple>-->
+        <!--                    <option th:each="shop : ${shops}" th:value="${shop.id}" th:text="${shop.name}" name="requiredShop"></option>-->
+        <!--                </select>-->
         <div class="scrollable-list">
             <ul>
                 <li th:each="shop : ${shops}" class="shop-item">
@@ -41,24 +48,41 @@
         <button class="btn btn-outline-info" type="submit">Search</button>
         <br>
     </form>
+    <br>
 
-    <!-- Shop items -->
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Shop</th>
-        </tr>
-        </thead>
-        <tbody>
+    <!-- Items -->
+    <form th:action="@{/customer/purchase}" method="get">
+        <div class="titles">
+            <h3>Items </h3>
+        </div>
 
-        <!-- Loop through the items and display a row for each one -->
-        <tr th:each="shopItem : ${shopItems}">
-            <td th:text="${shopItem.item.name}" width="50%"></td>
-            <td th:text="${shopItem.shop.name}" width="50%"></td>
-        </tr>
-        </tbody>
-    </table>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Shop</th>
+                <th>Add to cart</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <!-- Loop through the items and display a row for each one -->
+            <tr th:each="shopItem : ${shopItems}">
+                <td th:text="${shopItem.item.name}" width="33%"></td>
+                <td th:text="${shopItem.shop.name}" width="33%"></td>
+                <td width="33%">
+                    <label>
+                        <input type="checkbox" name="purchaseItemsId" th:value="${shopItem.id}"/>
+                    </label>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="buttons">
+            <button class="btn btn-success " type="submit">Go to cart</button>
+        </div>
+    </form>
 </div>
 </body>
 </html>

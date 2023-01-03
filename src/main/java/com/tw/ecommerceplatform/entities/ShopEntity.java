@@ -33,6 +33,9 @@ public class ShopEntity {
     @OneToMany(mappedBy = "shop")
     private List<OrderEntity> orders;
 
+    @ManyToMany(mappedBy = "shops")
+    private List<PurchaseEntity> purchases;
+
     @OneToMany(mappedBy = "shop")
     private List<ShopItem> items;
 

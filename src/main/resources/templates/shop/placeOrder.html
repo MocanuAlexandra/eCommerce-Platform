@@ -25,7 +25,7 @@
 
     <div class="tab-content" id="myTabContent">
 
-        <form method="post" th:object="${listOfOrderItemModel}"
+        <form method="post" th:object="${orderCartModel}"
               th:action="@{/shop/placeOrder/{warehouseId}(warehouseId=${warehouse.warehouse_id})}">
 
             <!-- All items -->
@@ -34,7 +34,7 @@
                     <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Actions</th>
+                        <th>Quantity</th>
                     </tr>
                     </thead>
                     <tbody>

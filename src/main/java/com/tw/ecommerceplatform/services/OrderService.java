@@ -1,7 +1,7 @@
 package com.tw.ecommerceplatform.services;
 
 import com.tw.ecommerceplatform.entities.*;
-import com.tw.ecommerceplatform.models.ListOfOrderItemModel;
+import com.tw.ecommerceplatform.models.OrderCartModel;
 import com.tw.ecommerceplatform.models.OrderItemModel;
 import com.tw.ecommerceplatform.repositories.*;
 import lombok.RequiredArgsConstructor;
@@ -22,15 +22,15 @@ public class OrderService {
     public void placeOrder(WarehouseEntity warehouse,
                            ShopEntity shop,
                            List<OrderItemModel> orderItems,
-                           ListOfOrderItemModel listOrderItemsModel) throws Exception {
+                           OrderCartModel orderCartModel) throws Exception {
 
         // Attach the name of the items to the order items
         for (int i = 0; i < orderItems.size(); i++) {
-            listOrderItemsModel.getOrderItems().get(i).setItemName(orderItems.get(i).getItemName());
+            orderCartModel.getOrderItems().get(i).setItemName(orderItems.get(i).getItemName());
         }
 
         // filter the order items with quantity greater than 0
-        List<OrderItemModel> filteredOrderItems = listOrderItemsModel.getOrderItems().stream()
+        List<OrderItemModel> filteredOrderItems = orderCartModel.getOrderItems().stream()
                 .filter(orderItem -> orderItem.getItemQuantity() > 0)
                 .toList();
 

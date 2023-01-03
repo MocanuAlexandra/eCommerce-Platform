@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+
+<!-- Tabs with view all items from cart-->
+<div class="container mt-5">
+    <div class="titles">
+        <h3>Cart items </h3>
+    </div>
+
+    <form method="post"
+          th:object="${purchaseCartModel}"
+          th:action="@{/customer/purchase}">
+
+        <!-- All items -->
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Shop name</th>
+                <th>Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <!-- Loop through the items and display a row for each one -->
+            <tr th:each="item, itemStat : *{purchaseItems}">
+                <td width="33" th:text="${purchaseItems[__${itemStat.index}__].itemName}"></td>
+                <td width="33%" th:text="${purchaseItems[__${itemStat.index}__].shopName}"></td>
+                <td width="33%"><label>
+                    <input
+                            type="number"
+                            placeholder="Quantity"
+                            name="quantity"
+                            min="0"
+                            th:field="*{purchaseItems[__${itemStat.index}__].itemQuantity}"/>
+                </label></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div th:if="${errorMessage}" th:text="${errorMessage}" class="error-message"></div>
+
+        <div class="buttons">
+            <button type="submit" class="btn btn-outline-success">Purchase</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(function () {
+        $('#myTab a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+    });
+</script>
+
+</body>
+</html>

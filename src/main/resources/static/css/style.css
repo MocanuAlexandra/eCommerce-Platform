@@ -29,6 +29,12 @@
     padding: 5px;
     margin-top: -50px;
 }
+.buttons-panel2 {
+    display: inline-block;
+    float: left;
+    padding: 5px;
+    margin-top: -50px;
+}
 .btn {
     border-radius: 0.25rem;
     font-size: 1rem;

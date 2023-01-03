@@ -17,7 +17,7 @@ public class ItemEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private long id;
-    @Column(name = "name",unique = true)
+    @Column(name = "name", unique = true)
     private String name;
 
     @OneToMany(mappedBy = "item")
@@ -27,6 +27,9 @@ public class ItemEntity {
     private List<ShopItem> shops;
     @OneToMany(mappedBy = "item")
     private List<OrderItem> orders;
+
+    @OneToMany(mappedBy = "item")
+    private List<PurchaseItem> purchases;
 
     public ItemEntity(String itemName) {
         this.name = itemName;

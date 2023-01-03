@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -25,6 +27,9 @@ public class UserEntity {
     private String passwordConfirm;
     @ManyToOne
     private RoleEntity role;
+
+    @OneToMany(mappedBy = "customer")
+    private List<PurchaseEntity> purchases;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
