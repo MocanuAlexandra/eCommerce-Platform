@@ -12,6 +12,6 @@ public class PurchaseCartModel {
     private List<PurchaseItemModel> purchaseItems = new ArrayList<>();
 
     public void addToPurchaseCart(PurchaseItemModel item) {
-       this.purchaseItems.add(item);
+        this.purchaseItems.add(item);
     }
 }

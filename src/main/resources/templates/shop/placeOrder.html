@@ -16,55 +16,43 @@
 
 <!-- Tabs with view all items from that warehouse -->
 <div class="container mt-5">
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" id="item-tab" data-toggle="tab" href="#item"
-               role="tab" aria-controls="items" aria-selected="true">All items</a>
-        </li>
-    </ul>
+    
+    <form method="post" th:object="${orderCartModel}"
+          th:action="@{/shop/placeOrder/{warehouseId}(warehouseId=${warehouse.warehouse_id})}">
 
-    <div class="tab-content" id="myTabContent">
+        <!-- All items -->
+        <div class="tab-pane fade show active" id="item" role="tabpanel" aria-labelledby="item-tab">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                </tr>
+                </thead>
+                <tbody>
 
-        <form method="post" th:object="${orderCartModel}"
-              th:action="@{/shop/placeOrder/{warehouseId}(warehouseId=${warehouse.warehouse_id})}">
+                <!-- Loop through the items and display a row for each one -->
+                <tr th:each="item, itemStat : *{orderItems}">
+                    <td width="50%" th:text="${orderItems[__${itemStat.index}__].itemName}"></td>
+                    <td width="50%"><label>
+                        <input
+                                type="number"
+                                placeholder="Quantity"
+                                name="quantity"
+                                min="0"
+                                th:field="*{orderItems[__${itemStat.index}__].itemQuantity}"/>
+                    </label></td>
+                </tr>
+                </tbody>
+            </table>
 
-            <!-- All items -->
-            <div class="tab-pane fade show active" id="item" role="tabpanel" aria-labelledby="item-tab">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Quantity</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+            <div th:if="${errorMessage}" th:text="${errorMessage}" class="error-message"></div>
 
-                    <!-- Loop through the items and display a row for each one -->
-                    <tr th:each="item, itemStat : *{orderItems}">
-                        <td width="50%" th:text="${orderItems[__${itemStat.index}__].itemName}">
-
-                            <!--TODO get the name from template insead of controller-->
-                            <!--                            <input type="hidden" th:field="*{orderItems[__${itemStat.index}__].itemName}" />-->
-
-                        </td>
-                        <td width="50%"><label>
-                            <input
-                                    type="number"
-                                    placeholder="Quantity"
-                                    name="quantity"
-                                    min="0"
-                                    th:field="*{orderItems[__${itemStat.index}__].itemQuantity}"/>
-                        </label></td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <div th:if="${errorMessage}" th:text="${errorMessage}" class="error-message"></div>
-
-                <button type="submit" class="btn btn-primary">Place order</button>
+            <div class="buttons">
+                <button type="submit" class="btn btn-outline-success">Place order</button>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>
 
 <script>
