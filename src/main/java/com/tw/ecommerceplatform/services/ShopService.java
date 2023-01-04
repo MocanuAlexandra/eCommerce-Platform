@@ -63,6 +63,11 @@ public class ShopService {
         return shopRepository.getAllPendingShops();
     }
 
+    // Get all shops that are in approved status
+    public List<ShopEntity> getAllApprovedShops() {
+        return shopRepository.getAllApprovedShops();
+    }
+
     // Delete shop
     public void deleteShop(Long id) {
         shopRepository.deleteById(id);

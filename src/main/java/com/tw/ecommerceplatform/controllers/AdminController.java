@@ -58,6 +58,9 @@ public class AdminController {
             // Approve registration
             warehouseService.approveRegistration(id);
 
+            // Add non-existing contracts between this warehouse and all the shops approved by admin
+            shopWarehouseContractService.addNonExistingContractsWarehouseShops(id);
+
         } else if (action.equalsIgnoreCase(RegistrationStatus.REJECTED.getName())) {
 
             // Reject registration -> remove both warehouse, and it's admin from db
@@ -84,7 +87,7 @@ public class AdminController {
             shopService.approveShop(id);
 
             // Add non-existing contracts between this shop and all warehouses approved by admin
-            shopWarehouseContractService.addNonExistingContracts(id);
+            shopWarehouseContractService.addNonExistingContractsShopWarehouses(id);
 
         } else if (action.equalsIgnoreCase(RegistrationStatus.REJECTED.getName())) {
 
@@ -129,7 +132,14 @@ public class AdminController {
             return "admin/changePassword";
         }
 
-        // If the password was changed successfully, redirect to the admin page
-        return "redirect:/private";
+        // If the password was changed successfully, redirect to the password changed page
+        return "redirect:/private/passwordChanged";
+    }
+
+    // Endpoint to show the password changed page
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/private/passwordChanged")
+    public String passwordChanged() {
+        return "admin/passwordChanged";
     }
 }

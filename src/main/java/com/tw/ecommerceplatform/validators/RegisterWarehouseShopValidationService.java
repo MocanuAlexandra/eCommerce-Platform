@@ -42,27 +42,12 @@ public class RegisterWarehouseShopValidationService implements Validator {
          */
         String addressRegexPattern = "^[A-Z][a-zA-Z]*(\\s[A-Z][a-zA-Z]*)?\\s[0-9]+$";
 
-        /*
-        This regex will match a company name with one or more words,
-        where each word consists of a capital letter followed by zero or more letters that may be
-        lowercase or uppercase, and where an optional second word is also allowed.
-
-        For example, the following company names would be matched by this regex:
-
-             "Acme Corporation"
-             "Big Corp Inc."
-             "Small Business LLC"
-
-        */
-        String nameRegexPattern = "^[A-Z][a-zA-Z]+(?: [A-Z][a-zA-Z]+)*$\n";
-
         /* Code format by 5 digits */
         String codeRegexPattern = "^[0-9]{5}$";
 
         boolean isValidEmail = model.getUsername().matches(emailRegexPattern);
         boolean isValidPassword = model.getPassword().matches(passwordRegexPattern);
         boolean arePasswordTheSame = model.getPassword().equals(model.getConfirmPassword());
-        boolean isNameValid = model.getName().matches(nameRegexPattern);
         boolean isAddressValid = model.getAddress().matches(addressRegexPattern);
         boolean isCodeNumberValid = model.getCode().matches(codeRegexPattern);
 
@@ -72,8 +57,6 @@ public class RegisterWarehouseShopValidationService implements Validator {
             errors.rejectValue("password", "form.isValidPassword");
         if (!arePasswordTheSame)
             errors.rejectValue("confirmPassword", "form.isPasswordTheSame");
-        if (!isNameValid)
-            errors.rejectValue("name", "form.isNameValid");
         if (!isAddressValid)
             errors.rejectValue("address", "form.isAddressValid");
         if (!isCodeNumberValid)

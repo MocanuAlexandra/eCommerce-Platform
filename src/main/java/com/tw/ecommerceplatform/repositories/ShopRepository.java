@@ -13,6 +13,9 @@ public interface ShopRepository extends JpaRepository<ShopEntity, Long> {
     @Query("SELECT s FROM ShopEntity s WHERE s.adminShop.status = 'PENDING'")
     List<ShopEntity> getAllPendingShops();
 
+    @Query("SELECT s FROM ShopEntity s WHERE s.adminShop.status = 'APPROVED'")
+    List<ShopEntity> getAllApprovedShops();
+
     void deleteById(Long id);
 
     ShopEntity findByAdminShop_Email(String username);

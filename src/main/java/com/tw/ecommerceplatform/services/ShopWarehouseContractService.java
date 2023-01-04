@@ -15,19 +15,34 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ShopWarehouseContractService {
     private final ShopWarehouseContractRepository shopWarehouseContractRepository;
-    private final ShopRepository shopRepository;
     private final WarehouseService warehouseService;
+    private final ShopService shopService;
+    private final ShopRepository shopRepository;
 
     // Add contract with 'NON-EXISTENT' status between shop and all of warehouses
-    public void addNonExistingContracts(Long shopId) {
+    public void addNonExistingContractsShopWarehouses(Long shopId) {
 
         List<WarehouseEntity> warehouses = warehouseService.getAllApprovedWarehouses();
-        ShopWarehouseContract shopWarehouseContract = new ShopWarehouseContract();
-        shopWarehouseContract.setShop(shopRepository.findById(shopId).get());
-        shopWarehouseContract.setStatus(ContractStatus.NON_EXISTENT);
 
         for (WarehouseEntity warehouse : warehouses) {
+            ShopWarehouseContract shopWarehouseContract = new ShopWarehouseContract();
+            shopWarehouseContract.setShop(shopService.getShopById(shopId));
+            shopWarehouseContract.setStatus(ContractStatus.NON_EXISTENT);
             shopWarehouseContract.setWarehouse(warehouse);
+            shopWarehouseContractRepository.save(shopWarehouseContract);
+        }
+    }
+
+    // Add contract with 'NON-EXISTENT' status between warehouse and all of shops
+    public void addNonExistingContractsWarehouseShops(Long warehouseId) {
+
+        List<ShopEntity> shops = shopService.getAllApprovedShops();
+
+        for (ShopEntity shop : shops) {
+            ShopWarehouseContract shopWarehouseContract = new ShopWarehouseContract();
+            shopWarehouseContract.setWarehouse(warehouseService.getWarehouseById(warehouseId));
+            shopWarehouseContract.setStatus(ContractStatus.NON_EXISTENT);
+            shopWarehouseContract.setShop(shop);
             shopWarehouseContractRepository.save(shopWarehouseContract);
         }
     }
