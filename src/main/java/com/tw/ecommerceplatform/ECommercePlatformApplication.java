@@ -80,18 +80,16 @@ public class ECommercePlatformApplication {
 
             WarehouseItem warehouseItem = new WarehouseItem(item, warehouse, 100);
             WarehouseItem warehouseItem2 = new WarehouseItem(item2, warehouse, 120);
-            WarehouseItem warehouseItem3 = new WarehouseItem(item3, warehouse2, 10);
             warehouseItemRepository.save(warehouseItem);
             warehouseItemRepository.save(warehouseItem2);
-            warehouseItemRepository.save(warehouseItem3);
 
-            ShopItem shopItem = new ShopItem(item, shop, 10);
-            ShopItem shopItem2 = new ShopItem(item2, shop2, 12);
+            ShopItem shopItem = new ShopItem(item, shop, 0);
+            ShopItem shopItem2 = new ShopItem(item2, shop, 1);
             shopItemRepository.save(shopItem);
             shopItemRepository.save(shopItem2);
 
             ShopWarehouseContract shopWarehouseContract = new ShopWarehouseContract(shop, warehouse, ContractStatus.APPROVED);
-            ShopWarehouseContract shopWarehouseContract2 = new ShopWarehouseContract(shop, warehouse2, ContractStatus.PENDING);
+            ShopWarehouseContract shopWarehouseContract2 = new ShopWarehouseContract(shop, warehouse2, ContractStatus.NON_EXISTENT);
             shopWarehouseContractRepository.save(shopWarehouseContract);
             shopWarehouseContractRepository.save(shopWarehouseContract2);
         };

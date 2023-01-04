@@ -39,7 +39,8 @@ public class CustomerController {
     public String getCustomerPanelPage(Model model) {
 
 
-        // Get all items from all shops
+        // Get all available items from all shops
+        // An item is available if it has a quantity > 0
         List<ShopItem> shopItems = shopItemService.getAllItems();
         // Get all the shops
         List<ShopEntity> shops = shopService.getAllItems();

@@ -125,6 +125,11 @@ public class ShopController {
                 .map(WarehouseItem::getItem)
                 .toList();
 
+        //Check if the warehouse has any items
+        if (items.isEmpty()) {
+            model.addAttribute("emptyWarehouse", "yes");
+        }
+
         // Add the items in a list of OrderItemModel to the model
         List<OrderItemModel> orderItemsModel = new ArrayList<>();
         for (ItemEntity item : items) {

@@ -10,18 +10,27 @@
 </head>
 <body>
 
-<div class="titles" th:object="${warehouse}">
-    <h1><span th:text="${warehouse.name}"></span>' inventory</h1><br>
+<div class="buttons-panel2">
+    <a href="/shop" class="btn btn-info">Back to main panel</a>
 </div>
 
 <!-- Tabs with view all items from that warehouse -->
 <div class="container mt-5">
-    
+
+    <div class="titles" th:object="${warehouse}">
+        <h1><span th:text="${warehouse.name}"></span>' inventory</h1><br>
+    </div>
+
     <form method="post" th:object="${orderCartModel}"
           th:action="@{/shop/placeOrder/{warehouseId}(warehouseId=${warehouse.warehouse_id})}">
 
+        <!-- Check if warehouse is empty -->
+        <div th:if="${emptyWarehouse=='yes'}" class="center">
+            <h3>There are no items in this warehouse</h3>
+        </div>
+
         <!-- All items -->
-        <div class="tab-pane fade show active" id="item" role="tabpanel" aria-labelledby="item-tab">
+        <div th:unless="${emptyWarehouse=='yes'}" class="tab-pane fade show active" id="item" role="tabpanel" aria-labelledby="item-tab">
             <table class="table">
                 <thead>
                 <tr>

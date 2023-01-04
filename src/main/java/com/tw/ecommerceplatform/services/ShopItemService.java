@@ -20,7 +20,7 @@ public class ShopItemService {
 
     // Get all items from all shops
     public List<ShopItem> getAllItems() {
-        return shopItemRepository.findAll();
+        return shopItemRepository.findAllQuantityGreaterThanZero();
     }
 
     // Get all items from all shops according to the search term
