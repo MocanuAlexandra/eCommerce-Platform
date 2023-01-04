@@ -13,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,6 @@ import java.util.List;
 public class CustomerController {
     private final ShopItemService shopItemService;
     private final ShopService shopService;
-
     private final PurchaseService purchaseService;
 
     // Endpoint to thank you page for ordering
@@ -37,7 +35,6 @@ public class CustomerController {
     @PreAuthorize("hasRole('CUSTOMER')")
     @RequestMapping("/customer")
     public String getCustomerPanelPage(Model model) {
-
 
         // Get all available items from all shops
         // An item is available if it has a quantity > 0
@@ -114,7 +111,6 @@ public class CustomerController {
     @PostMapping("/customer/purchase")
     public String placePurchase(
             Authentication authentication,
-            RedirectAttributes redirectAttributes,
             @ModelAttribute("purchaseItems") List<PurchaseItemModel> purchaseItems,
             @ModelAttribute("purchaseCartModel") PurchaseCartModel purchaseCartModel,
             Model model) {

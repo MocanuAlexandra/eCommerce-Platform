@@ -60,12 +60,12 @@ public class ShopService {
 
     // Get all shops that are in pending status
     public List<ShopEntity> getAllPendingShops() {
-        return shopRepository.getAllPendingShops();
+        return shopRepository.findAllPendingShops();
     }
 
     // Get all shops that are in approved status
     public List<ShopEntity> getAllApprovedShops() {
-        return shopRepository.getAllApprovedShops();
+        return shopRepository.findAllApprovedShops();
     }
 
     // Delete shop

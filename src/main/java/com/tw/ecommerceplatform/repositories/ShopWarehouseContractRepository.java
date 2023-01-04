@@ -11,13 +11,13 @@ import java.util.List;
 public interface ShopWarehouseContractRepository extends JpaRepository<ShopWarehouseContract, Long> {
 
     @Query("SELECT c FROM ShopWarehouseContract c WHERE c.shop.id=:shopId and c.status = 'APPROVED'")
-    List<ShopWarehouseContract> getAllByShopAndApprovedStatus(Long shopId);
+    List<ShopWarehouseContract> findAllByShopAndApprovedStatus(Long shopId);
 
-    @Query("SELECT c FROM ShopWarehouseContract c WHERE c.warehouse.id=:warehouseId and c.status = 'PENDING'")
-    List<ShopWarehouseContract> getAllByWarehouseAndPendingStatus(Long warehouseId);
+    @Query("SELECT c FROM ShopWarehouseContract c WHERE c.warehouse.warehouse_id=:warehouseId and c.status = 'PENDING'")
+    List<ShopWarehouseContract> findAllByWarehouseAndPendingStatus(Long warehouseId);
 
     @Query("SELECT c FROM ShopWarehouseContract c WHERE c.shop.id=:shopId and c.status = 'NON_EXISTENT'")
-    List<ShopWarehouseContract> getAllByShopAndNonExistingStatus(Long shopId);
+    List<ShopWarehouseContract> findAllByShopAndNonExistingStatus(Long shopId);
 
     ShopWarehouseContract findByShopAndWarehouse(ShopEntity shop, WarehouseEntity warehouse);
 }

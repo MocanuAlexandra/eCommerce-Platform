@@ -11,10 +11,10 @@ public interface ShopRepository extends JpaRepository<ShopEntity, Long> {
     ShopEntity findByName(String name);
 
     @Query("SELECT s FROM ShopEntity s WHERE s.adminShop.status = 'PENDING'")
-    List<ShopEntity> getAllPendingShops();
+    List<ShopEntity> findAllPendingShops();
 
     @Query("SELECT s FROM ShopEntity s WHERE s.adminShop.status = 'APPROVED'")
-    List<ShopEntity> getAllApprovedShops();
+    List<ShopEntity> findAllApprovedShops();
 
     void deleteById(Long id);
 

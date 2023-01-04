@@ -49,17 +49,17 @@ public class ShopWarehouseContractService {
 
     // Get all approved contracts of a shop
     public List<ShopWarehouseContract> getAllApprovedContracts(ShopEntity shop) {
-        return shopWarehouseContractRepository.getAllByShopAndApprovedStatus(shop.getId());
+        return shopWarehouseContractRepository.findAllByShopAndApprovedStatus(shop.getId());
     }
 
     // Get all pending contracts of a shop
     public List<ShopWarehouseContract> getAllPendingContracts(WarehouseEntity warehouse) {
-        return shopWarehouseContractRepository.getAllByWarehouseAndPendingStatus(warehouse.getWarehouse_id());
+        return shopWarehouseContractRepository.findAllByWarehouseAndPendingStatus(warehouse.getWarehouse_id());
     }
 
     // Get all non-existing contracts
     public List<ShopWarehouseContract> getAllNonExistingContracts(ShopEntity shop) {
-        return shopWarehouseContractRepository.getAllByShopAndNonExistingStatus(shop.getId());
+        return shopWarehouseContractRepository.findAllByShopAndNonExistingStatus(shop.getId());
     }
 
     // Get contract by shop and warehouse

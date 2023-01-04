@@ -65,12 +65,12 @@ public class WarehouseService {
 
     // Get all warehouses that are in pending status
     public List<WarehouseEntity> getAllPendingWarehouses() {
-        return warehouseRepository.getAllPendingWarehouses();
+        return warehouseRepository.findAllPendingWarehouses();
     }
 
     // Get all warehouses that are in approved status
     public List<WarehouseEntity> getAllApprovedWarehouses() {
-        return warehouseRepository.getAllApprovedWarehouses();
+        return warehouseRepository.findAllApprovedWarehouses();
     }
 
     // Delete warehouse

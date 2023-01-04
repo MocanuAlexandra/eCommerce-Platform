@@ -7,12 +7,12 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ShopItemRepository extends org.springframework.data.jpa.repository.JpaRepository<ShopItem,Long> {
+public interface ShopItemRepository extends org.springframework.data.jpa.repository.JpaRepository<ShopItem, Long> {
     @Query("SELECT si FROM ShopItem si WHERE si.shop = :shop")
     List<ShopItem> findByShop(@Param("shop") ShopEntity shop);
 
     @Query("SELECT si FROM ShopItem si WHERE si.shop = :shop and si.item.name = :name")
-    ShopItem findByShopAndItem_Name(ShopEntity shop, String  name);
+    ShopItem findByShopAndItem_Name(ShopEntity shop, String name);
 
     List<ShopItem> findByItemNameContainingIgnoreCase(String term);
 
