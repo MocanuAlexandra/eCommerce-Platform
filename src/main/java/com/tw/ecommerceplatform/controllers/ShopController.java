@@ -30,7 +30,7 @@ public class ShopController {
 
     // Endpoint to pending approval page for registration
     @GetMapping("/register/shop/pending")
-    public String pendingREgistrationPage() {
+    public String pendingRegistrationPage() {
         return "register/pendingRegistrationPage";
     }
 

@@ -67,7 +67,7 @@ public class RegisterController {
             bindingResult.rejectValue("username", "error.user", "User already exists");
             return "register/registerCustomer";
         }
-        return "redirect:/login";
+        return "redirect:/register/customer/successfully";
     }
 
 

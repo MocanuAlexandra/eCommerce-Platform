@@ -25,6 +25,11 @@ public class CustomerController {
     private final ShopService shopService;
     private final PurchaseService purchaseService;
 
+    @GetMapping("/register/customer/successfully")
+    public String successfullyRegostration() {
+        return "register/customerRegistrationSuccessfully";
+    }
+
     // Endpoint to thank you page for ordering
     @GetMapping("/customer/thankYou")
     public String thankYouPage() {
