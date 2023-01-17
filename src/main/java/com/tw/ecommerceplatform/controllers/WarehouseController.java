@@ -192,7 +192,6 @@ public class WarehouseController {
         }
 
         // Reload the contracts with pending state to the model
-
         // Get all the pending contracts to the model
         List<ShopWarehouseContract> approvedContracts = shopWarehouseContractService.getAllPendingContracts(warehouse);
         List<ShopEntity> pendingContracts = approvedContracts.stream()

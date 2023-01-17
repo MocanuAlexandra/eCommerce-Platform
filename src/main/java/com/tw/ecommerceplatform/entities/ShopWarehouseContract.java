@@ -26,10 +26,4 @@ public class ShopWarehouseContract {
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private ContractStatus status;
-
-    public ShopWarehouseContract(ShopEntity shop, WarehouseEntity warehouse, ContractStatus status) {
-        this.shop = shop;
-        this.warehouse = warehouse;
-        this.status = status;
-    }
 }

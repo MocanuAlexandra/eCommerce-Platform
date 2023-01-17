@@ -33,14 +33,14 @@ public class WarehouseEntity {
     @OneToMany(mappedBy = "warehouse")
     private List<OrderEntity> orders;
 
+    @OneToMany(mappedBy = "warehouse")
+    private List<WarehouseItem> items;
+
     public WarehouseEntity(String name, String address, String business_code, UserEntity admin) {
         this.name = name;
         this.address = address;
         this.business_code = business_code;
         this.adminWarehouse = admin;
     }
-
-    @OneToMany(mappedBy = "warehouse")
-    private List<WarehouseItem> items;
 }
 

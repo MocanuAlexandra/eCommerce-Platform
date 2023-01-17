@@ -15,8 +15,4 @@ public class RoleEntity {
     @Id
     private long id;
     private String name;
-
-    public RoleEntity(String name) {
-        this.name = name;
-    }
 }

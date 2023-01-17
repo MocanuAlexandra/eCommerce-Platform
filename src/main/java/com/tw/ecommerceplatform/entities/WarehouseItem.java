@@ -24,10 +24,4 @@ public class WarehouseItem {
     private WarehouseEntity warehouse;
 
     private int quantity;
-
-    public WarehouseItem(ItemEntity item, WarehouseEntity warehouse, int quantity) {
-        this.item = item;
-        this.warehouse = warehouse;
-        this.quantity = quantity;
-    }
 }

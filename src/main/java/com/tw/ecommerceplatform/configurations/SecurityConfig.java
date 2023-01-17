@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .and()
                 .userDetailsService(jpaUserDetailsService)
                 .authorizeHttpRequests()
-                .requestMatchers("/login").permitAll()
+                .requestMatchers( "/login").permitAll()
                 .requestMatchers("/register/**").permitAll()
                 .requestMatchers("/css/**").permitAll()
                 .anyRequest().authenticated()
